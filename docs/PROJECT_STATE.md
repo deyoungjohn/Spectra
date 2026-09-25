@@ -1,6 +1,6 @@
 # Project state
 
-Last updated: 2026-09-23
+Last updated: 2026-09-25
 
 ## Objective
 
@@ -9,6 +9,7 @@ Not yet defined. Requirements will be established with the user before implement
 ## Current status
 
 - Cross-agent workspace initialized.
+- Shared project MCP memory initialized with a retrievable Spectra project entity.
 - Application implementation has not started.
 - Product requirements remain to be defined.
 
