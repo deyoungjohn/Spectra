@@ -24,6 +24,7 @@ import {
   type ExecutionPolicy,
   type TradeProposal,
 } from "@spectra/core";
+import { createMarketRouter, createAlphaRouter } from "./market.js";
 
 export interface BackendServices {
   cache: MemoryCacheService;
@@ -278,6 +279,10 @@ export function createApp(services: BackendServices): express.Application {
       res.status(500).json({ error: "Failed to fetch user receipts" });
     }
   });
+
+  // Module 1: Market Intelligence & Alpha routes (§6.4)
+  app.use("/api/market", createMarketRouter(services));
+  app.use("/api/alpha", createAlphaRouter(services));
 
   return app;
 }

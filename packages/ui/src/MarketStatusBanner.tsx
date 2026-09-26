@@ -1,0 +1,83 @@
+// packages/ui/src/MarketStatusBanner.tsx
+import React from "react";
+
+export interface MarketStatusBannerProps {
+  status: "OPEN" | "CLOSED" | "HALTED";
+  isOpen: boolean;
+  nextOpenTime?: string | null;
+  dataFeedAvailable?: boolean;
+  lastFetchTime?: string | null;
+}
+
+export const MarketStatusBanner: React.FC<MarketStatusBannerProps> = ({
+  status,
+  isOpen,
+  nextOpenTime,
+  dataFeedAvailable = true,
+  lastFetchTime,
+}) => {
+  const getStatusColor = () => {
+    if (status === "HALTED") return "#F6465D"; // Critical red
+    if (isOpen) return "#0ECB81"; // Vibrant green
+    return "#787B86"; // Dim gray
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        padding: "10px 16px",
+        backgroundColor: "#16181D",
+        borderBottom: "1px solid #23272E",
+        color: "#FFFFFF",
+        fontFamily: "Inter, sans-serif",
+        fontSize: "13px",
+      }}
+    >
+      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <span
+          style={{
+            display: "inline-block",
+            width: "8px",
+            height: "8px",
+            borderRadius: "50%",
+            backgroundColor: getStatusColor(),
+            boxShadow: isOpen ? "0 0 8px #0ECB81" : "none",
+          }}
+        />
+        <span style={{ fontWeight: 600, letterSpacing: "0.5px" }}>
+          TRADFI US EQUITIES: {status}
+        </span>
+        {nextOpenTime && !isOpen && (
+          <span style={{ color: "#848E9C" }}>
+            (Opens: {new Date(nextOpenTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })})
+          </span>
+        )}
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+        {!dataFeedAvailable && (
+          <span
+            style={{
+              backgroundColor: "rgba(246, 70, 93, 0.15)",
+              color: "#F6465D",
+              padding: "2px 8px",
+              borderRadius: "4px",
+              fontSize: "11px",
+              fontWeight: 600,
+            }}
+          >
+            DATA FEED DELAYED (STALE CACHE ACTIVE)
+          </span>
+        )}
+        {lastFetchTime && (
+          <span style={{ color: "#5E6673", fontSize: "11px" }}>
+            Updated: {new Date(lastFetchTime).toLocaleTimeString()}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+};

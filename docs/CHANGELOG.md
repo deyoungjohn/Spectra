@@ -81,3 +81,22 @@
 - Reason: On-chain contracts provide verifiable auditability, cryptographic non-repudiation of agent decisions, and programmatic risk caps on BSC.
 - Behavior/compatibility impact: Smart contracts compile, deploy, and pass all tests. Repository check procedure updated to include Solidity compilation and testing. Total tests increased to 105 across 11 test suites.
 - Verification: `./scripts/check.sh` passes — 105/105 tests passing (85 core + 9 backend + 11 smart contracts), 0 type errors, 0 lint errors.
+ 
++## 2026-09-26 — Phase 4: Module 1 — Market Intelligence Complete
++
++- Agent/client: Antigravity (Gemini 3.8 Flash)
++- Change: Built the "Finviz layer" for tokenized equity intelligence on BNB Smart Chain:
++  - `apps/backend/src/market.ts`: Express market intelligence routes providing `/api/market/status`, `/api/market/heatmap`, `/api/market/screener`, `/api/market/ticker/:ticker`, `/api/market/sectors/:sector`, `/api/market/anomalies`, and paid b402 endpoint `/api/alpha/screener` ($0.05/call format per §6.4)
++  - `@spectra/ui` React component library:
++    - `MarketStatusBanner`: Live market hours countdown, status badges, feed staleness warnings
++    - `AnomalyFilters`: Interactive filter chips for oracle divergence, weekend premium (locked indicator), basis, flow, and ratio drift
++    - `SectorTabs`: Magnificent 7, AI Chips, ETFs, and Buffett Portfolio category pills
++    - `HeatmapView`: Color-graded responsive grid rendering per-share normalized prices and cross-platform basis deltas
++    - `ScreenerTable`: Real-time tabular screener with string-formatted volumes and spread badges
++    - `PlatformComparison`: Multi-venue side-by-side pricing (Ondo vs bStocks vs xStocks) with ratio badges
++    - `TickerDetailView`: High-density ticker view with spread cards, active signal tags, and "Forge Strategy" bridge
++  - `apps/web`: Full Next.js 16 dashboard with Turbopack, responsive dark theme (`#0D0E12`, `#F0B90B`), dynamic ticker route `/market/ticker/[ticker]`, and integration tests
++  - Added 15 new tests (8 in `@spectra/ui` and 7 in `@spectra/backend`), bringing the monorepo total to 120 passing tests across 12 test suites
++- Reason: Users and autonomous agents require real-time visibility into Web3 tokenized stock anomalies, cross-platform pricing discrepancies, and normalized per-share valuations.
++- Behavior/compatibility impact: Market intelligence API endpoints and web dashboard are live. Existing base layer APIs remain fully backwards-compatible.
++- Verification: `./scripts/check.sh` passes — 120/120 tests passing (85 core + 8 ui + 16 backend + 11 contracts), Next.js production build passes in 111ms, 0 type errors, 0 lint errors.

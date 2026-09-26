@@ -60,10 +60,22 @@ if [[ -f package.json ]]; then
     npx tsc --project packages/core/tsconfig.json
   fi
 
+  # Build UI package so web can import dist declarations
+  if [[ -f packages/ui/tsconfig.json ]]; then
+    echo "Building @spectra/ui..."
+    npx tsc --project packages/ui/tsconfig.json
+  fi
+
   # Typecheck core package
   if [[ -f packages/core/tsconfig.json ]]; then
     echo "Typechecking @spectra/core..."
     npx tsc --noEmit --project packages/core/tsconfig.json
+  fi
+
+  # Typecheck UI package
+  if [[ -f packages/ui/tsconfig.json ]]; then
+    echo "Typechecking @spectra/ui..."
+    npx tsc --noEmit --project packages/ui/tsconfig.json
   fi
 
   # Typecheck backend
@@ -78,10 +90,21 @@ if [[ -f package.json ]]; then
     npx tsc --noEmit --project apps/agent/tsconfig.json
   fi
 
+  # Typecheck web
+  if [[ -f apps/web/tsconfig.json ]]; then
+    echo "Typechecking @spectra/web..."
+    npm run typecheck -w @spectra/web
+  fi
+
   # Run tests
   if [[ -f packages/core/vitest.config.ts ]]; then
     echo "Testing @spectra/core..."
     npx vitest run --config packages/core/vitest.config.ts
+  fi
+
+  if [[ -f packages/ui/vitest.config.ts ]]; then
+    echo "Testing @spectra/ui..."
+    npx vitest run --config packages/ui/vitest.config.ts
   fi
 
   if [[ -f apps/backend/vitest.config.ts ]]; then
@@ -97,10 +120,16 @@ if [[ -f package.json ]]; then
     npm test -w @spectra/contracts
   fi
 
+  # Build Next.js web application
+  if [[ -f apps/web/next.config.mjs ]]; then
+    echo "Building @spectra/web..."
+    npm run build -w @spectra/web
+  fi
+
   # Lint
   if [[ -f eslint.config.js ]]; then
     echo "Linting..."
-    npx eslint packages/core/src/ apps/backend/src/ apps/agent/src/ --no-warn-ignored || true
+    npx eslint packages/core/src/ packages/ui/src/ apps/backend/src/ apps/agent/src/ apps/web/src/ --no-warn-ignored
   fi
 fi
 

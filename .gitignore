@@ -12,6 +12,7 @@ node_modules/
 coverage/
 dist/
 build/
+.next/
 artifacts/
 cache/
 typechain-types/

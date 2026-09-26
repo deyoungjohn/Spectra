@@ -3,9 +3,29 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
-    "build": "echo 'UI build: React setup pending (Phase 4)'",
-    "typecheck": "echo 'UI typecheck: React setup pending (Phase 4)'",
-    "lint": "echo 'UI lint: setup pending (Phase 4)'"
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src/ --no-warn-ignored"
+  },
+  "dependencies": {
+    "@spectra/core": "*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/dom": "10.4.2",
+    "@testing-library/react": "16.3.3",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "jsdom": "30.1.1"
   }
 }

@@ -16,7 +16,19 @@ independent TradFi oracle.
 - **Phase 1 (Base Layer — Core Data): ✅ Complete**
 - **Phase 2 (Base Layer — Signals & Policy): ✅ Complete**
 - **Phase 3 (Smart Contracts): ✅ Complete**
-- Phase 4 (Module 1 — Market Intelligence): 🔄 Next up
+- **Phase 4 (Module 1 — Market Intelligence): ✅ Complete**
+- Phase 5 (Module 3 — Flow Radar): 🔄 Next up
+- UI Library (`@spectra/ui`) implements:
+  - `MarketStatusBanner`: Market hours status, countdown to open/close, staleness indicator
+  - `AnomalyFilters`: Toggle filter chips for divergence, premium, basis, flow, and drift
+  - `SectorTabs`: Magnificent 7, AI Chips, ETFs, Buffett Portfolio filters
+  - `HeatmapView`: Responsive grid with per-share price conversion and signal-severity color grading
+  - `ScreenerTable`: Real-time cross-platform scanner with bps spreads and volume
+  - `PlatformComparison`: Side-by-side Ondo, bStocks, and xStocks price & ratio comparison
+  - `TickerDetailView`: Deep inspection with price spread cards, active signals, and Strategy Forge trigger
+- Next.js Web Application (`apps/web`):
+  - Turbopack-enabled Next.js 16 dashboard with dynamic route `/market/ticker/[ticker]`
+  - Spectra dark theme (`#0D0E12`, `#F0B90B` gold accent)
 - Smart Contracts (`@spectra/contracts`) implements:
   - `FixedPointMath.sol`: 18-decimal fixed-point library on-chain
   - `OracleWatch.sol`: Divergence recording with bounded history pruning
@@ -33,9 +45,9 @@ independent TradFi oracle.
   - Receipt Service (SHA-256 decision, simulation, and quote hashing)
   - Strategy Conflict Resolution Coordinator (priority netting, cap enforcement)
   - Memory Cache Service with TTL
-- Backend API (`@spectra/backend`) running Express with `/api/health`, `/api/core/status`, `/api/core/tokens`, `/api/core/signals`, `/api/core/policy/check`, `/api/core/receipts/:user`
-- 105 total passing tests across 11 test suites (85 core + 9 backend + 11 smart contracts)
-- Zero type errors, zero lint warnings
+- Backend API (`@spectra/backend`) running Express with `/api/health`, `/api/core/*`, `/api/market/*`, and b402 paid `/api/alpha/screener`
+- 120 total passing tests across 12 test suites (85 core + 8 ui + 16 backend + 11 smart contracts)
+- Zero type errors, zero lint warnings, production Next.js build passes
 - Build phases tracked in `docs/BUILD_PHASES.md`
 
 ## Architecture

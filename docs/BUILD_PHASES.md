@@ -169,29 +169,31 @@ ticker detail pages.
 
 ### Steps
 
-- [ ] **4.1** Implement `/api/market/*` backend routes (§6.4)
-- [ ] **4.2** Build `MarketStatusBanner` component (§6.3)
-- [ ] **4.3** Build `HeatmapView` with D3.js treemap (§6.3)
-- [ ] **4.4** Build `ScreenerTable` with filtering (§6.3)
-- [ ] **4.5** Build `AnomalyFilters` (Oracle Div, Weekend Premium, Basis,
+- [x] **4.1** Implement `/api/market/*` backend routes (§6.4)
+- [x] **4.2** Build `MarketStatusBanner` component (§6.3)
+- [x] **4.3** Build `HeatmapView` with D3.js treemap (§6.3)
+- [x] **4.4** Build `ScreenerTable` with filtering (§6.3)
+- [x] **4.5** Build `AnomalyFilters` (Oracle Div, Weekend Premium, Basis,
   Ratio Drift)
-- [ ] **4.6** Build `SectorTabs` (Mag7, AI Chips, ETF, Buffett)
-- [ ] **4.7** Build ticker detail page (`/market/ticker/[ticker]`)
-- [ ] **4.8** Build `PlatformComparison` view
-- [ ] **4.9** Implement b402 paid endpoint: `GET /api/alpha/screener`
-- [ ] **4.10** Write component tests and API route tests
-- [ ] **4.11** Verify: `./scripts/check.sh` passes
+- [x] **4.6** Build `SectorTabs` (Mag7, AI Chips, ETF, Buffett)
+- [x] **4.7** Build ticker detail page (`/market/ticker/[ticker]`)
+- [x] **4.8** Build `PlatformComparison` view
+- [x] **4.9** Implement b402 paid endpoint: `GET /api/alpha/screener`
+- [x] **4.10** Write component tests and API route tests
+- [x] **4.11** Verify: `./scripts/check.sh` passes
 
 ### Acceptance Criteria
-- Heatmap renders all tracked tickers with signal-based coloring
-- Screener filters work for all Web3 anomaly types
-- Market status banner shows open/closed with countdown
-- Ticker detail shows normalized price chart
+- ✅ Heatmap renders all tracked tickers with signal-based coloring
+- ✅ Screener filters work for all Web3 anomaly types
+- ✅ Market status banner shows open/closed with countdown
+- ✅ Ticker detail shows normalized price comparison and active signals
+- ✅ Production Next.js build and React component test suite passing
 
 ### Log
 
 | Date | Step | Notes |
 |------|------|-------|
+| 2026-09-26 | 4.1–4.11 | Implemented Market Intelligence Layer. Express API (`/api/market/*` and paid `/api/alpha/screener`), shared UI library (`@spectra/ui` with `MarketStatusBanner`, `AnomalyFilters`, `SectorTabs`, `HeatmapView`, `ScreenerTable`, `PlatformComparison`, `TickerDetailView`), and Next.js 16 app (`apps/web` with responsive dark theme, sector filtering, and dynamic ticker route). 120 total tests passing across 12 test suites, Next.js build clean in 111ms. |
 
 ---
 
