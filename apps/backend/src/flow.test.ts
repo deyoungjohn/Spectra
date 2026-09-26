@@ -16,6 +16,9 @@ import {
   FlowSignalEngine,
   type ITradFiClient,
   parseToFixed18,
+  PaymentGateway,
+  BnbAgentStudioClient,
+  AgenticWalletClient,
 } from "@spectra/core";
 
 describe("Flow Radar API (/api/flow/* & /api/alpha/flow/*)", () => {
@@ -39,6 +42,9 @@ describe("Flow Radar API (/api/flow/* & /api/alpha/flow/*)", () => {
     const bscScan = new MockBscScanProvider();
     const flowAggregator = new FlowAggregator(bscScan);
     const flowEngine = new FlowSignalEngine(flowAggregator, { signalEngine });
+    const paymentGateway = new PaymentGateway({ mode: "shadow" });
+    const agentStudio = new BnbAgentStudioClient();
+    const agenticWallet = new AgenticWalletClient(policyEngine);
 
     const services: BackendServices = {
       cache,
@@ -51,6 +57,9 @@ describe("Flow Radar API (/api/flow/* & /api/alpha/flow/*)", () => {
       bscScan,
       flowAggregator,
       flowEngine,
+      paymentGateway,
+      agentStudio,
+      agenticWallet,
     };
     const app = createApp(services);
     return { app, services };

@@ -112,6 +112,11 @@ if [[ -f package.json ]]; then
     npx vitest run --config apps/backend/vitest.config.ts
   fi
 
+  if [[ -f apps/agent/vitest.config.ts ]]; then
+    echo "Testing @spectra/agent..."
+    npx vitest run --config apps/agent/vitest.config.ts
+  fi
+
   # Build and test smart contracts
   if [[ -f packages/contracts/hardhat.config.cjs ]]; then
     echo "Compiling @spectra/contracts..."

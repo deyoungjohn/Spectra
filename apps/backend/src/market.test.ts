@@ -13,6 +13,12 @@ import {
   ReceiptService,
   type ITradFiClient,
   parseToFixed18,
+  HttpBscScanClient,
+  FlowAggregator,
+  FlowSignalEngine,
+  PaymentGateway,
+  BnbAgentStudioClient,
+  AgenticWalletClient,
 } from "@spectra/core";
 
 describe("Market Intelligence API (/api/market/* & /api/alpha/*)", () => {
@@ -33,6 +39,13 @@ describe("Market Intelligence API (/api/market/* & /api/alpha/*)", () => {
     const policyEngine = new PolicyEngine(signalEngine);
     const receiptService = new ReceiptService();
 
+    const bscScan = new HttpBscScanClient({ cache });
+    const flowAggregator = new FlowAggregator(bscScan);
+    const flowEngine = new FlowSignalEngine(flowAggregator, { signalEngine });
+    const paymentGateway = new PaymentGateway({ mode: "shadow" });
+    const agentStudio = new BnbAgentStudioClient();
+    const agenticWallet = new AgenticWalletClient(policyEngine);
+
     const services: BackendServices = {
       cache,
       ingestion,
@@ -41,6 +54,12 @@ describe("Market Intelligence API (/api/market/* & /api/alpha/*)", () => {
       signalEngine,
       policyEngine,
       receiptService,
+      bscScan,
+      flowAggregator,
+      flowEngine,
+      paymentGateway,
+      agentStudio,
+      agenticWallet,
     };
     const app = createApp(services);
     return { app, services };

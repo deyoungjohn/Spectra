@@ -27,6 +27,9 @@ import {
   FlowAggregator,
   FlowSignalEngine,
   type BscScanProvider,
+  PaymentGateway,
+  BnbAgentStudioClient,
+  AgenticWalletClient,
 } from "@spectra/core";
 import { createMarketRouter, createAlphaRouter } from "./market.js";
 import { createFlowRouter } from "./flow.js";
@@ -43,6 +46,9 @@ export interface BackendServices {
   bscScan: BscScanProvider;
   flowAggregator: FlowAggregator;
   flowEngine: FlowSignalEngine;
+  paymentGateway: PaymentGateway;
+  agentStudio: BnbAgentStudioClient;
+  agenticWallet: AgenticWalletClient;
 }
 
 export function createServices(env: NodeJS.ProcessEnv = process.env): BackendServices {
@@ -84,6 +90,17 @@ export function createServices(env: NodeJS.ProcessEnv = process.env): BackendSer
     signalEngine,
   });
 
+  // Agent Layer setup (Phase 7, Spectra.md §5.6, §9)
+  const paymentGateway = new PaymentGateway({
+    mode: env.B402_MODE === "official" ? "official" : "shadow",
+    apiKey: env.B402_API_KEY,
+    secretKey: env.B402_SECRET_KEY,
+    baseUrl: env.B402_BASE_URL,
+    payTo: env.B402_PAY_TO,
+  });
+  const agentStudio = new BnbAgentStudioClient();
+  const agenticWallet = new AgenticWalletClient(policyEngine);
+
   return {
     cache,
     ingestion,
@@ -95,6 +112,9 @@ export function createServices(env: NodeJS.ProcessEnv = process.env): BackendSer
     bscScan,
     flowAggregator,
     flowEngine,
+    paymentGateway,
+    agentStudio,
+    agenticWallet,
   };
 }
 

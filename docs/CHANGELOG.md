@@ -150,3 +150,27 @@
 - Reason: Autonomous agents and retail investors require a verifiable bridge between human intent and programmatic on-chain execution with strict risk bounds and dry-run proof.
 - Behavior/compatibility impact: Strategy Forge endpoints, compiler, simulator, and dashboard are fully operational. Zero regressions on prior modules.
 - Verification: `./scripts/check.sh` passes — 173/173 tests passing (109 core + 22 ui + 31 backend + 11 smart contracts), Next.js production build passes in 108ms, 0 type errors, 0 lint errors.
+## 2026-09-26 — Phase 7: Agent Layer Complete
+
+- Agent/client: Antigravity (Gemini 3.8 Flash)
+- Change: Built the Agent Layer for autonomous execution, on-chain identity, and b402 monetization per Spectra.md §5.6 and §9:
+  - Payment Gateway & b402 Protocol (`@spectra/core/b402`):
+    - `PaymentGateway`: Dual-mode gateway with upstream official verification/settlement and automatic local shadow fallback
+    - `B402Signer`: Cryptographic HMAC-SHA256 request signer and verifier (`X-OC-APIKEY`, `X-OC-TIMESTAMP`, `X-OC-SIGN`)
+    - `BazaarMetadata`: Discovery schemas for all 6 paid intelligence feeds
+  - Smart Contracts (`@spectra/contracts`):
+    - `MockFacilitator.sol`: BSC Cancun EVM on-chain facilitator for shadow payment settlement verification and `PaymentSettled` event emission (3 unit tests)
+  - Backend API (`apps/backend`):
+    - Implemented all 6 paid alpha endpoints: `/api/alpha/screener` ($0.03), `/api/alpha/flow/:ticker` ($0.02), `/api/alpha/oracle-divergence/:ticker` ($0.01), `/api/alpha/weekend-premium/:ticker` ($0.01), `/api/alpha/basis/:ticker` ($0.02), and `/api/alpha/signals` ($0.05)
+    - Added b402 utility endpoints: `/api/alpha/b402/verify`, `/api/alpha/b402/settle`, and `/api/alpha/b402/supported`
+    - Added 9 integration tests in `apps/backend/src/alpha.test.ts`
+  - BNB Agent Studio & Agentic Wallet (`@spectra/core/agent`):
+    - `BnbAgentStudioClient`: ERC-8004 identity registration and signature verification; ERC-8183 inter-agent task runner lifecycle
+    - `AgenticWalletClient`: 4 Binance Web3 wallet skills (`binance-web3/get-quote`, `swap`, `get-balances`, `simulate-transaction`) with strict PolicyVault and fixed-point math enforcement
+  - Spectra MCP Server (`apps/agent`):
+    - Model Context Protocol server exposing the 5 canonical tools from §9.4 (`Spectra_get_signals`, `Spectra_get_oracle_divergence`, `Spectra_get_weekend_premium`, `Spectra_execute_strategy`, `Spectra_check_policy`) with stdio transport and programmatic API
+    - Added 8 integration tests in `apps/agent/src/mcp-server.test.ts`
+  - Added 31 new tests across `@spectra/core` (11 tests), `@spectra/contracts` (3 tests), `@spectra/backend` (9 tests), and `@spectra/agent` (8 tests), bringing monorepo total to 204 passing tests across 21 test suites
+- Reason: Enable self-funding, trustless autonomous agents that can register verifiable ERC-8004 identities, execute policy-bounded trades on BSC DEXes via Agentic Wallet, sell proprietary alpha through b402, and seamlessly interface with Claude Code / Cursor through MCP.
+- Behavior/compatibility impact: Agent Layer and paid b402 endpoints are fully operational. Zero regressions on Base Layer, Market Intelligence, Flow Radar, or Strategy Forge.
+- Verification: `./scripts/check.sh` passes — 204/204 tests passing (120 core + 22 ui + 40 backend + 8 agent + 14 smart contracts), Next.js production build clean in 106ms, 0 type errors, 0 lint errors.

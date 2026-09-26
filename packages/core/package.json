@@ -33,6 +33,22 @@
     "./policy": {
       "import": "./dist/policy/index.js",
       "types": "./dist/policy/index.d.ts"
+    },
+    "./flow": {
+      "import": "./dist/flow/index.js",
+      "types": "./dist/flow/index.d.ts"
+    },
+    "./strategy": {
+      "import": "./dist/strategy/index.js",
+      "types": "./dist/strategy/index.d.ts"
+    },
+    "./b402": {
+      "import": "./dist/b402/index.js",
+      "types": "./dist/b402/index.d.ts"
+    },
+    "./agent": {
+      "import": "./dist/agent/index.js",
+      "types": "./dist/agent/index.d.ts"
     }
   },
   "scripts": {

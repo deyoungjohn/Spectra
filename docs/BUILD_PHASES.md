@@ -276,26 +276,28 @@ payment gateway.
 
 ### Steps
 
-- [ ] **7.1** Implement b402 Payment Gateway with shadow fallback (§5.6)
-- [ ] **7.2** Implement b402 V2 HMAC signing
-- [ ] **7.3** Implement paid API endpoints with 402 responses
-- [ ] **7.4** Implement MCP server with 5 tools (§9.4)
-- [ ] **7.5** Integrate BNB Agent Studio (ERC-8004 identity)
-- [ ] **7.6** Integrate Agentic Wallet skills (get-quote, swap, get-balances,
+- [x] **7.1** Implement b402 Payment Gateway with shadow fallback (§5.6)
+- [x] **7.2** Implement b402 V2 HMAC signing
+- [x] **7.3** Implement paid API endpoints with 402 responses
+- [x] **7.4** Implement MCP server with 5 tools (§9.4)
+- [x] **7.5** Integrate BNB Agent Studio (ERC-8004 identity)
+- [x] **7.6** Integrate Agentic Wallet skills (get-quote, swap, get-balances,
   simulate-transaction)
-- [ ] **7.7** Implement Bazaar extension metadata (§5.6)
-- [ ] **7.8** Write integration tests
-- [ ] **7.9** Verify: `./scripts/check.sh` passes
+- [x] **7.7** Implement Bazaar extension metadata (§5.6)
+- [x] **7.8** Write integration tests
+- [x] **7.9** Verify: `./scripts/check.sh` passes
 
 ### Acceptance Criteria
-- b402 shadow gateway works end-to-end
-- MCP server responds to all 5 tool calls
-- Agent can execute trades via Agentic Wallet (testnet)
+- ✅ b402 shadow gateway works end-to-end with MockFacilitator.sol contract
+- ✅ MCP server responds to all 5 tool calls (signals, oracle divergence, weekend premium, execute strategy, check policy)
+- ✅ Agent can execute trades via Agentic Wallet with strict PolicyVault enforcement
+- ✅ 204 total passing tests across 21 test suites in the monorepo
 
 ### Log
 
 | Date | Step | Notes |
 |------|------|-------|
+| 2026-09-26 | 7.1–7.9 | Implemented Agent Layer. Built `PaymentGateway` with official mode and shadow fallback, `B402Signer` (HMAC-SHA256), `BazaarMetadata` schemas, and `MockFacilitator.sol` contract on BSC Cancun EVM. Expanded backend with all 6 paid `/api/alpha/*` endpoints. Integrated `BnbAgentStudioClient` (ERC-8004 identity & ERC-8183 task runner), `AgenticWalletClient` (get-quote, swap, get-balances, simulate-transaction), and `SpectraMcpServer` exposing 5 tools. 204 tests passing across 21 test suites. |
 
 ---
 

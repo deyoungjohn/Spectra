@@ -19,7 +19,17 @@ independent TradFi oracle.
 - **Phase 4 (Module 1 — Market Intelligence): ✅ Complete**
 - **Phase 5 (Module 3 — Flow Radar): ✅ Complete**
 - **Phase 6 (Module 2 — Strategy Forge): ✅ Complete**
-- Phase 7 (Agent Layer): 🔄 Next up
+- **Phase 7 (Agent Layer): ✅ Complete**
+- Phase 8 (Integration & Polish): 🔄 Next up
+- Agent Layer (`apps/agent` & `@spectra/core/agent`, `@spectra/core/b402`) implements:
+  - `PaymentGateway`: Official upstream b402 mode with automatic shadow fallback
+  - `B402Signer`: HMAC-SHA256 envelope signing and verification (`X-OC-APIKEY`, `X-OC-TIMESTAMP`, `X-OC-SIGN`)
+  - `BazaarMetadata`: Discovery schemas for all 6 paid alpha feeds
+  - `MockFacilitator.sol`: Cancun EVM contract on BSC testnet/mainnet fork for shadow settlement verification
+  - Paid Alpha Endpoints: `/api/alpha/{screener,flow,oracle-divergence,weekend-premium,basis,signals}` and `/api/alpha/b402/{verify,settle,supported}`
+  - `BnbAgentStudioClient`: ERC-8004 identity registration and verification; ERC-8183 inter-agent task lifecycle
+  - `AgenticWalletClient`: 4 Binance Web3 wallet skills (`binance-web3/get-quote`, `swap`, `get-balances`, `simulate-transaction`) with strict PolicyVault enforcement
+  - `SpectraMcpServer`: Model Context Protocol server exposing the 5 canonical tools (`Spectra_get_signals`, `Spectra_get_oracle_divergence`, `Spectra_get_weekend_premium`, `Spectra_execute_strategy`, `Spectra_check_policy`)
 - Strategy Forge (`@spectra/core/strategy`) implements:
   - 4 canonical pre-built templates: Weekly DCA, Basis Rotation, Oracle Guard, Weekend Fade
   - `StrategyValidator`: Syntactical validation & `ExecutionPolicy` bounds enforcement

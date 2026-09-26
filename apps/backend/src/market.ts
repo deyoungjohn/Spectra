@@ -6,7 +6,14 @@
 import { Router, type Request, type Response } from "express";
 import type { BackendServices } from "./app.js";
 import { serializeStock, serializeSignal } from "./app.js";
-import type { NormalizedStock } from "@spectra/core";
+import {
+  type NormalizedStock,
+  formatFixed18,
+  BPS_PRECISION,
+  type B402PaymentPayload,
+  type PaymentRequirementOption,
+  PaymentGateway,
+} from "@spectra/core";
 
 export function createMarketRouter(services: BackendServices): Router {
   const router = Router();
@@ -214,37 +221,69 @@ export function createMarketRouter(services: BackendServices): Router {
 
 export function createAlphaRouter(services: BackendServices): Router {
   const router = Router();
+  const gateway = services.paymentGateway ?? new PaymentGateway();
 
-  // GET /api/alpha/screener (Paid b402 endpoint §5.6, §6.4)
-  router.get("/screener", async (req: Request, res: Response) => {
-    // If b402 payment header is missing in official mode, return 402 Payment Required (§5.6)
+  async function handlePaidAccess(
+    req: Request,
+    res: Response,
+    endpointKey: string,
+    amount: string
+  ): Promise<boolean> {
+    const requirements = gateway.createPaymentRequirements(endpointKey, amount, "USDC");
     const paymentHeader = req.headers["x-402-payment"];
-    if (!paymentHeader && process.env.B402_MODE === "official") {
-      res.status(402).json({
-        x402Version: 2,
-        error: "Payment Required",
-        accepts: [
-          {
-            scheme: "exact",
-            token: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d", // USDC on BSC
-            amount: "30000", // 0.03 USDC
-            description: "Spectra Full Screener Export",
-          },
-        ],
-      });
-      return;
+
+    if (paymentHeader && typeof paymentHeader === "string") {
+      try {
+        const payload = JSON.parse(paymentHeader) as B402PaymentPayload;
+        const reqOption: PaymentRequirementOption = requirements.accepts[0]!;
+        const verifyResult = await gateway.verifyPayment(payload, reqOption);
+
+        if (!verifyResult.valid) {
+          res.status(402).json({
+            x402Version: 2,
+            error: "Payment Required",
+            reason: verifyResult.reason,
+            requirements,
+          });
+          return false;
+        }
+
+        const settleResult = await gateway.settlePayment(payload, reqOption);
+        res.setHeader("X-402-Receipt", settleResult.settlementId);
+        return true;
+      } catch {
+        res.status(400).json({ error: "Malformed X-402-Payment header" });
+        return false;
+      }
     }
 
-    // Serve screener export
-    const stocks = await services.normalization.getAll();
-    services.signalEngine.evaluateAll(stocks);
+    if (gateway.getMode() === "official" || process.env.B402_MODE === "official") {
+      res.status(402).json(requirements);
+      return false;
+    }
 
-    res.json({
-      timestamp: new Date().toISOString(),
-      source: "Spectra Market Intelligence Base Layer",
-      count: stocks.length,
-      data: stocks.map(serializeStock),
-    });
+    return true;
+  }
+
+  // GET /api/alpha/screener (Paid b402 endpoint §5.6, §6.4: 0.03 USDC)
+  router.get("/screener", async (req: Request, res: Response) => {
+    const ok = await handlePaidAccess(req, res, "screener", "30000");
+    if (!ok) return;
+
+    try {
+      const stocks = await services.normalization.getAll();
+      services.signalEngine.evaluateAll(stocks);
+
+      res.json({
+        timestamp: new Date().toISOString(),
+        source: "Spectra Market Intelligence Base Layer",
+        count: stocks.length,
+        costUsd: "0.03",
+        data: stocks.map(serializeStock),
+      });
+    } catch {
+      res.status(500).json({ error: "Failed to fetch screener data export" });
+    }
   });
 
   // GET /api/alpha/flow/:ticker (Paid b402 endpoint §5.6, §6.4: 0.02 USDC)
@@ -252,23 +291,8 @@ export function createAlphaRouter(services: BackendServices): Router {
     const rawTicker = req.params.ticker;
     const ticker = (Array.isArray(rawTicker) ? rawTicker[0] ?? "" : rawTicker ?? "").toUpperCase();
 
-    // If b402 payment header is missing in official mode, return 402 Payment Required (§5.6)
-    const paymentHeader = req.headers["x-402-payment"];
-    if (!paymentHeader && process.env.B402_MODE === "official") {
-      res.status(402).json({
-        x402Version: 2,
-        error: "Payment Required",
-        accepts: [
-          {
-            scheme: "exact",
-            token: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d", // USDC on BSC
-            amount: "20000", // 0.02 USDC
-            description: `Spectra Smart Money Flow Alpha for ${ticker}`,
-          },
-        ],
-      });
-      return;
-    }
+    const ok = await handlePaidAccess(req, res, "flow", "20000");
+    if (!ok) return;
 
     try {
       const summary = await services.flowAggregator.aggregateTickerFlow(ticker);
@@ -296,6 +320,191 @@ export function createAlphaRouter(services: BackendServices): Router {
     } catch {
       res.status(500).json({ error: "Failed to generate smart money flow alpha" });
     }
+  });
+
+  // GET /api/alpha/oracle-divergence/:ticker (Paid b402 endpoint §5.6: 0.01 USDC)
+  router.get("/oracle-divergence/:ticker", async (req: Request, res: Response) => {
+    const rawTicker = req.params.ticker;
+    const ticker = (Array.isArray(rawTicker) ? rawTicker[0] ?? "" : rawTicker ?? "").toUpperCase();
+
+    const ok = await handlePaidAccess(req, res, "oracleDivergence", "10000");
+    if (!ok) return;
+
+    try {
+      const stocks = await services.normalization.getAll();
+      const stock = stocks.find((s) => s.ticker.toUpperCase() === ticker);
+      const tradFiQuote = await services.tradfi.getQuote(ticker);
+
+      if (!stock || !tradFiQuote) {
+        res.status(404).json({ error: `Ticker ${ticker} not found in normalized inventory` });
+        return;
+      }
+
+      const diff = stock.perSharePrice - tradFiQuote.price;
+      const divergenceBps = (diff * BPS_PRECISION) / tradFiQuote.price;
+      const absBps = divergenceBps < 0n ? -divergenceBps : divergenceBps;
+
+      const divergenceState =
+        absBps > 50n ? "CRITICAL" : absBps > 20n ? "MODERATE" : "NORMAL";
+      const direction =
+        divergenceBps > 0n ? "OVERVALUED" : divergenceBps < 0n ? "UNDERVALUED" : "ALIGNED";
+
+      res.json({
+        ticker,
+        divergenceBps: divergenceBps.toString(),
+        divergenceState,
+        direction,
+        onChainPrice: formatFixed18(stock.perSharePrice),
+        tradFiPrice: formatFixed18(tradFiQuote.price),
+        platform: stock.platform,
+        timestamp: Date.now(),
+        costUsd: "0.01",
+      });
+    } catch {
+      res.status(500).json({ error: `Failed to compute oracle divergence for ${ticker}` });
+    }
+  });
+
+  // GET /api/alpha/weekend-premium/:ticker (Paid b402 endpoint §5.6: 0.01 USDC)
+  router.get("/weekend-premium/:ticker", async (req: Request, res: Response) => {
+    const rawTicker = req.params.ticker;
+    const ticker = (Array.isArray(rawTicker) ? rawTicker[0] ?? "" : rawTicker ?? "").toUpperCase();
+
+    const ok = await handlePaidAccess(req, res, "weekendPremium", "10000");
+    if (!ok) return;
+
+    res.json({
+      ticker,
+      premiumBps: "0",
+      active: false,
+      featureFlagLocked: true,
+      marketStatus: "FEATURE_LOCKED",
+      note: "SIGNAL_WEEKEND_PREMIUM is locked to false per empirical finding in Spectra.md §5.8",
+      timestamp: Date.now(),
+      costUsd: "0.01",
+    });
+  });
+
+  // GET /api/alpha/basis/:ticker (Paid b402 endpoint §5.6: 0.02 USDC)
+  router.get("/basis/:ticker", async (req: Request, res: Response) => {
+    const rawTicker = req.params.ticker;
+    const ticker = (Array.isArray(rawTicker) ? rawTicker[0] ?? "" : rawTicker ?? "").toUpperCase();
+
+    const ok = await handlePaidAccess(req, res, "basis", "20000");
+    if (!ok) return;
+
+    try {
+      const allStocks = await services.normalization.getAll();
+      const matching = allStocks.filter((s) => s.ticker.toUpperCase() === ticker);
+
+      if (matching.length < 2) {
+        res.json({
+          ticker,
+          spreadBps: "0",
+          buyPlatform: matching[0]?.platform ?? "ONDO",
+          sellPlatform: matching[0]?.platform ?? "ONDO",
+          netProfitBps: "0",
+          platformsTracked: matching.length,
+          timestamp: Date.now(),
+          costUsd: "0.02",
+        });
+        return;
+      }
+
+      // Sort by perSharePrice ascending
+      matching.sort((a, b) => (a.perSharePrice < b.perSharePrice ? -1 : 1));
+      const cheapest = matching[0]!;
+      const mostExpensive = matching[matching.length - 1]!;
+
+      const spreadBps = ((mostExpensive.perSharePrice - cheapest.perSharePrice) * BPS_PRECISION) / cheapest.perSharePrice;
+
+      res.json({
+        ticker,
+        spreadBps: spreadBps.toString(),
+        buyPlatform: cheapest.platform,
+        buyPrice: formatFixed18(cheapest.perSharePrice),
+        sellPlatform: mostExpensive.platform,
+        sellPrice: formatFixed18(mostExpensive.perSharePrice),
+        netProfitBps: spreadBps > 30n ? (spreadBps - 30n).toString() : "0",
+        timestamp: Date.now(),
+        costUsd: "0.02",
+      });
+    } catch {
+      res.status(500).json({ error: `Failed to compute basis for ${ticker}` });
+    }
+  });
+
+  // GET /api/alpha/signals (Paid b402 endpoint §5.6: 0.05 USDC)
+  router.get("/signals", async (req: Request, res: Response) => {
+    const ok = await handlePaidAccess(req, res, "signals", "50000");
+    if (!ok) return;
+
+    try {
+      const signals = services.signalEngine.getActiveSignals();
+      res.json({
+        count: signals.length,
+        signals: signals.map(serializeSignal),
+        timestamp: Date.now(),
+        costUsd: "0.05",
+      });
+    } catch {
+      res.status(500).json({ error: "Failed to fetch active alpha signals" });
+    }
+  });
+
+  // POST /api/alpha/b402/verify (Utility endpoint for agent payment verification)
+  router.post("/b402/verify", async (req: Request, res: Response) => {
+    try {
+      const { paymentPayload, paymentRequirements } = req.body as {
+        paymentPayload?: B402PaymentPayload;
+        paymentRequirements?: PaymentRequirementOption;
+      };
+
+      if (!paymentPayload || !paymentRequirements) {
+        res.status(400).json({ error: "Missing paymentPayload or paymentRequirements" });
+        return;
+      }
+
+      const result = await gateway.verifyPayment(paymentPayload, paymentRequirements);
+      res.json(result);
+    } catch {
+      res.status(500).json({ error: "b402 verification failed" });
+    }
+  });
+
+  // POST /api/alpha/b402/settle (Utility endpoint for payment settlement)
+  router.post("/b402/settle", async (req: Request, res: Response) => {
+    try {
+      const { paymentPayload, paymentRequirements, settleAmount } = req.body as {
+        paymentPayload?: B402PaymentPayload;
+        paymentRequirements?: PaymentRequirementOption;
+        settleAmount?: string;
+      };
+
+      if (!paymentPayload || !paymentRequirements) {
+        res.status(400).json({ error: "Missing paymentPayload or paymentRequirements" });
+        return;
+      }
+
+      const result = await gateway.settlePayment(paymentPayload, paymentRequirements, settleAmount);
+      res.json(result);
+    } catch {
+      res.status(500).json({ error: "b402 settlement failed" });
+    }
+  });
+
+  // GET /api/alpha/b402/supported (Readiness check per Spectra.md §5.6)
+  router.get("/b402/supported", async (_req: Request, res: Response) => {
+    const ready = await gateway.checkB402Readiness();
+    res.json({
+      code: "000000000",
+      mode: gateway.getMode(),
+      isUpstreamReady: ready,
+      supportedAssets: ["USDC", "USDT", "USD1", "U"],
+      networks: ["bsc", "bsc-testnet"],
+      payTo: gateway.getPayTo(),
+      timestamp: Date.now(),
+    });
   });
 
   return router;
