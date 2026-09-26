@@ -52,3 +52,17 @@
 - Reason: Base Layer data ingestion and per-share normalization must be active before signals, smart contracts, and UI lenses can consume accurate market data.
 - Behavior/compatibility impact: Base layer API and core normalization exports are fully operational.
 - Verification: `./scripts/check.sh` passes — 70/70 tests passing (65 core + 5 backend), 0 type errors, 0 lint errors.
+
+## 2026-09-26 — Phase 2: Base Layer — Signals & Policy Complete
+
+- Agent/client: Antigravity (Gemini 3.8 Flash)
+- Change: Implemented Signals, Policy, and Execution coordination layer:
+  - `SignalEngine`: Full implementation of Signals A–F (Oracle Divergence with >10 bps alert and >25 bps critical halt, Weekend Premium gated by feature flag, Cross-Platform Basis, Flow Accumulation, Liquidity Alert, and Ratio Drift)
+  - `PolicyEngine`: Multi-layered trade constraint validator (kill switch, active halt signal rejection, max trade notional, slippage caps, cooldown intervals, rolling 24h daily spending limits, token allowlists)
+  - `ReceiptService`: Deterministic SHA-256 decision, simulation, and quote hashing, producing on-chain anchorable `ExecutionReceipt` records (§5.5, §10.4)
+  - `StrategyCoordinator`: Nexus-inspired portfolio conflict resolution coordinator with priority ranking (Kill switch > Halt guards > Scheduled DCA > Tactical rules), portfolio and sector cap clipping, and cash netting matching the worked example in Spectra.md §5.9
+  - Extended `apps/backend` Express API with endpoints: `GET /api/core/signals`, `GET /api/core/signals/:ticker`, `POST /api/core/policy/check`, and `GET /api/core/receipts/:user`
+  - 24 new unit and integration tests added, bringing total to 94 tests across 10 test suites
+- Reason: Autonomous agents and execution pipelines require strict mathematical constraints, conflict resolution, and deterministic receipts before initiating any trades.
+- Behavior/compatibility impact: Signals and policy APIs are operational. Zero regressions on existing core services.
+- Verification: `./scripts/check.sh` passes — 94/94 tests passing (85 core + 9 backend), 0 type errors, 0 lint errors.

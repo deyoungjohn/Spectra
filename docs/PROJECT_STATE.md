@@ -14,15 +14,20 @@ independent TradFi oracle.
 
 - **Phase 0 (Project Scaffolding): ✅ Complete**
 - **Phase 1 (Base Layer — Core Data): ✅ Complete**
-- Phase 2 (Base Layer — Signals & Policy): 🔄 Next up
+- **Phase 2 (Base Layer — Signals & Policy): ✅ Complete**
+- Phase 3 (Smart Contracts): 🔄 Next up
 - Core package (`@spectra/core`) implements:
   - BigInt 18-decimal fixed-point arithmetic (6 functions)
   - Data Ingestion Service with RWA Data API and mock providers
   - Composite TradFi Client (Finnhub primary + Yahoo Finance fallback)
   - Normalization Engine (per-share conversion, ratio drift detection, basis)
+  - Signal Engine (Signals A-F: Oracle Divergence, Weekend Premium, Basis, Flow, Liquidity, Ratio Drift)
+  - Policy Engine (kill switch, halt signals, max notional, slippage caps, cooldowns, daily limits, whitelist)
+  - Receipt Service (SHA-256 decision, simulation, and quote hashing)
+  - Strategy Conflict Resolution Coordinator (priority netting, cap enforcement)
   - Memory Cache Service with TTL
-- Backend API (`@spectra/backend`) running Express with `/api/health`, `/api/core/status`, and `/api/core/tokens`
-- 70 unit and integration tests passing across core and backend
+- Backend API (`@spectra/backend`) running Express with `/api/health`, `/api/core/status`, `/api/core/tokens`, `/api/core/signals`, `/api/core/policy/check`, `/api/core/receipts/:user`
+- 94 unit and integration tests passing across core and backend (10 test suites)
 - Zero type errors, zero lint warnings
 - Build phases tracked in `docs/BUILD_PHASES.md`
 

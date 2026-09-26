@@ -10,3 +10,11 @@ export { FinnhubClient, YFinanceClient, CompositeTradFiClient } from "./tradfi.j
 
 export type { RawRwaToken, IRwaDataProvider } from "./data-ingestion.js";
 export { MockRwaDataProvider, BinanceRwaDataProvider, DataIngestionService } from "./data-ingestion.js";
+
+export {
+  computeSha256,
+  hashDecision,
+  hashSimulation,
+  hashQuote,
+  ReceiptService,
+} from "./receipt.js";

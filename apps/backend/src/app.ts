@@ -1,7 +1,8 @@
 // apps/backend/src/app.ts
 //
 // Express application setup for Spectra Base Layer API.
-// Connects Ingestion Service, Normalization Engine, and TradFi feeds.
+// Connects Ingestion Service, Normalization Engine, TradFi feeds,
+// Signal Engine, Policy Engine, and Receipt Service.
 
 import express, { type Request, type Response } from "express";
 import {
@@ -13,8 +14,15 @@ import {
   FinnhubClient,
   YFinanceClient,
   MemoryCacheService,
+  SignalEngine,
+  PolicyEngine,
+  ReceiptService,
   formatFixed18,
+  parseToFixed18,
   type NormalizedStock,
+  type AlphaSignal,
+  type ExecutionPolicy,
+  type TradeProposal,
 } from "@spectra/core";
 
 export interface BackendServices {
@@ -22,6 +30,9 @@ export interface BackendServices {
   ingestion: DataIngestionService;
   tradfi: CompositeTradFiClient;
   normalization: NormalizationEngine;
+  signalEngine: SignalEngine;
+  policyEngine: PolicyEngine;
+  receiptService: ReceiptService;
 }
 
 export function createServices(env: NodeJS.ProcessEnv = process.env): BackendServices {
@@ -43,7 +54,25 @@ export function createServices(env: NodeJS.ProcessEnv = process.env): BackendSer
   const ingestion = new DataIngestionService(rwaProvider, { cache, cacheTtlSeconds: 60 });
   const normalization = new NormalizationEngine(ingestion, tradfi);
 
-  return { cache, ingestion, tradfi, normalization };
+  // Signals and Policy setup
+  const signalEngine = new SignalEngine();
+  // Hook ratio drift from normalization into signal engine
+  normalization.onRatioDrift((event) => {
+    signalEngine.handleRatioDrift(event);
+  });
+
+  const policyEngine = new PolicyEngine(signalEngine);
+  const receiptService = new ReceiptService();
+
+  return {
+    cache,
+    ingestion,
+    tradfi,
+    normalization,
+    signalEngine,
+    policyEngine,
+    receiptService,
+  };
 }
 
 /**
@@ -66,6 +95,23 @@ export function serializeStock(stock: NormalizedStock) {
     marketStatus: stock.marketStatus,
     nextOpenTime: stock.nextOpenTime,
     lastUpdated: stock.lastUpdated,
+  };
+}
+
+/**
+ * Format an AlphaSignal into a JSON-safe response
+ */
+export function serializeSignal(signal: AlphaSignal) {
+  return {
+    id: signal.id,
+    type: signal.type,
+    ticker: signal.ticker,
+    severity: signal.severity,
+    value: signal.value.toString(),
+    context: signal.context,
+    timestamp: signal.timestamp.toISOString(),
+    actionable: signal.actionable,
+    regime: signal.regime,
   };
 }
 
@@ -105,6 +151,9 @@ export function createApp(services: BackendServices): express.Application {
   app.get("/api/core/tokens", async (_req: Request, res: Response) => {
     try {
       const stocks = await services.normalization.getAll();
+      // Also evaluate signals across active stocks
+      services.signalEngine.evaluateAll(stocks);
+
       res.json({
         count: stocks.length,
         data: stocks.map(serializeStock),
@@ -127,6 +176,106 @@ export function createApp(services: BackendServices): express.Application {
       res.json({ data: serializeStock(stock) });
     } catch {
       res.status(500).json({ error: "Failed to fetch stock" });
+    }
+  });
+
+  // Active signals list (§5.3)
+  app.get("/api/core/signals", async (_req: Request, res: Response) => {
+    try {
+      const stocks = await services.normalization.getAll();
+      services.signalEngine.evaluateAll(stocks);
+      const activeSignals = services.signalEngine.getActiveSignals();
+
+      res.json({
+        count: activeSignals.length,
+        data: activeSignals.map(serializeSignal),
+      });
+    } catch {
+      res.status(500).json({ error: "Failed to fetch signals" });
+    }
+  });
+
+  // Signals for a specific ticker
+  app.get("/api/core/signals/:ticker", async (req: Request, res: Response) => {
+    try {
+      const rawTicker = req.params.ticker;
+      const ticker = Array.isArray(rawTicker) ? rawTicker[0] ?? "" : rawTicker ?? "";
+      const signals = services.signalEngine.getSignalsForTicker(ticker);
+      res.json({
+        ticker: ticker.toUpperCase(),
+        count: signals.length,
+        data: signals.map(serializeSignal),
+      });
+    } catch {
+      res.status(500).json({ error: "Failed to fetch ticker signals" });
+    }
+  });
+
+  // Policy check endpoint (§5.4)
+  app.post("/api/core/policy/check", (req: Request, res: Response) => {
+    try {
+      const body = req.body as {
+        policy: {
+          userId: string;
+          maxTradeNotionalUsd: string;
+          maxSlippageBps: string;
+          cooldownSeconds: number;
+          dailyLimitUsd: string;
+          allowedTokens: string[];
+          killSwitch: boolean;
+        };
+        trade: {
+          ticker: string;
+          tokenAddress: string;
+          direction: "BUY" | "SELL";
+          amountUsd: string;
+          expectedSlippageBps: string;
+        };
+      };
+
+      if (!body || !body.policy || !body.trade) {
+        res.status(400).json({ error: "Missing policy or trade body" });
+        return;
+      }
+
+      const policy: ExecutionPolicy = {
+        userId: body.policy.userId,
+        maxTradeNotionalUsd: parseToFixed18(body.policy.maxTradeNotionalUsd || "0"),
+        maxSlippageBps: BigInt(body.policy.maxSlippageBps || "0"),
+        cooldownSeconds: body.policy.cooldownSeconds || 0,
+        dailyLimitUsd: parseToFixed18(body.policy.dailyLimitUsd || "0"),
+        allowedTokens: body.policy.allowedTokens || [],
+        killSwitch: Boolean(body.policy.killSwitch),
+      };
+
+      const trade: TradeProposal = {
+        ticker: body.trade.ticker,
+        tokenAddress: body.trade.tokenAddress,
+        direction: body.trade.direction,
+        amountUsd: parseToFixed18(body.trade.amountUsd || "0"),
+        expectedSlippageBps: BigInt(body.trade.expectedSlippageBps || "0"),
+      };
+
+      const checkResult = services.policyEngine.checkTrade(policy, trade);
+      res.json(checkResult);
+    } catch {
+      res.status(500).json({ error: "Failed to evaluate policy" });
+    }
+  });
+
+  // Receipts list for a user (§5.5)
+  app.get("/api/core/receipts/:user", (req: Request, res: Response) => {
+    try {
+      const rawUser = req.params.user;
+      const user = Array.isArray(rawUser) ? rawUser[0] ?? "" : rawUser ?? "";
+      const receipts = services.receiptService.getReceiptsByUser(user);
+      res.json({
+        user,
+        count: receipts.length,
+        data: receipts,
+      });
+    } catch {
+      res.status(500).json({ error: "Failed to fetch user receipts" });
     }
   });
 

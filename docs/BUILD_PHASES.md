@@ -13,8 +13,8 @@ Last updated: 2026-09-26
 |-------|------|-------|--------|
 | 0 | Project Scaffolding | Monorepo, toolchain, CI, config | ✅ Complete |
 | 1 | Base Layer — Core Data | Fixed-point math, types, normalization engine, data ingestion | ✅ Complete |
-| 2 | Base Layer — Signals & Policy | Signal engine, policy engine, config & feature flags | 🔄 In Progress |
-| 3 | Smart Contracts | FixedPointMath, OracleWatch, PolicyVault, ReceiptRegistry, ExecutionPlan | ⬜ Not Started |
+| 2 | Base Layer — Signals & Policy | Signal engine, policy engine, config & feature flags | ✅ Complete |
+| 3 | Smart Contracts | FixedPointMath, OracleWatch, PolicyVault, ReceiptRegistry, ExecutionPlan | 🔄 In Progress |
 | 4 | Module 1 — Market Intelligence | Heatmap, screener, anomaly filters, API endpoints, UI | ⬜ Not Started |
 | 5 | Module 3 — Flow Radar | BscScan integration, flow aggregation, UI | ⬜ Not Started |
 | 6 | Module 2 — Strategy Forge | NL input, templates, simulator, strategy DSL, deployment | ⬜ Not Started |
@@ -108,27 +108,28 @@ receipt service.
 
 ### Steps
 
-- [ ] **2.1** Implement Signal Engine — all 6 signal types from Spectra.md §5.3
-- [ ] **2.2** Implement regime awareness (OPEN vs CLOSED signal gating)
-- [ ] **2.3** Implement `SIGNAL_WEEKEND_PREMIUM` feature flag gate
-- [ ] **2.4** Implement Policy Engine with `ExecutionPolicy` interface
-- [ ] **2.5** Implement Receipt Service (decision hashing, SHA-256)
-- [ ] **2.6** Implement Strategy Conflict Resolution coordinator (§5.9)
-- [ ] **2.7** Implement missing-data-as-product-state behavior (§5.10)
-- [ ] **2.8** Write unit tests for each signal type
-- [ ] **2.9** Write tests for conflict resolution with worked example
-- [ ] **2.10** Verify: `./scripts/check.sh` passes
+- [x] **2.1** Implement Signal Engine — all 6 signal types from Spectra.md §5.3
+- [x] **2.2** Implement regime awareness (OPEN vs CLOSED signal gating)
+- [x] **2.3** Implement `SIGNAL_WEEKEND_PREMIUM` feature flag gate
+- [x] **2.4** Implement Policy Engine with `ExecutionPolicy` interface
+- [x] **2.5** Implement Receipt Service (decision hashing, SHA-256)
+- [x] **2.6** Implement Strategy Conflict Resolution coordinator (§5.9)
+- [x] **2.7** Implement missing-data-as-product-state behavior (§5.10)
+- [x] **2.8** Write unit tests for each signal type
+- [x] **2.9** Write tests for conflict resolution with worked example
+- [x] **2.10** Verify: `./scripts/check.sh` passes
 
 ### Acceptance Criteria
-- All 6 signal types fire correctly with test data
-- Weekend Premium signal is gated by feature flag (OFF by default)
-- Policy engine rejects trades that violate constraints
-- Conflict resolution matches the worked example in §5.9
+- ✅ All 6 signal types fire correctly with test data
+- ✅ Weekend Premium signal is gated by feature flag (OFF by default)
+- ✅ Policy engine rejects trades that violate constraints
+- ✅ Conflict resolution matches the worked example in §5.9
 
 ### Log
 
 | Date | Step | Notes |
 |------|------|-------|
+| 2026-09-26 | 2.1–2.10 | Implemented `SignalEngine` (Signals A-F with OPEN/CLOSED regimes and Weekend Premium flag gate), `PolicyEngine` (kill switch, active halt, limits, cooldown, whitelist), `ReceiptService` (SHA-256 decision/simulation/quote hashing), and `StrategyCoordinator` with priority-netting conflict resolution. 94 total tests passing across 10 test suites (85 core + 9 backend), zero lint errors. |
 
 ---
 

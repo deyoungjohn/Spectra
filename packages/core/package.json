@@ -25,6 +25,14 @@
     "./services": {
       "import": "./dist/services/index.js",
       "types": "./dist/services/index.d.ts"
+    },
+    "./signals": {
+      "import": "./dist/signals/index.js",
+      "types": "./dist/signals/index.d.ts"
+    },
+    "./policy": {
+      "import": "./dist/policy/index.js",
+      "types": "./dist/policy/index.d.ts"
     }
   },
   "scripts": {
