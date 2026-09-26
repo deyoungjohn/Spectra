@@ -81,22 +81,47 @@
 - Reason: On-chain contracts provide verifiable auditability, cryptographic non-repudiation of agent decisions, and programmatic risk caps on BSC.
 - Behavior/compatibility impact: Smart contracts compile, deploy, and pass all tests. Repository check procedure updated to include Solidity compilation and testing. Total tests increased to 105 across 11 test suites.
 - Verification: `./scripts/check.sh` passes — 105/105 tests passing (85 core + 9 backend + 11 smart contracts), 0 type errors, 0 lint errors.
- 
-+## 2026-09-26 — Phase 4: Module 1 — Market Intelligence Complete
-+
-+- Agent/client: Antigravity (Gemini 3.8 Flash)
-+- Change: Built the "Finviz layer" for tokenized equity intelligence on BNB Smart Chain:
-+  - `apps/backend/src/market.ts`: Express market intelligence routes providing `/api/market/status`, `/api/market/heatmap`, `/api/market/screener`, `/api/market/ticker/:ticker`, `/api/market/sectors/:sector`, `/api/market/anomalies`, and paid b402 endpoint `/api/alpha/screener` ($0.05/call format per §6.4)
-+  - `@spectra/ui` React component library:
-+    - `MarketStatusBanner`: Live market hours countdown, status badges, feed staleness warnings
-+    - `AnomalyFilters`: Interactive filter chips for oracle divergence, weekend premium (locked indicator), basis, flow, and ratio drift
-+    - `SectorTabs`: Magnificent 7, AI Chips, ETFs, and Buffett Portfolio category pills
-+    - `HeatmapView`: Color-graded responsive grid rendering per-share normalized prices and cross-platform basis deltas
-+    - `ScreenerTable`: Real-time tabular screener with string-formatted volumes and spread badges
-+    - `PlatformComparison`: Multi-venue side-by-side pricing (Ondo vs bStocks vs xStocks) with ratio badges
-+    - `TickerDetailView`: High-density ticker view with spread cards, active signal tags, and "Forge Strategy" bridge
-+  - `apps/web`: Full Next.js 16 dashboard with Turbopack, responsive dark theme (`#0D0E12`, `#F0B90B`), dynamic ticker route `/market/ticker/[ticker]`, and integration tests
-+  - Added 15 new tests (8 in `@spectra/ui` and 7 in `@spectra/backend`), bringing the monorepo total to 120 passing tests across 12 test suites
-+- Reason: Users and autonomous agents require real-time visibility into Web3 tokenized stock anomalies, cross-platform pricing discrepancies, and normalized per-share valuations.
-+- Behavior/compatibility impact: Market intelligence API endpoints and web dashboard are live. Existing base layer APIs remain fully backwards-compatible.
-+- Verification: `./scripts/check.sh` passes — 120/120 tests passing (85 core + 8 ui + 16 backend + 11 contracts), Next.js production build passes in 111ms, 0 type errors, 0 lint errors.
+## 2026-09-26 — Phase 4: Module 1 — Market Intelligence Complete
+
+- Agent/client: Antigravity (Gemini 3.8 Flash)
+- Change: Built the "Finviz layer" for tokenized equity intelligence on BNB Smart Chain:
+  - `apps/backend/src/market.ts`: Express market intelligence routes providing `/api/market/status`, `/api/market/heatmap`, `/api/market/screener`, `/api/market/ticker/:ticker`, `/api/market/sectors/:sector`, `/api/market/anomalies`, and paid b402 endpoint `/api/alpha/screener` ($0.03/call format per §6.4)
+  - `@spectra/ui` React component library:
+    - `MarketStatusBanner`: Live market hours countdown, status badges, feed staleness warnings
+    - `AnomalyFilters`: Interactive filter chips for oracle divergence, weekend premium (locked indicator), basis, flow, and ratio drift
+    - `SectorTabs`: Magnificent 7, AI Chips, ETFs, and Buffett Portfolio category pills
+    - `HeatmapView`: Color-graded responsive grid rendering per-share normalized prices and cross-platform basis deltas
+    - `ScreenerTable`: Real-time tabular screener with string-formatted volumes and spread badges
+    - `PlatformComparison`: Multi-venue side-by-side pricing (Ondo vs bStocks vs xStocks) with ratio badges
+    - `TickerDetailView`: High-density ticker view with spread cards, active signal tags, and "Forge Strategy" bridge
+  - `apps/web`: Full Next.js 16 dashboard with Turbopack, responsive dark theme (`#0D0E12`, `#F0B90B`), dynamic ticker route `/market/ticker/[ticker]`, and integration tests
+  - Added 15 new tests (8 in `@spectra/ui` and 7 in `@spectra/backend`), bringing the monorepo total to 120 passing tests across 12 test suites
+- Reason: Users and autonomous agents require real-time visibility into Web3 tokenized stock anomalies, cross-platform pricing discrepancies, and normalized per-share valuations.
+- Behavior/compatibility impact: Market intelligence API endpoints and web dashboard are live. Existing base layer APIs remain fully backwards-compatible.
+- Verification: `./scripts/check.sh` passes — 120/120 tests passing (85 core + 8 ui + 16 backend + 11 contracts), Next.js production build passes in 111ms, 0 type errors, 0 lint errors.
+
+## 2026-09-26 — Phase 5: Module 3 — Flow Radar Complete
+
+- Agent/client: Antigravity (Gemini 3.8 Flash)
+- Change: Built the "Quiver Quant layer" for smart money wallet tracking and liquidity analysis on BNB Smart Chain:
+  - Core Flow Radar package (`@spectra/core/flow`):
+    - `BscScanProvider` interface and `MockBscScanProvider` seeded with real-world whale accumulations, distributions, and cross-platform transfers
+    - `HttpBscScanClient` with automated TTL caching and graceful fallback during rate-limits or feed outages (§5.10, §14)
+    - `FlowAggregator`: Computes trailing 1h, 4h, and 24h net flows in 18-decimal fixed-point BigInt, identifies top-N accumulation wallets, detects pre-event positioning during closed sessions, generates hourly time-series points, and calculates cross-platform liquidity distributions
+    - `FlowSignalEngine`: Evaluates `FLOW_ACCUMULATION` (> $5,000 net 4h), `FLOW_DISTRIBUTION` (< -$5,000 net 4h), and `WHALE_MOVEMENT` (> $10,000 single transfer); integrates directly with Base Layer `SignalEngine` and supports graceful module strip-out when `MODULE_3_FLOW_RADAR = false`
+  - Backend API (`apps/backend`):
+    - Router `apps/backend/src/flow.ts` providing `/api/flow/status`, `/api/flow/summary`, `/api/flow/ticker/:ticker`, `/api/flow/chart/:ticker`, `/api/flow/whales`, and `/api/flow/cross-platform`
+    - Paid b402 endpoint `GET /api/alpha/flow/:ticker` ($0.02 USDC) with 402 Payment Required negotiation in official mode (§5.6, §6.4)
+  - UI Component Library (`@spectra/ui`):
+    - `FlowDashboard`: 24h market net flow KPI card, top accumulation and distribution leaderboards, and feed staleness warnings
+    - `TickerFlowChart`: Visual net flow hourly time-series with pre-event positioning alert badges and 1h/4h/24h window selectors
+    - `WhaleTable`: Large wallet tracking table with direction badges, notional USD, share counts, and BscScan transaction links
+    - `CrossPlatformFlow`: Side-by-side venue flow routing (Ondo vs bStocks vs xStocks) with dominant venue badge
+  - Web Application (`apps/web`):
+    - Next.js 16 route `/flow` with real-time ticker selection and alpha export links
+    - Dynamic route `/flow/ticker/[ticker]` for deep inspection and Strategy Forge trigger
+    - Updated navigation header linking Market Intel and Flow Radar
+  - Added 30 new tests across `@spectra/core` (14 tests), `@spectra/ui` (8 tests), and `@spectra/backend` (8 tests), bringing total passing tests to 150 across 15 test suites
+- Reason: Autonomous agents and human traders need transparent visibility into on-chain whale positioning, DEX net inflows, and pre-market accumulation ahead of earnings or session open.
+- Behavior/compatibility impact: Flow Radar endpoints and UI lenses are fully operational. Zero regressions on Base Layer and Market Intelligence modules.
+- Verification: `./scripts/check.sh` passes — 150/150 tests passing (99 core + 16 ui + 24 backend + 11 smart contracts), Next.js production build compiles cleanly in 129ms, 0 type errors, 0 lint errors.

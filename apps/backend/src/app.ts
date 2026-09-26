@@ -23,8 +23,13 @@ import {
   type AlphaSignal,
   type ExecutionPolicy,
   type TradeProposal,
+  HttpBscScanClient,
+  FlowAggregator,
+  FlowSignalEngine,
+  type BscScanProvider,
 } from "@spectra/core";
 import { createMarketRouter, createAlphaRouter } from "./market.js";
+import { createFlowRouter } from "./flow.js";
 
 export interface BackendServices {
   cache: MemoryCacheService;
@@ -34,6 +39,9 @@ export interface BackendServices {
   signalEngine: SignalEngine;
   policyEngine: PolicyEngine;
   receiptService: ReceiptService;
+  bscScan: BscScanProvider;
+  flowAggregator: FlowAggregator;
+  flowEngine: FlowSignalEngine;
 }
 
 export function createServices(env: NodeJS.ProcessEnv = process.env): BackendServices {
@@ -65,6 +73,16 @@ export function createServices(env: NodeJS.ProcessEnv = process.env): BackendSer
   const policyEngine = new PolicyEngine(signalEngine);
   const receiptService = new ReceiptService();
 
+  // Flow Radar setup (Module 3, Spectra.md §8.2)
+  const bscScan = new HttpBscScanClient({
+    apiKey: env.BSCSCAN_API_KEY,
+    cache,
+  });
+  const flowAggregator = new FlowAggregator(bscScan);
+  const flowEngine = new FlowSignalEngine(flowAggregator, {
+    signalEngine,
+  });
+
   return {
     cache,
     ingestion,
@@ -73,6 +91,9 @@ export function createServices(env: NodeJS.ProcessEnv = process.env): BackendSer
     signalEngine,
     policyEngine,
     receiptService,
+    bscScan,
+    flowAggregator,
+    flowEngine,
   };
 }
 
@@ -283,6 +304,9 @@ export function createApp(services: BackendServices): express.Application {
   // Module 1: Market Intelligence & Alpha routes (§6.4)
   app.use("/api/market", createMarketRouter(services));
   app.use("/api/alpha", createAlphaRouter(services));
+
+  // Module 3: Flow Radar routes (§8.2, §8.4)
+  app.use("/api/flow", createFlowRouter(services));
 
   return app;
 }

@@ -77,16 +77,29 @@ export default function RootLayout({
             </div>
 
             <nav style={{ display: "flex", gap: "16px", fontSize: "13px" }}>
-              <span style={{ color: "#F0B90B", fontWeight: 600, cursor: "pointer" }}>
+              <a
+                href="/"
+                style={{
+                  color: "#F0B90B",
+                  fontWeight: 600,
+                  textDecoration: "none",
+                }}
+              >
                 Market Intel
-              </span>
-              <span style={{ color: "#848E9C", cursor: "pointer" }}>
+              </a>
+              <a
+                href="/flow"
+                style={{
+                  color: "#848E9C",
+                  textDecoration: "none",
+                }}
+              >
                 Flow Radar
-              </span>
-              <span style={{ color: "#848E9C", cursor: "pointer" }}>
+              </a>
+              <span style={{ color: "#474D57", cursor: "not-allowed" }}>
                 Strategy Forge
               </span>
-              <span style={{ color: "#848E9C", cursor: "pointer" }}>
+              <span style={{ color: "#474D57", cursor: "not-allowed" }}>
                 Proofs & Vault
               </span>
             </nav>

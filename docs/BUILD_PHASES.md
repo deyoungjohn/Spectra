@@ -204,30 +204,32 @@ whale alerts.
 
 ### Steps
 
-- [ ] **5.1** Implement BscScan API client for token transfer events
-- [ ] **5.2** Implement Flow Aggregator (group by ticker + platform, top-N
+- [x] **5.1** Implement BscScan API client for token transfer events
+- [x] **5.2** Implement Flow Aggregator (group by ticker + platform, top-N
   wallets, net flow computation)
-- [ ] **5.3** Implement Flow Signal Engine (FLOW_ACCUMULATION,
+- [x] **5.3** Implement Flow Signal Engine (FLOW_ACCUMULATION,
   FLOW_DISTRIBUTION, WHALE_MOVEMENT)
-- [ ] **5.4** Implement `/api/flow/*` backend routes
-- [ ] **5.5** Build `FlowDashboard` UI
-- [ ] **5.6** Build `TickerFlowChart` (net flow time-series)
-- [ ] **5.7** Build `WhaleTable`
-- [ ] **5.8** Build `CrossPlatformFlow` view
-- [ ] **5.9** Implement b402 paid endpoint: `GET /api/alpha/flow/:ticker`
-- [ ] **5.10** Write tests
-- [ ] **5.11** Verify: `./scripts/check.sh` passes
+- [x] **5.4** Implement `/api/flow/*` backend routes
+- [x] **5.5** Build `FlowDashboard` UI
+- [x] **5.6** Build `TickerFlowChart` (net flow time-series)
+- [x] **5.7** Build `WhaleTable`
+- [x] **5.8** Build `CrossPlatformFlow` view
+- [x] **5.9** Implement b402 paid endpoint: `GET /api/alpha/flow/:ticker`
+- [x] **5.10** Write tests
+- [x] **5.11** Verify: `./scripts/check.sh` passes
 
 ### Acceptance Criteria
-- Flow data populates from BscScan (or mock in dev)
-- Net flow charts render per ticker
-- Flow signals integrate with Base Layer Signal Engine
-- Module gracefully degrades when `MODULE_3_FLOW_RADAR = false`
+- ✅ Flow data populates from BscScan (or mock in dev)
+- ✅ Net flow charts render per ticker
+- ✅ Flow signals integrate with Base Layer Signal Engine
+- ✅ Module gracefully degrades when `MODULE_3_FLOW_RADAR = false`
+- ✅ Whale alerts, top wallet tracking, and pre-event positioning operational
 
 ### Log
 
 | Date | Step | Notes |
 |------|------|-------|
+| 2026-09-26 | 5.1–5.11 | Built Quiver Quant flow layer. Implemented `HttpBscScanClient` / `MockBscScanProvider`, `FlowAggregator` (trailing 1h/4h/24h net flow, pre-event positioning, hourly time series, cross-platform flow), and `FlowSignalEngine` (accumulation, distribution, whale alerts). Added backend endpoints `/api/flow/*` and paid b402 endpoint `GET /api/alpha/flow/:ticker` ($0.02 USDC). Built UI components (`FlowDashboard`, `TickerFlowChart`, `WhaleTable`, `CrossPlatformFlow`) and Next.js routes (`/flow` and `/flow/ticker/[ticker]`). 150 tests passing across 15 test suites. |
 
 ---
 

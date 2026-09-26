@@ -247,5 +247,56 @@ export function createAlphaRouter(services: BackendServices): Router {
     });
   });
 
+  // GET /api/alpha/flow/:ticker (Paid b402 endpoint §5.6, §6.4: 0.02 USDC)
+  router.get("/flow/:ticker", async (req: Request, res: Response) => {
+    const rawTicker = req.params.ticker;
+    const ticker = (Array.isArray(rawTicker) ? rawTicker[0] ?? "" : rawTicker ?? "").toUpperCase();
+
+    // If b402 payment header is missing in official mode, return 402 Payment Required (§5.6)
+    const paymentHeader = req.headers["x-402-payment"];
+    if (!paymentHeader && process.env.B402_MODE === "official") {
+      res.status(402).json({
+        x402Version: 2,
+        error: "Payment Required",
+        accepts: [
+          {
+            scheme: "exact",
+            token: "0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d", // USDC on BSC
+            amount: "20000", // 0.02 USDC
+            description: `Spectra Smart Money Flow Alpha for ${ticker}`,
+          },
+        ],
+      });
+      return;
+    }
+
+    try {
+      const summary = await services.flowAggregator.aggregateTickerFlow(ticker);
+      await services.flowEngine.evaluateTicker(ticker);
+
+      const sentiment =
+        summary.netFlow4hUsd > 0n
+          ? "ACCUMULATION"
+          : summary.netFlow4hUsd < 0n
+            ? "DISTRIBUTION"
+            : "NEUTRAL";
+
+      res.json({
+        ticker,
+        netFlow4hUsd: summary.netFlow4hUsd.toString(),
+        netFlow24hUsd: summary.netFlow24hUsd.toString(),
+        sentiment,
+        topWalletsCount: summary.topWallets.length,
+        whaleAlertsCount: summary.whaleAlerts.length,
+        preEventPositioning: summary.preEventPositioning,
+        dominantPlatform: summary.crossPlatform.dominantPlatform,
+        timestamp: new Date().toISOString(),
+        costUsd: "0.02",
+      });
+    } catch {
+      res.status(500).json({ error: "Failed to generate smart money flow alpha" });
+    }
+  });
+
   return router;
 }
