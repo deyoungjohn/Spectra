@@ -20,7 +20,15 @@ independent TradFi oracle.
 - **Phase 5 (Module 3 — Flow Radar): ✅ Complete**
 - **Phase 6 (Module 2 — Strategy Forge): ✅ Complete**
 - **Phase 7 (Agent Layer): ✅ Complete**
-- Phase 8 (Integration & Polish): 🔄 Next up
+- **Phase 8 (Integration & Polish): ✅ Complete**
+- Phase 9 (Deployment & Verification): 🔄 Next up
+- Integration & Polish Layer implements:
+  - `NotificationService` in `@spectra/core/services/notification.ts`: central notification broker subscribed to `SignalEngine.onSignal`
+  - `SpectraWebSocketManager` in `apps/backend/src/websocket.ts`: real-time client connection manager with initial snapshots, heartbeat ping/pong, and event broadcast
+  - `SpectraTelegramBot` in `apps/backend/src/telegram.ts`: grammY bot dispatcher (`/start`, `/signals`, `/status`, `/alerts`) with mock fallback
+  - Backend integration in `apps/backend/src/app.ts`: `/api/notifications` log and `/api/telegram/command` dispatch
+  - UI additions in `@spectra/ui`: `UnifiedLoopNav` (4-stage stepper) and `TickerTape` (sticky status bar with market status pulse, WS indicator, and live signals)
+  - Unified Loop in `apps/web/src/app/loop/page.tsx`: interactive walkthrough through the complete lifecycle `SEE → READ → FORGE → PROVE`
 - Agent Layer (`apps/agent` & `@spectra/core/agent`, `@spectra/core/b402`) implements:
   - `PaymentGateway`: Official upstream b402 mode with automatic shadow fallback
   - `B402Signer`: HMAC-SHA256 envelope signing and verification (`X-OC-APIKEY`, `X-OC-TIMESTAMP`, `X-OC-SIGN`)

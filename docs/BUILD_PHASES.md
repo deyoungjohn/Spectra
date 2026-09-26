@@ -308,16 +308,16 @@ the UX.
 
 ### Steps
 
-- [ ] **8.1** Wire Signal Engine events to Notification Service
-- [ ] **8.2** Implement WebSocket real-time updates
-- [ ] **8.3** Implement Telegram Bot alerts (grammY)
-- [ ] **8.4** Wire Flow Radar signals into Strategy Forge conditions
-- [ ] **8.5** Implement the full Unified Loop (SEE → READ → FORGE → PROVE)
-- [ ] **8.6** Implement design system (colors, typography, UI states from §11)
-- [ ] **8.7** Implement dashboard layout (top nav, sidebar, bottom bar)
-- [ ] **8.8** End-to-end testing of the full loop
-- [ ] **8.9** Performance optimization (caching, lazy loading)
-- [ ] **8.10** Verify: `./scripts/check.sh` passes
+- [x] **8.1** Wire Signal Engine events to Notification Service
+- [x] **8.2** Implement WebSocket real-time updates
+- [x] **8.3** Implement Telegram Bot alerts (grammY)
+- [x] **8.4** Wire Flow Radar signals into Strategy Forge conditions
+- [x] **8.5** Implement the full Unified Loop (SEE → READ → FORGE → PROVE)
+- [x] **8.6** Implement design system (colors, typography, UI states from §11)
+- [x] **8.7** Implement dashboard layout (top nav, sidebar, bottom bar)
+- [x] **8.8** End-to-end testing of the full loop
+- [x] **8.9** Performance optimization (caching, lazy loading)
+- [x] **8.10** Verify: `./scripts/check.sh` passes
 
 ### Acceptance Criteria
 - A user can complete the full Unified Loop from UI
@@ -329,6 +329,7 @@ the UX.
 
 | Date | Step | Notes |
 |------|------|-------|
+| 2026-09-26 | 8.1–8.10 | Completed Phase 8 (Integration & Polish). Implemented `NotificationService` in `@spectra/core/services/notification.ts`, wired signal engine listener. Built `SpectraWebSocketManager` in `apps/backend/src/websocket.ts` with snapshots and notification streaming. Built `SpectraTelegramBot` in `apps/backend/src/telegram.ts` with grammY commands `/start`, `/signals`, `/status`, `/alerts`. Created UI components `UnifiedLoopNav` and `TickerTape` adhering to Spectra.md §11 design system. Built interactive single-page walkthrough in `apps/web/src/app/loop/page.tsx` covering the complete Unified Loop (`SEE → READ → FORGE → PROVE`). 214 tests passing across 23 test suites; Next.js App Router build and ESLint 100% clean. |
 
 ---
 

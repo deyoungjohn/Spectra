@@ -1,68 +1,15 @@
 // apps/backend/src/alpha.test.ts
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import request from "supertest";
-import { createApp, type BackendServices } from "./app.js";
+import { createApp, createServices } from "./app.js";
 import {
-  MemoryCacheService,
-  DataIngestionService,
-  MockRwaDataProvider,
-  NormalizationEngine,
-  CompositeTradFiClient,
-  SignalEngine,
-  PolicyEngine,
-  ReceiptService,
-  HttpBscScanClient,
-  FlowAggregator,
-  FlowSignalEngine,
-  type ITradFiClient,
-  parseToFixed18,
-  PaymentGateway,
-  BnbAgentStudioClient,
-  AgenticWalletClient,
   type B402PaymentPayload,
   type PaymentRequirementOption,
 } from "@spectra/core";
 
 describe("b402 Paid Alpha Endpoints (/api/alpha/*)", () => {
   function createTestApp() {
-    const cache = new MemoryCacheService();
-    const mockTradFi: ITradFiClient = {
-      getQuote: vi.fn().mockResolvedValue({
-        ticker: "AAPL",
-        price: parseToFixed18("333.90"),
-        timestamp: new Date(),
-        source: "mock",
-      }),
-    };
-    const tradfi = new CompositeTradFiClient(mockTradFi, mockTradFi, { cache });
-    const ingestion = new DataIngestionService(new MockRwaDataProvider(), { cache });
-    const normalization = new NormalizationEngine(ingestion, tradfi);
-    const signalEngine = new SignalEngine();
-    const policyEngine = new PolicyEngine(signalEngine);
-    const receiptService = new ReceiptService();
-
-    const bscScan = new HttpBscScanClient({ cache });
-    const flowAggregator = new FlowAggregator(bscScan);
-    const flowEngine = new FlowSignalEngine(flowAggregator, { signalEngine });
-    const paymentGateway = new PaymentGateway({ mode: "shadow" });
-    const agentStudio = new BnbAgentStudioClient();
-    const agenticWallet = new AgenticWalletClient(policyEngine);
-
-    const services: BackendServices = {
-      cache,
-      ingestion,
-      tradfi,
-      normalization,
-      signalEngine,
-      policyEngine,
-      receiptService,
-      bscScan,
-      flowAggregator,
-      flowEngine,
-      paymentGateway,
-      agentStudio,
-      agenticWallet,
-    };
+    const services = createServices();
     const app = createApp(services);
     return { app, services };
   }

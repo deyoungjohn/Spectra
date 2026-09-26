@@ -18,3 +18,5 @@ export { NLInput, type NLInputProps } from "./NLInput.js";
 export { StrategyPreview, type StrategyPreviewProps } from "./StrategyPreview.js";
 export { Simulator, type SimulatorProps, type SimulationResultView } from "./Simulator.js";
 export { ExecutionLog, type ExecutionLogProps, type ExecutionRecordView } from "./ExecutionLog.js";
+export { UnifiedLoopNav, type UnifiedLoopNavProps, type LoopStepMeta, type LoopStepId, LOOP_STEPS } from "./UnifiedLoopNav.js";
+export { TickerTape, type TickerTapeProps, type TickerTapeSignal } from "./TickerTape.js";

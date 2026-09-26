@@ -30,10 +30,13 @@ import {
   PaymentGateway,
   BnbAgentStudioClient,
   AgenticWalletClient,
+  NotificationService,
 } from "@spectra/core";
 import { createMarketRouter, createAlphaRouter } from "./market.js";
 import { createFlowRouter } from "./flow.js";
 import { createForgeRouter } from "./forge.js";
+import { SpectraWebSocketManager } from "./websocket.js";
+import { SpectraTelegramBot } from "./telegram.js";
 
 export interface BackendServices {
   cache: MemoryCacheService;
@@ -49,6 +52,9 @@ export interface BackendServices {
   paymentGateway: PaymentGateway;
   agentStudio: BnbAgentStudioClient;
   agenticWallet: AgenticWalletClient;
+  notificationService: NotificationService;
+  wsManager: SpectraWebSocketManager;
+  telegramBot: SpectraTelegramBot;
 }
 
 export function createServices(env: NodeJS.ProcessEnv = process.env): BackendServices {
@@ -101,7 +107,13 @@ export function createServices(env: NodeJS.ProcessEnv = process.env): BackendSer
   const agentStudio = new BnbAgentStudioClient();
   const agenticWallet = new AgenticWalletClient(policyEngine);
 
-  return {
+  // Notification Service & Dispatchers (Phase 8, Spectra.md §5.7)
+  const notificationService = new NotificationService();
+  signalEngine.onSignal((signal) => {
+    notificationService.createFromSignal(signal);
+  });
+
+  const partialServices: BackendServices = {
     cache,
     ingestion,
     tradfi,
@@ -115,7 +127,25 @@ export function createServices(env: NodeJS.ProcessEnv = process.env): BackendSer
     paymentGateway,
     agentStudio,
     agenticWallet,
+    notificationService,
+    wsManager: undefined as unknown as SpectraWebSocketManager,
+    telegramBot: undefined as unknown as SpectraTelegramBot,
   };
+
+  const wsManager = new SpectraWebSocketManager(partialServices);
+  const telegramBot = new SpectraTelegramBot(partialServices, {
+    botToken: env.TELEGRAM_BOT_TOKEN,
+    channelId: env.TELEGRAM_CHANNEL_ID,
+  });
+
+  notificationService.onNotification((n) => {
+    telegramBot.sendAlert(n).catch(() => {});
+  });
+
+  partialServices.wsManager = wsManager;
+  partialServices.telegramBot = telegramBot;
+
+  return partialServices;
 }
 
 /**
@@ -331,6 +361,28 @@ export function createApp(services: BackendServices): express.Application {
 
   // Module 2: Strategy Forge routes (§7.2, §7.6)
   app.use("/api/forge", createForgeRouter(services));
+
+  // Phase 8: Notification & Real-time alert routes (§5.7)
+  app.get("/api/notifications", (req: Request, res: Response) => {
+    const rawLimit = req.query.limit;
+    const limit = rawLimit ? parseInt(String(rawLimit), 10) : 20;
+    const notifs = services.notificationService?.getRecent(limit) ?? [];
+    res.json({
+      count: notifs.length,
+      data: notifs,
+      timestamp: Date.now(),
+    });
+  });
+
+  app.post("/api/telegram/command", async (req: Request, res: Response) => {
+    const { command } = req.body as { command?: string };
+    if (!command) {
+      res.status(400).json({ error: "Missing command parameter" });
+      return;
+    }
+    const reply = await services.telegramBot?.handleCommand(command);
+    res.json({ command, reply });
+  });
 
   return app;
 }

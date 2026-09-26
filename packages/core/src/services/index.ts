@@ -18,3 +18,11 @@ export {
   hashQuote,
   ReceiptService,
 } from "./receipt.js";
+
+export {
+  NotificationService,
+  type NotificationType,
+  type NotificationChannel,
+  type SpectraNotification,
+} from "./notification.js";
+

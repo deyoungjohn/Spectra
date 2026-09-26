@@ -1,5 +1,6 @@
 // apps/web/src/app/layout.tsx
 import React from "react";
+import { FooterBar } from "./components/FooterBar";
 
 export const metadata = {
   title: "Spectra | Tokenized Equities Intelligence Terminal",
@@ -80,7 +81,7 @@ export default function RootLayout({
               <a
                 href="/"
                 style={{
-                  color: "#F0B90B",
+                  color: "#EAECEF",
                   fontWeight: 600,
                   textDecoration: "none",
                 }}
@@ -105,9 +106,29 @@ export default function RootLayout({
               >
                 Strategy Forge
               </a>
-              <span style={{ color: "#474D57", cursor: "not-allowed" }}>
-                Proofs & Vault
-              </span>
+              <a
+                href="/loop"
+                style={{
+                  color: "#F0B90B",
+                  fontWeight: 700,
+                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+              >
+                <span>Unified Loop</span>
+                <span
+                  style={{
+                    fontSize: "9px",
+                    padding: "1px 5px",
+                    borderRadius: "3px",
+                    backgroundColor: "rgba(240, 185, 11, 0.15)",
+                  }}
+                >
+                  SEE→PROVE
+                </span>
+              </a>
             </nav>
           </div>
 
@@ -139,24 +160,10 @@ export default function RootLayout({
         {/* Main Content */}
         <main style={{ flex: 1 }}>{children}</main>
 
-        {/* Bottom Bar (§11) */}
-        <footer
-          style={{
-            padding: "8px 24px",
-            backgroundColor: "#16181D",
-            borderTop: "1px solid #23272E",
-            display: "flex",
-            justifyContent: "space-between",
-            fontSize: "11px",
-            color: "#5E6673",
-          }}
-        >
-          <div>
-            Spectra Terminal • Empirical Oracle Divergence Engine • Base Layer: Normalization & Fixed-Point v1.0
-          </div>
-          <div>Gas: 3 Gwei • block time: 3.0s • contracts verified</div>
-        </footer>
+        {/* Sticky Ticker Tape Bottom Bar (§11) */}
+        <FooterBar />
       </body>
     </html>
   );
 }
+

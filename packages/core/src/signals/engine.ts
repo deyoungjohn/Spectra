@@ -21,6 +21,7 @@ export class SignalEngine {
   private features: FeatureFlags;
   private activeSignals: Map<string, AlphaSignal> = new Map();
   private flowAccumulations: Map<string, bigint> = new Map(); // Trailing 4h net flow
+  private listeners: Array<(signal: AlphaSignal) => void> = [];
 
   constructor(options?: SignalEngineOptions) {
     this.thresholds = {
@@ -31,6 +32,29 @@ export class SignalEngine {
       ...DEFAULT_FEATURES,
       ...options?.features,
     };
+  }
+
+  /**
+   * Subscribe to new signals emitted by the engine (§5.7).
+   */
+  public onSignal(listener: (signal: AlphaSignal) => void): () => void {
+    this.listeners.push(listener);
+    return () => {
+      const idx = this.listeners.indexOf(listener);
+      if (idx !== -1) {
+        this.listeners.splice(idx, 1);
+      }
+    };
+  }
+
+  private emitSignal(signal: AlphaSignal) {
+    for (const listener of this.listeners) {
+      try {
+        listener(signal);
+      } catch {
+        // Safe dispatch
+      }
+    }
   }
 
   /**
@@ -69,6 +93,7 @@ export class SignalEngine {
     };
 
     this.activeSignals.set(`${event.ticker}:RATIO_DRIFT`, signal);
+    this.emitSignal(signal);
     return signal;
   }
 
@@ -220,6 +245,7 @@ export class SignalEngine {
     // Update active signals map
     for (const sig of signals) {
       this.activeSignals.set(`${ticker}:${sig.type}`, sig);
+      this.emitSignal(sig);
     }
 
     return signals;

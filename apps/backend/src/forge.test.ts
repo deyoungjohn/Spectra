@@ -1,57 +1,11 @@
 // apps/backend/src/forge.test.ts
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 import request from "supertest";
-import { createApp, type BackendServices } from "./app.js";
-import {
-  MemoryCacheService,
-  DataIngestionService,
-  MockRwaDataProvider,
-  NormalizationEngine,
-  CompositeTradFiClient,
-  SignalEngine,
-  PolicyEngine,
-  ReceiptService,
-  MockBscScanProvider,
-  FlowAggregator,
-  FlowSignalEngine,
-  type ITradFiClient,
-  parseToFixed18,
-} from "@spectra/core";
+import { createApp, createServices } from "./app.js";
 
 describe("Strategy Forge API (/api/forge/*)", () => {
   function createTestApp() {
-    const cache = new MemoryCacheService();
-    const mockTradFi: ITradFiClient = {
-      getQuote: vi.fn().mockResolvedValue({
-        ticker: "AAPL",
-        price: parseToFixed18("333.90"),
-        timestamp: new Date(),
-        source: "mock",
-      }),
-    };
-    const tradfi = new CompositeTradFiClient(mockTradFi, mockTradFi, { cache });
-    const ingestion = new DataIngestionService(new MockRwaDataProvider(), { cache });
-    const normalization = new NormalizationEngine(ingestion, tradfi);
-    const signalEngine = new SignalEngine();
-    const policyEngine = new PolicyEngine(signalEngine);
-    const receiptService = new ReceiptService();
-
-    const bscScan = new MockBscScanProvider();
-    const flowAggregator = new FlowAggregator(bscScan);
-    const flowEngine = new FlowSignalEngine(flowAggregator, { signalEngine });
-
-    const services: BackendServices = {
-      cache,
-      ingestion,
-      tradfi,
-      normalization,
-      signalEngine,
-      policyEngine,
-      receiptService,
-      bscScan,
-      flowAggregator,
-      flowEngine,
-    };
+    const services = createServices();
     const app = createApp(services);
     return { app, services };
   }

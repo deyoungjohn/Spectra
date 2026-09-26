@@ -174,3 +174,31 @@
 - Reason: Enable self-funding, trustless autonomous agents that can register verifiable ERC-8004 identities, execute policy-bounded trades on BSC DEXes via Agentic Wallet, sell proprietary alpha through b402, and seamlessly interface with Claude Code / Cursor through MCP.
 - Behavior/compatibility impact: Agent Layer and paid b402 endpoints are fully operational. Zero regressions on Base Layer, Market Intelligence, Flow Radar, or Strategy Forge.
 - Verification: `./scripts/check.sh` passes — 204/204 tests passing (120 core + 22 ui + 40 backend + 8 agent + 14 smart contracts), Next.js production build clean in 106ms, 0 type errors, 0 lint errors.
+
+## 2026-09-26 — Phase 8: Integration & Polish Complete
+
+- Agent/client: Antigravity (Gemini 3.8 Flash)
+- Change: Integrated all modules, implemented real-time communication, and polished the Unified Loop UX per Spectra.md §3, §7.3, and §11:
+  - Base Layer & Notifications (`@spectra/core/services`):
+    - `NotificationService`: In-memory notification log and subscription broker wired to `SignalEngine.onSignal`
+  - Real-Time & Bot Layer (`apps/backend`):
+    - `SpectraWebSocketManager`: WebSocket server handling client connection snapshots, heartbeat ping/pong, and real-time notification broadcasting
+    - `SpectraTelegramBot`: grammY-powered bot dispatcher supporting `/start`, `/signals`, `/status`, and `/alerts` commands with shadow fallback
+    - Backend endpoints: Added `/api/notifications` and `/api/telegram/command`
+    - Added 4 integration tests in `apps/backend/src/integration.test.ts`
+  - UI Component Library (`@spectra/ui`):
+    - `UnifiedLoopNav`: 4-stage stepper/breadcrumb navigation component representing `SEE → READ → FORGE → PROVE`
+    - `TickerTape`: Sticky bottom status bar conforming to §11 design system (open/closed market pulse, WebSocket status badge, live anomaly marquee chips, gas, and block time)
+    - Added 6 unit tests in `packages/ui/src/loop.test.tsx`
+  - Next.js Web Application (`apps/web`):
+    - Created interactive single-page walkthrough route `/loop` for the full Unified Loop:
+      - SEE Stage: Real-time anomaly spotter (TSLA oracle divergence, NVDA basis, AAPL spread)
+      - READ Stage: Flow Radar whale accumulation verification and BscScan indexer breakdown
+      - FORGE Stage: Strategy DSL compilation and dry-run simulation with SHA-256 hash
+      - PROVE Stage: Cryptographic receipt anchoring with EIP-712 structured proof and ReceiptRegistry.sol audit trail
+    - Updated `apps/web/src/app/layout.tsx` with Unified Loop top navigation link and sticky `TickerTape` bottom status bar
+  - Added 10 new tests across `@spectra/ui` (6 tests) and `@spectra/backend` (4 tests), bringing monorepo total to 214 passing tests across 23 test suites
+- Reason: Unify Market Intelligence, Flow Radar, Strategy Forge, and Agent Layer into a coherent, verifiable terminal journey that delivers on the core premise of Spectra.
+- Behavior/compatibility impact: Full Unified Loop navigable via web UI; WebSocket and Telegram push notifications live; zero regressions on all prior modules.
+- Verification: `./scripts/check.sh` passes — 214/214 tests passing (120 core + 28 ui + 44 backend + 8 agent + 14 smart contracts), Next.js production build clean, 0 type errors, 0 lint errors.
+
