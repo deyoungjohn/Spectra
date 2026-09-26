@@ -1,12 +1,29 @@
 {
-  "name": "Spectra",
+  "name": "spectra",
   "version": "0.1.0",
   "private": true,
-  "description": "Portable cross-agent software project workspace",
+  "type": "module",
+  "description": "Empirically-grounded intelligence terminal for tokenized equities on BSC",
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
   "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
     "check": "./scripts/check.sh"
   },
   "devDependencies": {
-    "@modelcontextprotocol/server-memory": "2026.8.31"
+    "@eslint/js": "^9.27.0",
+    "@modelcontextprotocol/server-memory": "2026.8.31",
+    "@types/node": "^22.15.30",
+    "eslint": "^9.27.0",
+    "turbo": "^2.5.4",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.34.0",
+    "vitest": "^3.2.3"
   }
 }

@@ -1,23 +1,39 @@
 # Project state
 
-Last updated: 2026-09-25
+Last updated: 2026-09-26
 
 ## Objective
 
-Not yet defined. Requirements will be established with the user before implementation.
+Spectra is a production-grade, modular terminal combining market screening,
+on-chain flow analysis, and agentic strategy execution for tokenized equities
+on BNB Smart Chain. Built on the empirical proof that the RWA Data API's
+`referencePrice` is a deterministic per-share unit conversion, not an
+independent TradFi oracle.
 
 ## Current status
 
-- Cross-agent workspace initialized.
-- Shared project MCP memory initialized with a retrievable Spectra project entity.
-- Application implementation has not started.
-- Product requirements remain to be defined.
+- **Phase 0 (Project Scaffolding): ✅ Complete**
+- Phase 1 (Base Layer — Core Data): Next up
+- Monorepo structure established (Turborepo + npm workspaces)
+- Core package (`@spectra/core`) with fixed-point math, types, and feature flags
+- 36 unit tests passing, typechecks clean, linting enforced
+- Build phases tracked in `docs/BUILD_PHASES.md`
 
 ## Architecture
 
-- Language and framework: To be selected based on project requirements
-- Build tooling: To be selected
-- Test framework: To be selected
+- **Monorepo:** Turborepo with npm workspaces
+- **Language:** TypeScript (strict mode, ES2022 target)
+- **Math:** BigInt-only 18-decimal fixed-point (no floating-point financial math)
+- **Packages:**
+  - `packages/core` — Shared types, normalization engine math, config
+  - `packages/contracts` — Solidity smart contracts (Phase 3)
+  - `packages/ui` — Shared React components (Phase 4)
+- **Apps:**
+  - `apps/web` — Next.js Dashboard (Phase 4)
+  - `apps/backend` — Express API + Base Layer services (Phase 1)
+  - `apps/agent` — Agent runtime + MCP Server (Phase 7)
+- **Test framework:** Vitest
+- **Lint:** ESLint with financial math rules blocking `parseFloat` and `Number`
 
 ## Required verification
 
@@ -27,8 +43,13 @@ Run:
 ./scripts/check.sh
 ```
 
-Extend that script when the project stack is chosen. It must remain the single
-entry point for all required checks.
+This runs:
+1. Required file existence checks
+2. Shell script syntax validation
+3. JSON/TOML syntax validation
+4. TypeScript typechecking for core, backend, and agent packages
+5. Vitest unit tests for `@spectra/core`
+6. ESLint linting with financial math rules
 
 ## Known limitations
 
@@ -36,3 +57,7 @@ entry point for all required checks.
   concurrently. Close one agent and its MCP process before opening the next.
 - MCP memory is supplementary and does not replace tests, Git history, decision
   records, specifications, or the change ledger.
+- `apps/web` (Next.js), `packages/contracts` (Hardhat), and `packages/ui`
+  (React) are placeholder packages pending their respective phases.
+- Weekend Premium signal is LOCKED OFF (`SIGNAL_WEEKEND_PREMIUM=false`) until
+  the weekend empirical test passes (Spectra.md §2.4).

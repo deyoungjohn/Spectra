@@ -1,0 +1,16 @@
+{
+  "name": "@spectra/web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "echo 'Web build: Next.js setup pending (Phase 4)'",
+    "dev": "echo 'Web dev: Next.js setup pending (Phase 4)'",
+    "typecheck": "echo 'Web typecheck: Next.js setup pending (Phase 4)'",
+    "lint": "echo 'Web lint: Next.js setup pending (Phase 4)'"
+  },
+  "dependencies": {
+    "@spectra/core": "*",
+    "@spectra/ui": "*"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "name": "@spectra/ui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "echo 'UI build: React setup pending (Phase 4)'",
+    "typecheck": "echo 'UI typecheck: React setup pending (Phase 4)'",
+    "lint": "echo 'UI lint: setup pending (Phase 4)'"
+  }
+}

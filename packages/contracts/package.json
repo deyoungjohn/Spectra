@@ -1,0 +1,10 @@
+{
+  "name": "@spectra/contracts",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "echo 'Contracts build: Hardhat setup pending (Phase 3)'",
+    "typecheck": "echo 'Contracts typecheck: Hardhat setup pending (Phase 3)'",
+    "test": "echo 'Contracts test: Hardhat setup pending (Phase 3)'"
+  }
+}
