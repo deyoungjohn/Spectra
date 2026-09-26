@@ -18,7 +18,13 @@ independent TradFi oracle.
 - **Phase 3 (Smart Contracts): ✅ Complete**
 - **Phase 4 (Module 1 — Market Intelligence): ✅ Complete**
 - **Phase 5 (Module 3 — Flow Radar): ✅ Complete**
-- Phase 6 (Module 2 — Strategy Forge): 🔄 Next up
+- **Phase 6 (Module 2 — Strategy Forge): ✅ Complete**
+- Phase 7 (Agent Layer): 🔄 Next up
+- Strategy Forge (`@spectra/core/strategy`) implements:
+  - 4 canonical pre-built templates: Weekly DCA, Basis Rotation, Oracle Guard, Weekend Fade
+  - `StrategyValidator`: Syntactical validation & `ExecutionPolicy` bounds enforcement
+  - `NLStrategyCompiler`: Natural language prompt compiler into composite `StrategyDSL`
+  - `StrategySimulator`: Dry-run simulation with fee & slippage calculation and SHA-256 `simulationHash`
 - Flow Radar (`@spectra/core/flow`) implements:
   - `BscScanProvider` / `HttpBscScanClient` with caching & fallback to `MockBscScanProvider`
   - `FlowAggregator`: Trailing 1h, 4h, 24h net flow, top-N wallet rankings, pre-event positioning detection, hourly time series, cross-platform aggregation
@@ -35,8 +41,13 @@ independent TradFi oracle.
   - `TickerFlowChart`: Net flow time series with pre-event positioning alerts and hourly volume bars
   - `WhaleTable`: Large wallet tracking table with direction, notional USD, share amounts, and BSC tx links
   - `CrossPlatformFlow`: Side-by-side venue flow routing (Ondo vs bStocks vs xStocks) with dominant venue badge
+  - `TemplateGallery`: One-click deployable strategy templates
+  - `NLInput`: Natural language strategy prompt composer with preset chips
+  - `StrategyPreview`: Formatted Strategy DSL viewer with valid/invalid badges and deploy buttons
+  - `Simulator`: Dry-run execution output with SHA-256 hash and policy check badges
+  - `ExecutionLog`: Audit trail of autonomous agent trades and execution receipts
 - Next.js Web Application (`apps/web`):
-  - Turbopack-enabled Next.js 16 dashboard with routes `/`, `/flow`, `/market/ticker/[ticker]`, and `/flow/ticker/[ticker]`
+  - Turbopack-enabled Next.js 16 dashboard with routes `/`, `/flow`, `/forge`, `/market/ticker/[ticker]`, and `/flow/ticker/[ticker]`
   - Spectra dark theme (`#0D0E12`, `#F0B90B` gold accent)
 - Smart Contracts (`@spectra/contracts`) implements:
   - `FixedPointMath.sol`: 18-decimal fixed-point library on-chain
@@ -54,8 +65,8 @@ independent TradFi oracle.
   - Receipt Service (SHA-256 decision, simulation, and quote hashing)
   - Strategy Conflict Resolution Coordinator (priority netting, cap enforcement)
   - Memory Cache Service with TTL
-- Backend API (`@spectra/backend`) running Express with `/api/health`, `/api/core/*`, `/api/market/*`, `/api/flow/*`, and b402 paid `/api/alpha/screener` and `/api/alpha/flow/:ticker`
-- 150 total passing tests across 15 test suites (99 core + 16 ui + 24 backend + 11 smart contracts)
+- Backend API (`@spectra/backend`) running Express with `/api/health`, `/api/core/*`, `/api/market/*`, `/api/flow/*`, `/api/forge/*`, and b402 paid `/api/alpha/screener` and `/api/alpha/flow/:ticker`
+- 173 total passing tests across 16 test suites (109 core + 22 ui + 31 backend + 11 smart contracts)
 - Zero type errors, zero lint warnings, production Next.js build passes
 - Build phases tracked in `docs/BUILD_PHASES.md`
 

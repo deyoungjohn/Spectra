@@ -125,3 +125,28 @@
 - Reason: Autonomous agents and human traders need transparent visibility into on-chain whale positioning, DEX net inflows, and pre-market accumulation ahead of earnings or session open.
 - Behavior/compatibility impact: Flow Radar endpoints and UI lenses are fully operational. Zero regressions on Base Layer and Market Intelligence modules.
 - Verification: `./scripts/check.sh` passes — 150/150 tests passing (99 core + 16 ui + 24 backend + 11 smart contracts), Next.js production build compiles cleanly in 129ms, 0 type errors, 0 lint errors.
+
+## 2026-09-26 — Phase 6: Module 2 — Strategy Forge Complete
+
+- Agent/client: Antigravity (Gemini 3.8 Flash)
+- Change: Built the "Composer layer" for natural language strategy synthesis, dry-run simulation, and autonomous agent deployment:
+  - Core Strategy Forge package (`@spectra/core/strategy`):
+    - 4 canonical pre-built templates: Weekly DCA, Cross-Platform Basis Rotation, Oracle Divergence Guard, and Weekend Premium Fade (§7.7)
+    - `StrategyValidator`: Syntactical block verification and `ExecutionPolicy` bounds checking (trade ceiling, slippage caps, kill switch)
+    - `NLStrategyCompiler`: Natural language parser translating complex prompts (e.g. worked example §7.4) into composite `StrategyDSL` with boolean AND/OR triggers
+    - `StrategySimulator`: Dry-run execution simulation against live/cached prices and DEX liquidity, calculating slippage, fees, net output, and generating cryptographic SHA-256 `simulationHash`
+  - Backend API (`apps/backend`):
+    - Router `apps/backend/src/forge.ts` providing `/api/forge/templates`, `/api/forge/compile`, `/api/forge/validate`, `/api/forge/simulate`, `/api/forge/deploy`, `/api/forge/strategies`, and `/api/forge/executions`
+  - UI Component Library (`@spectra/ui`):
+    - `TemplateGallery`: One-click template cards with estimated APY tags and descriptions
+    - `NLInput`: Plain English strategy composer with preset example chips
+    - `StrategyPreview`: Formatted JSON DSL code viewer with validation badges and simulation/deployment buttons
+    - `Simulator`: Dry-run output cards showing trigger firing, simulated price, fees, and SHA-256 hash
+    - `ExecutionLog`: Execution table with transaction statuses and receipt links
+  - Web Application (`apps/web`):
+    - Next.js 16 route `/forge` providing the full interactive Strategy Forge workspace
+    - Updated navigation header linking Market Intel, Flow Radar, and Strategy Forge
+  - Added 23 new tests (10 in `@spectra/core`, 6 in `@spectra/ui`, and 7 in `@spectra/backend`), bringing the monorepo total to 173 passing tests across 16 test suites
+- Reason: Autonomous agents and retail investors require a verifiable bridge between human intent and programmatic on-chain execution with strict risk bounds and dry-run proof.
+- Behavior/compatibility impact: Strategy Forge endpoints, compiler, simulator, and dashboard are fully operational. Zero regressions on prior modules.
+- Verification: `./scripts/check.sh` passes — 173/173 tests passing (109 core + 22 ui + 31 backend + 11 smart contracts), Next.js production build passes in 108ms, 0 type errors, 0 lint errors.

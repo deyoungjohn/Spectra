@@ -30,6 +30,7 @@ import {
 } from "@spectra/core";
 import { createMarketRouter, createAlphaRouter } from "./market.js";
 import { createFlowRouter } from "./flow.js";
+import { createForgeRouter } from "./forge.js";
 
 export interface BackendServices {
   cache: MemoryCacheService;
@@ -307,6 +308,9 @@ export function createApp(services: BackendServices): express.Application {
 
   // Module 3: Flow Radar routes (§8.2, §8.4)
   app.use("/api/flow", createFlowRouter(services));
+
+  // Module 2: Strategy Forge routes (§7.2, §7.6)
+  app.use("/api/forge", createForgeRouter(services));
 
   return app;
 }

@@ -11,3 +11,4 @@ export * from "./services/index.js";
 export * from "./signals/index.js";
 export * from "./policy/index.js";
 export * from "./flow/index.js";
+export * from "./strategy/index.js";

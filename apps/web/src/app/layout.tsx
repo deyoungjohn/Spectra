@@ -96,9 +96,15 @@ export default function RootLayout({
               >
                 Flow Radar
               </a>
-              <span style={{ color: "#474D57", cursor: "not-allowed" }}>
+              <a
+                href="/forge"
+                style={{
+                  color: "#848E9C",
+                  textDecoration: "none",
+                }}
+              >
                 Strategy Forge
-              </span>
+              </a>
               <span style={{ color: "#474D57", cursor: "not-allowed" }}>
                 Proofs & Vault
               </span>
