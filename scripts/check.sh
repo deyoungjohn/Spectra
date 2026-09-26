@@ -53,6 +53,12 @@ fi
 
 # ── Step 5: Monorepo checks (if package.json has workspaces) ──
 if [[ -f package.json ]]; then
+  # Build core package so other packages can import dist declarations
+  if [[ -f packages/core/tsconfig.json ]]; then
+    echo "Building @spectra/core..."
+    npx tsc --project packages/core/tsconfig.json
+  fi
+
   # Typecheck core package
   if [[ -f packages/core/tsconfig.json ]]; then
     echo "Typechecking @spectra/core..."
@@ -75,6 +81,11 @@ if [[ -f package.json ]]; then
   if [[ -f packages/core/vitest.config.ts ]]; then
     echo "Testing @spectra/core..."
     npx vitest run --config packages/core/vitest.config.ts
+  fi
+
+  if [[ -f apps/backend/vitest.config.ts ]]; then
+    echo "Testing @spectra/backend..."
+    npx vitest run --config apps/backend/vitest.config.ts
   fi
 
   # Lint

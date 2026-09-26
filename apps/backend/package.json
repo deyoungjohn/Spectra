@@ -12,6 +12,12 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@spectra/core": "*"
+    "@spectra/core": "*",
+    "express": "5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "5.0.6",
+    "@types/supertest": "7.2.1",
+    "supertest": "7.3.0"
   }
 }

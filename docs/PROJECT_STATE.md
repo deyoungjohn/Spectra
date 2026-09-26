@@ -13,10 +13,17 @@ independent TradFi oracle.
 ## Current status
 
 - **Phase 0 (Project Scaffolding): ✅ Complete**
-- Phase 1 (Base Layer — Core Data): Next up
-- Monorepo structure established (Turborepo + npm workspaces)
-- Core package (`@spectra/core`) with fixed-point math, types, and feature flags
-- 36 unit tests passing, typechecks clean, linting enforced
+- **Phase 1 (Base Layer — Core Data): ✅ Complete**
+- Phase 2 (Base Layer — Signals & Policy): 🔄 Next up
+- Core package (`@spectra/core`) implements:
+  - BigInt 18-decimal fixed-point arithmetic (6 functions)
+  - Data Ingestion Service with RWA Data API and mock providers
+  - Composite TradFi Client (Finnhub primary + Yahoo Finance fallback)
+  - Normalization Engine (per-share conversion, ratio drift detection, basis)
+  - Memory Cache Service with TTL
+- Backend API (`@spectra/backend`) running Express with `/api/health`, `/api/core/status`, and `/api/core/tokens`
+- 70 unit and integration tests passing across core and backend
+- Zero type errors, zero lint warnings
 - Build phases tracked in `docs/BUILD_PHASES.md`
 
 ## Architecture

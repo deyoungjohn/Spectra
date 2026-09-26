@@ -1,6 +1,15 @@
-// Spectra Backend — Entry Point
+// apps/backend/src/index.ts
 //
-// This will be the Express API server serving all modules.
-// Currently a placeholder for Phase 0 scaffolding.
+// Spectra Backend server runner.
 
-console.log("Spectra Backend starting...");
+import { createApp, createServices } from "./app.js";
+
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
+const services = createServices(process.env);
+const app = createApp(services);
+
+app.listen(port, () => {
+  console.log(`[Spectra Backend] running on http://localhost:${port}`);
+});
+
+export { app, services };

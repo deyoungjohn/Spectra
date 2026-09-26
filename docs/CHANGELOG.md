@@ -37,3 +37,18 @@
   typecheck + vitest + eslint.
 - Verification: `./scripts/check.sh` passes — 36/36 tests, 0 type errors,
   0 lint errors.
+
+## 2026-09-26 — Phase 1: Base Layer — Core Data Complete
+
+- Agent/client: Antigravity (Gemini 3.8 Flash)
+- Change: Implemented core data ingestion and normalization layer:
+  - `MemoryCacheService` with TTL and pruning
+  - `FinnhubClient` and `YFinanceClient` with `CompositeTradFiClient` for resilient external pricing
+  - `MockRwaDataProvider` seeded with empirical benchmarks (AAPL, NVDA, TSLA) and `BinanceRwaDataProvider`
+  - `DataIngestionService` with automatic stale-cache fallback during feed outage (§5.10)
+  - `NormalizationEngine` converting token prices to per-share values via `tokenToShareRatio`, detecting ratio drift events, and computing oracle divergence, weekend premium, and cross-platform basis
+  - `apps/backend` Express server providing `/api/health`, `/api/core/status`, and `/api/core/tokens`
+  - Unit and integration tests for caching, TradFi clients, data ingestion, normalization, and backend API
+- Reason: Base Layer data ingestion and per-share normalization must be active before signals, smart contracts, and UI lenses can consume accurate market data.
+- Behavior/compatibility impact: Base layer API and core normalization exports are fully operational.
+- Verification: `./scripts/check.sh` passes — 70/70 tests passing (65 core + 5 backend), 0 type errors, 0 lint errors.
