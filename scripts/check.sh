@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+export CI=true
 
 script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 project_root="$(cd "$script_dir/.." && pwd)"
@@ -86,6 +87,14 @@ if [[ -f package.json ]]; then
   if [[ -f apps/backend/vitest.config.ts ]]; then
     echo "Testing @spectra/backend..."
     npx vitest run --config apps/backend/vitest.config.ts
+  fi
+
+  # Build and test smart contracts
+  if [[ -f packages/contracts/hardhat.config.cjs ]]; then
+    echo "Compiling @spectra/contracts..."
+    npm run build -w @spectra/contracts
+    echo "Testing @spectra/contracts..."
+    npm test -w @spectra/contracts
   fi
 
   # Lint

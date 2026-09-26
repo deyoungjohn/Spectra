@@ -15,7 +15,14 @@ independent TradFi oracle.
 - **Phase 0 (Project Scaffolding): ✅ Complete**
 - **Phase 1 (Base Layer — Core Data): ✅ Complete**
 - **Phase 2 (Base Layer — Signals & Policy): ✅ Complete**
-- Phase 3 (Smart Contracts): 🔄 Next up
+- **Phase 3 (Smart Contracts): ✅ Complete**
+- Phase 4 (Module 1 — Market Intelligence): 🔄 Next up
+- Smart Contracts (`@spectra/contracts`) implements:
+  - `FixedPointMath.sol`: 18-decimal fixed-point library on-chain
+  - `OracleWatch.sol`: Divergence recording with bounded history pruning
+  - `PolicyVault.sol`: On-chain execution policy storage and kill switch
+  - `ReceiptRegistry.sol`: On-chain decision receipt anchoring with SHA-256 hashes
+  - `ExecutionPlanVerifier.sol`: EIP-712 structured cryptographic plan verification
 - Core package (`@spectra/core`) implements:
   - BigInt 18-decimal fixed-point arithmetic (6 functions)
   - Data Ingestion Service with RWA Data API and mock providers
@@ -27,7 +34,7 @@ independent TradFi oracle.
   - Strategy Conflict Resolution Coordinator (priority netting, cap enforcement)
   - Memory Cache Service with TTL
 - Backend API (`@spectra/backend`) running Express with `/api/health`, `/api/core/status`, `/api/core/tokens`, `/api/core/signals`, `/api/core/policy/check`, `/api/core/receipts/:user`
-- 94 unit and integration tests passing across core and backend (10 test suites)
+- 105 total passing tests across 11 test suites (85 core + 9 backend + 11 smart contracts)
 - Zero type errors, zero lint warnings
 - Build phases tracked in `docs/BUILD_PHASES.md`
 

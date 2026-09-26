@@ -14,8 +14,8 @@ Last updated: 2026-09-26
 | 0 | Project Scaffolding | Monorepo, toolchain, CI, config | ✅ Complete |
 | 1 | Base Layer — Core Data | Fixed-point math, types, normalization engine, data ingestion | ✅ Complete |
 | 2 | Base Layer — Signals & Policy | Signal engine, policy engine, config & feature flags | ✅ Complete |
-| 3 | Smart Contracts | FixedPointMath, OracleWatch, PolicyVault, ReceiptRegistry, ExecutionPlan | 🔄 In Progress |
-| 4 | Module 1 — Market Intelligence | Heatmap, screener, anomaly filters, API endpoints, UI | ⬜ Not Started |
+| 3 | Smart Contracts | FixedPointMath, OracleWatch, PolicyVault, ReceiptRegistry, ExecutionPlan | ✅ Complete |
+| 4 | Module 1 — Market Intelligence | Heatmap, screener, anomaly filters, API endpoints, UI | 🔄 In Progress |
 | 5 | Module 3 — Flow Radar | BscScan integration, flow aggregation, UI | ⬜ Not Started |
 | 6 | Module 2 — Strategy Forge | NL input, templates, simulator, strategy DSL, deployment | ⬜ Not Started |
 | 7 | Agent Layer | BNB Agent Studio, Agentic Wallet, MCP server, b402 payment gateway | ⬜ Not Started |
@@ -139,25 +139,26 @@ receipt service.
 
 ### Steps
 
-- [ ] **3.1** Set up Hardhat/Foundry in `packages/contracts`
-- [ ] **3.2** Implement `FixedPointMath.sol` (§10.7)
-- [ ] **3.3** Implement `OracleWatch.sol` with pruning (§10.2)
-- [ ] **3.4** Implement `PolicyVault.sol` (§10.3)
-- [ ] **3.5** Implement `ReceiptRegistry.sol` (§10.4)
-- [ ] **3.6** Implement `ExecutionPlanVerifier.sol` with EIP-712 (§10.8)
-- [ ] **3.7** Write Solidity tests for all contracts
-- [ ] **3.8** Test gas costs and bounded array behavior
-- [ ] **3.9** Verify: `./scripts/check.sh` passes
+- [x] **3.1** Set up Hardhat in `packages/contracts`
+- [x] **3.2** Implement `FixedPointMath.sol` (§10.7)
+- [x] **3.3** Implement `OracleWatch.sol` with pruning (§10.2)
+- [x] **3.4** Implement `PolicyVault.sol` (§10.3)
+- [x] **3.5** Implement `ReceiptRegistry.sol` (§10.4)
+- [x] **3.6** Implement `ExecutionPlanVerifier.sol` with EIP-712 (§10.8)
+- [x] **3.7** Write Solidity tests for all contracts
+- [x] **3.8** Test gas costs and bounded array behavior
+- [x] **3.9** Verify: `./scripts/check.sh` passes
 
 ### Acceptance Criteria
-- All contracts compile and pass tests
-- Gas costs are reasonable for hackathon demo
-- EIP-712 verification works end-to-end in tests
+- ✅ All contracts compile and pass tests (19 Solidity files compiled with Cancun EVM, 11 tests passing)
+- ✅ Gas costs are reasonable for hackathon demo (bounded history pruning in OracleWatch, storage mapping patterns)
+- ✅ EIP-712 verification works end-to-end in tests (tested with ethers signTypedData)
 
 ### Log
 
 | Date | Step | Notes |
 |------|------|-------|
+| 2026-09-26 | 3.1–3.9 | Set up Hardhat with OpenZeppelin v5 and Cancun EVM. Implemented FixedPointMath.sol, OracleWatch.sol (bounded pruning), PolicyVault.sol (limits & kill switch), ReceiptRegistry.sol (decision hashing), and ExecutionPlanVerifier.sol (EIP-712). All 11 Hardhat tests passing, monorepo total reaches 105 passing tests across 11 test suites. |
 
 ---
 

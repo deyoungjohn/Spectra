@@ -66,3 +66,18 @@
 - Reason: Autonomous agents and execution pipelines require strict mathematical constraints, conflict resolution, and deterministic receipts before initiating any trades.
 - Behavior/compatibility impact: Signals and policy APIs are operational. Zero regressions on existing core services.
 - Verification: `./scripts/check.sh` passes — 94/94 tests passing (85 core + 9 backend), 0 type errors, 0 lint errors.
+
+## 2026-09-26 — Phase 3: Smart Contracts Complete
+
+- Agent/client: Antigravity (Gemini 3.8 Flash)
+- Change: Implemented Solidity smart contract layer in `@spectra/contracts`:
+  - `FixedPointMath.sol`: Library for 18-decimal fixed-point multiplication and division matching TypeScript math (§10.7)
+  - `OracleWatch.sol`: Permanent on-chain divergence recording with automatic array pruning at >1000 snapshots to guarantee bounded gas (§10.2)
+  - `PolicyVault.sol`: On-chain execution policy storage enforcing max notional trade limit, max slippage bps, 24h daily usage resets, and admin kill switch (§10.3)
+  - `ReceiptRegistry.sol`: On-chain decision receipt anchoring storing `decisionHash`, `simulationHash`, token pair, amounts, and `signalType` (§10.4)
+  - `ExecutionPlanVerifier.sol`: EIP-712 structured cryptographic plan verifier binding agent orders to backend coordinator approval signatures (§10.8)
+  - Hardhat toolchain with OpenZeppelin v5.2, Cancun EVM target, and comprehensive Hardhat test suite (11 passing tests)
+  - Integrated contract build and test steps into `scripts/check.sh`
+- Reason: On-chain contracts provide verifiable auditability, cryptographic non-repudiation of agent decisions, and programmatic risk caps on BSC.
+- Behavior/compatibility impact: Smart contracts compile, deploy, and pass all tests. Repository check procedure updated to include Solidity compilation and testing. Total tests increased to 105 across 11 test suites.
+- Verification: `./scripts/check.sh` passes — 105/105 tests passing (85 core + 9 backend + 11 smart contracts), 0 type errors, 0 lint errors.

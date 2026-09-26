@@ -12,6 +12,9 @@ node_modules/
 coverage/
 dist/
 build/
+artifacts/
+cache/
+typechain-types/
 .pytest_cache/
 __pycache__/
 *.pyc
