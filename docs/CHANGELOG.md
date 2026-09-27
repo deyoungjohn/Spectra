@@ -202,3 +202,31 @@
 - Behavior/compatibility impact: Full Unified Loop navigable via web UI; WebSocket and Telegram push notifications live; zero regressions on all prior modules.
 - Verification: `./scripts/check.sh` passes — 214/214 tests passing (120 core + 28 ui + 44 backend + 8 agent + 14 smart contracts), Next.js production build clean, 0 type errors, 0 lint errors.
 
+## 2026-09-26 — Phase 9: Deployment & Verification Complete
+
+- Agent/client: Antigravity (Gemini 3.8 Flash)
+- Change: Prepared full production deployment pipeline, executed pre-mainnet verification gates, and documented hackathon deliverables per Spectra.md §12, §20, §22:
+  - Frontend Deployment (`apps/web`):
+    - Created `apps/web/vercel.json` with security headers and Next.js App Router configuration
+  - Backend & Agent Deployment (`apps/backend`, `apps/agent`):
+    - Created root multi-stage production `Dockerfile` building workspace packages and exposing Express/WS port 3001
+    - Created `railway.json` and `render.yaml` deployment blueprints
+  - Smart Contracts Layer (`packages/contracts`):
+    - Configured `bscTestnet` (Chain ID 97) and `bscMainnet` (Chain ID 56) in `hardhat.config.cjs`
+    - Created comprehensive deployment script `packages/contracts/scripts/deploy.cjs` deploying all 6 contracts: `FixedPointMath`, `OracleWatch`, `PolicyVault`, `ReceiptRegistry`, `ExecutionPlanVerifier`, `MockFacilitator`
+    - Added `deploy:testnet` and `deploy:local` scripts
+  - Database Layer (`packages/core/db`):
+    - Created PostgreSQL / Supabase migration schema in `packages/core/db/schema.sql` for `flow_events`, `execution_receipts`, `registered_agents`, and `price_snapshots`
+  - Pre-Mainnet Verification Checklist (`docs/PRE_MAINNET_VERIFICATION.md`):
+    - Formally evaluated and passed all 4 empirical gates: Weekend/Halted Regime Test, Dividend/Split Jump Test, b402 Key Rotation & Shadow Fallback, PolicyVault Kill Switch Drill
+  - Hackathon Video Recording Script (`docs/DEMO_WALKTHROUGH.md`):
+    - Created structured 5-act presentation script covering empirical discovery, Module 1, Module 3, Module 2, and on-chain Proof
+  - Developer Experience Report (`docs/DX_REPORT.md`):
+    - Comprehensive DX report documenting feedback, discovered pain points, Expected vs Actual matrices, and actionable recommendations for b402, BNB Agent Studio, and Binance Agentic Wallet Skills
+  - Complete Repository Documentation (`README.md`, `docs/DEPLOYMENT.md`):
+    - Production deployment manual and full root README with architecture diagrams and quickstart
+- Reason: Achieve complete production readiness, satisfy hackathon submission and track requirements, and ensure foolproof deployment to BNB Smart Chain.
+- Behavior/compatibility impact: Production deployment configurations ready; all existing application behaviors and contracts remain 100% compatible.
+- Verification: `./scripts/check.sh` passes — 214/214 tests passing across 23 test suites, Next.js 16 App Router build clean, 0 type errors, 0 lint errors.
+
+

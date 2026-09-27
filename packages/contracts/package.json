@@ -6,7 +6,9 @@
   "scripts": {
     "build": "CI=true npx hardhat compile --config hardhat.config.cjs",
     "test": "CI=true npx hardhat test --config hardhat.config.cjs",
-    "typecheck": "echo 'Contracts typecheck passed'"
+    "typecheck": "echo 'Contracts typecheck passed'",
+    "deploy:local": "CI=true npx hardhat run scripts/deploy.cjs --network hardhat",
+    "deploy:testnet": "CI=true npx hardhat run scripts/deploy.cjs --network bscTestnet"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.2.0"

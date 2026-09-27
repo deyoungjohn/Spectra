@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: spectra-backend
+    runtime: docker
+    dockerfilePath: Dockerfile
+    plan: starter
+    region: oregon
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: B402_SHADOW_MODE
+        value: "true"
+      - key: SIGNAL_WEEKEND_PREMIUM
+        value: "false"
