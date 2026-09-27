@@ -246,5 +246,12 @@
 - Behavior/compatibility impact: Live contracts accessible via RPC and BscScan; all contract addresses recorded in version control.
 - Verification: Contracts verified on BscScan; all 214 monorepo tests passing.
 
+## 2026-09-27 — Fix MarketStatusBanner SSR hydration mismatch
 
-
+- Agent/client: Antigravity (Gemini 3.8 Flash)
+- Change: Fixed React SSR hydration mismatch in `MarketStatusBanner.tsx` and `apps/web/src/app/page.tsx`:
+  - Added mounted lifecycle check and `suppressHydrationWarning` on locale-formatted time strings.
+  - Deferred `lastFetchTime` initialization in `page.tsx` to `useEffect` on client mount.
+- Reason: Server-side rendering (SSR) in Next.js evaluated `toLocaleTimeString()` in server locale/timezone, mismatching the client browser's locale formatting and render timestamp.
+- Behavior/compatibility impact: Resolves Next.js hydration mismatch warning completely without visual shifts.
+- Verification: `./scripts/check.sh` passes — 214/214 tests passing across 23 test suites, Next.js build clean in 154ms, ESLint clean.
