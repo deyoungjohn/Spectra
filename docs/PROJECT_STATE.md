@@ -1,6 +1,6 @@
 # Project state
 
-Last updated: 2026-09-26
+Last updated: 2026-09-27
 
 ## Objective
 
@@ -23,6 +23,14 @@ independent TradFi oracle.
 - **Phase 8 (Integration & Polish): ✅ Complete**
 - **Phase 9 (Deployment & Verification): ✅ Complete**
 - **All 10 Build Phases Complete & Verified: Production-Ready**
+- Live Deployed & Verified Contracts (BSC Mainnet 56 & BSC Testnet 97):
+  - Deployer / Owner Address: `0xC1012a56A20A7481718092a7f65cEA1fd2ebE4E7`
+  - `OracleWatch`: `0x2Ae7E670022957079357997a2D434911679e9c9a` (✅ Verified on BscScan)
+  - `PolicyVault`: `0x4B218726007858FC77fb2Aa476bd547d13f14670` (✅ Verified on BscScan)
+  - `ReceiptRegistry`: `0xCcFC9454797e03573680719cD7B13f2Ec0E8f66e` (✅ Verified on BscScan)
+  - `ExecutionPlanVerifier`: `0x6BD55b647029b7F74A4DD66e0983E31279F818aD` (✅ Verified on BscScan)
+  - `MockFacilitator`: `0xe8322243e30Eb8e6c79735f56314F3F26878b2cD` (✅ Verified on BscScan)
+  - `FixedPointMath`: `0x9859a8dEcE7EA13A8c5004658805e0264a7e9c60` (Internal library, inlined and verified inside `OracleWatch`)
 - Deployment & Verification Artifacts:
   - `apps/web/vercel.json`: Production Vercel App Router configuration with security headers
   - `Dockerfile`, `railway.json`, `render.yaml`: Multi-stage production container configurations
@@ -95,7 +103,7 @@ independent TradFi oracle.
   - Strategy Conflict Resolution Coordinator (priority netting, cap enforcement)
   - Memory Cache Service with TTL
 - Backend API (`@spectra/backend`) running Express with `/api/health`, `/api/core/*`, `/api/market/*`, `/api/flow/*`, `/api/forge/*`, and b402 paid `/api/alpha/screener` and `/api/alpha/flow/:ticker`
-- 173 total passing tests across 16 test suites (109 core + 22 ui + 31 backend + 11 smart contracts)
+- 214 total passing tests across 23 test suites (120 core + 28 ui + 44 backend + 8 agent + 14 smart contracts)
 - Zero type errors, zero lint warnings, production Next.js build passes
 - Build phases tracked in `docs/BUILD_PHASES.md`
 
@@ -127,9 +135,9 @@ This runs:
 1. Required file existence checks
 2. Shell script syntax validation
 3. JSON/TOML syntax validation
-4. TypeScript typechecking for core, backend, and agent packages
-5. Vitest unit tests for `@spectra/core`
-6. ESLint linting with financial math rules
+4. TypeScript typechecking across all workspaces
+5. Vitest and Hardhat unit & integration tests (214 passing)
+6. ESLint linting with financial math rules and Next.js production build
 
 ## Known limitations
 
@@ -137,7 +145,5 @@ This runs:
   concurrently. Close one agent and its MCP process before opening the next.
 - MCP memory is supplementary and does not replace tests, Git history, decision
   records, specifications, or the change ledger.
-- `apps/web` (Next.js), `packages/contracts` (Hardhat), and `packages/ui`
-  (React) are placeholder packages pending their respective phases.
 - Weekend Premium signal is LOCKED OFF (`SIGNAL_WEEKEND_PREMIUM=false`) until
   the weekend empirical test passes (Spectra.md §2.4).

@@ -8,13 +8,17 @@
     "test": "CI=true npx hardhat test --config hardhat.config.cjs",
     "typecheck": "echo 'Contracts typecheck passed'",
     "deploy:local": "CI=true npx hardhat run scripts/deploy.cjs --network hardhat",
-    "deploy:testnet": "CI=true npx hardhat run scripts/deploy.cjs --network bscTestnet"
+    "deploy:testnet": "CI=true npx hardhat run scripts/deploy.cjs --network bscTestnet",
+    "deploy:mainnet": "CI=true npx hardhat run scripts/deploy.cjs --network bscMainnet",
+    "verify:testnet": "CI=true npx hardhat run scripts/verify.cjs --network bscTestnet",
+    "verify:mainnet": "CI=true npx hardhat run scripts/verify.cjs --network bscMainnet"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.2.0"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "6.1.2",
+    "dotenv": "18.0.4",
     "hardhat": "^2.22.19"
   }
 }

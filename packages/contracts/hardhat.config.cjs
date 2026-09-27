@@ -1,3 +1,5 @@
+require("dotenv").config({ path: "../../.env" });
+require("dotenv").config();
 require("@nomicfoundation/hardhat-toolbox");
 
 const BSC_TESTNET_RPC = process.env.BSC_TESTNET_RPC_URL || "https://data-seed-prebsc-1-s1.binance.org:8545/";
@@ -27,20 +29,15 @@ module.exports = {
       url: BSC_TESTNET_RPC,
       chainId: 97,
       accounts,
-      gasPrice: 10000000000,
     },
     bscMainnet: {
       url: BSC_MAINNET_RPC,
       chainId: 56,
       accounts,
-      gasPrice: 3000000000,
     },
   },
   etherscan: {
-    apiKey: {
-      bscTestnet: BSCSCAN_KEY,
-      bsc: BSCSCAN_KEY,
-    },
+    apiKey: process.env.ETHERSCAN_API_KEY || BSCSCAN_KEY,
   },
   analytics: {
     enabled: false,

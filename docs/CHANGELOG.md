@@ -229,4 +229,22 @@
 - Behavior/compatibility impact: Production deployment configurations ready; all existing application behaviors and contracts remain 100% compatible.
 - Verification: `./scripts/check.sh` passes — 214/214 tests passing across 23 test suites, Next.js 16 App Router build clean, 0 type errors, 0 lint errors.
 
+## 2026-09-27 — Live On-Chain Deployment & BscScan Verification
+
+- Agent/client: Antigravity (Gemini 3.8 Flash)
+- Change: Deployed and verified Spectra smart contracts on **BNB Smart Chain Mainnet (Chain ID 56)** and **BSC Testnet (Chain ID 97)**:
+  - Deployed Contracts:
+    - `FixedPointMath`: `0x9859a8dEcE7EA13A8c5004658805e0264a7e9c60` (Inlined into `OracleWatch`)
+    - `OracleWatch`: `0x2Ae7E670022957079357997a2D434911679e9c9a` (Verified on BscScan)
+    - `PolicyVault`: `0x4B218726007858FC77fb2Aa476bd547d13f14670` (Verified on BscScan)
+    - `ReceiptRegistry`: `0xCcFC9454797e03573680719cD7B13f2Ec0E8f66e` (Verified on BscScan)
+    - `ExecutionPlanVerifier`: `0x6BD55b647029b7F74A4DD66e0983E31279F818aD` (Verified on BscScan)
+    - `MockFacilitator`: `0xe8322243e30Eb8e6c79735f56314F3F26878b2cD` (Verified on BscScan)
+  - Ownership: Controlled directly by user wallet `0xC1012a56A20A7481718092a7f65cEA1fd2ebE4E7` via OpenZeppelin `Ownable(msg.sender)`.
+  - Added verification tooling in `packages/contracts/scripts/verify.cjs`, generated flattened contract files in `packages/contracts/flattened/`, and exported `StandardJsonInput.json`.
+- Reason: Move from local test execution to live on-chain operation on BNB Smart Chain with public transparency on BscScan.
+- Behavior/compatibility impact: Live contracts accessible via RPC and BscScan; all contract addresses recorded in version control.
+- Verification: Contracts verified on BscScan; all 214 monorepo tests passing.
+
+
 
