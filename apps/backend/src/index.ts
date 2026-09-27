@@ -8,8 +8,11 @@ const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
 const services = createServices(process.env);
 const app = createApp(services);
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`[Spectra Backend] running on http://localhost:${port}`);
 });
 
-export { app, services };
+services.wsManager?.init(server);
+
+export { app, services, server };
+
