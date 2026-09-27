@@ -16,11 +16,35 @@ export const MarketStatusBanner: React.FC<MarketStatusBannerProps> = ({
   dataFeedAvailable = true,
   lastFetchTime,
 }) => {
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const getStatusColor = () => {
     if (status === "HALTED") return "#F6465D"; // Critical red
     if (isOpen) return "#0ECB81"; // Vibrant green
     return "#787B86"; // Dim gray
   };
+
+  const formattedOpenTime = React.useMemo(() => {
+    if (!nextOpenTime || !mounted) return null;
+    try {
+      return new Date(nextOpenTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    } catch {
+      return null;
+    }
+  }, [nextOpenTime, mounted]);
+
+  const formattedUpdateTime = React.useMemo(() => {
+    if (!lastFetchTime || !mounted) return null;
+    try {
+      return new Date(lastFetchTime).toLocaleTimeString();
+    } catch {
+      return null;
+    }
+  }, [lastFetchTime, mounted]);
 
   return (
     <div
@@ -50,9 +74,9 @@ export const MarketStatusBanner: React.FC<MarketStatusBannerProps> = ({
         <span style={{ fontWeight: 600, letterSpacing: "0.5px" }}>
           TRADFI US EQUITIES: {status}
         </span>
-        {nextOpenTime && !isOpen && (
-          <span style={{ color: "#848E9C" }}>
-            (Opens: {new Date(nextOpenTime).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })})
+        {formattedOpenTime && !isOpen && (
+          <span style={{ color: "#848E9C" }} suppressHydrationWarning>
+            (Opens: {formattedOpenTime})
           </span>
         )}
       </div>
@@ -72,9 +96,9 @@ export const MarketStatusBanner: React.FC<MarketStatusBannerProps> = ({
             DATA FEED DELAYED (STALE CACHE ACTIVE)
           </span>
         )}
-        {lastFetchTime && (
-          <span style={{ color: "#5E6673", fontSize: "11px" }}>
-            Updated: {new Date(lastFetchTime).toLocaleTimeString()}
+        {formattedUpdateTime && (
+          <span style={{ color: "#5E6673", fontSize: "11px" }} suppressHydrationWarning>
+            Updated: {formattedUpdateTime}
           </span>
         )}
       </div>

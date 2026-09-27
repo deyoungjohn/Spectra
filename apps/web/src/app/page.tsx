@@ -1,7 +1,7 @@
 // apps/web/src/app/page.tsx
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   MarketStatusBanner,
   SectorTabs,
@@ -99,6 +99,11 @@ export default function MarketIntelDashboard() {
   const [activeFilter, setActiveFilter] = useState<AnomalyFilterType>("ALL");
   const [viewMode, setViewMode] = useState<"HEATMAP" | "SCREENER">("HEATMAP");
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
+  const [lastFetchTime, setLastFetchTime] = useState<string | null>(null);
+
+  useEffect(() => {
+    setLastFetchTime(new Date().toISOString());
+  }, []);
 
   // Filter stocks by activeSector and anomaly filter
   let displayedStocks = INITIAL_STOCKS;
@@ -157,7 +162,7 @@ export default function MarketIntelDashboard() {
         status="OPEN"
         isOpen={true}
         dataFeedAvailable={true}
-        lastFetchTime={new Date().toISOString()}
+        lastFetchTime={lastFetchTime}
       />
 
       <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "20px 24px" }}>
