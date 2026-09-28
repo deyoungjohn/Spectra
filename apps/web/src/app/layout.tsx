@@ -31,7 +31,9 @@ export default function RootLayout({
         style={{
           margin: 0,
           padding: 0,
-          backgroundColor: "#0D0E12", // Deep space black (§11)
+          backgroundColor: "#0D0E12",
+          backgroundImage: "radial-gradient(ellipse 80% 35% at 50% -10%, rgba(240, 185, 11, 0.08), transparent 70%)",
+          backgroundAttachment: "fixed",
           color: "#FFFFFF",
           fontFamily: "'Inter', sans-serif",
           minHeight: "100vh",
@@ -39,26 +41,32 @@ export default function RootLayout({
           flexDirection: "column",
         }}
       >
-        {/* Top Navigation Bar */}
+        {/* Top Navigation Bar (Expo-inspired design §DESIGN.md) */}
         <header
           style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 60,
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            padding: "0 24px",
-            height: "56px",
-            backgroundColor: "#16181D",
-            borderBottom: "1px solid #23272E",
+            padding: "0 28px",
+            height: "64px",
+            backgroundColor: "rgba(13, 14, 18, 0.8)",
+            backdropFilter: "blur(16px) saturate(160%)",
+            WebkitBackdropFilter: "blur(16px) saturate(160%)",
+            borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
+            <a href="/" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
               <span
                 style={{
-                  color: "#F0B90B", // Binance Yellow
+                  color: "#F0B90B",
                   fontWeight: 900,
                   fontSize: "20px",
                   letterSpacing: "1px",
+                  textShadow: "0 0 16px rgba(240, 185, 11, 0.35)",
                 }}
               >
                 SPECTRA
@@ -66,24 +74,31 @@ export default function RootLayout({
               <span
                 style={{
                   fontSize: "10px",
-                  padding: "1px 5px",
-                  borderRadius: "3px",
+                  padding: "2px 6px",
+                  borderRadius: "9999px",
                   backgroundColor: "rgba(240, 185, 11, 0.15)",
+                  border: "1px solid rgba(240, 185, 11, 0.3)",
                   color: "#F0B90B",
                   fontWeight: 700,
+                  letterSpacing: "0.5px",
                 }}
               >
                 BSC
               </span>
-            </div>
+            </a>
 
-            <nav style={{ display: "flex", gap: "16px", fontSize: "13px" }}>
+            <nav style={{ display: "flex", gap: "6px", fontSize: "13px" }}>
               <a
                 href="/"
                 style={{
                   color: "#EAECEF",
                   fontWeight: 600,
                   textDecoration: "none",
+                  padding: "6px 14px",
+                  borderRadius: "9999px",
+                  backgroundColor: "rgba(255, 255, 255, 0.06)",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  transition: "all 0.15s ease",
                 }}
               >
                 Market Intel
@@ -92,7 +107,11 @@ export default function RootLayout({
                 href="/flow"
                 style={{
                   color: "#848E9C",
+                  fontWeight: 500,
                   textDecoration: "none",
+                  padding: "6px 14px",
+                  borderRadius: "9999px",
+                  transition: "all 0.15s ease",
                 }}
               >
                 Flow Radar
@@ -101,7 +120,11 @@ export default function RootLayout({
                 href="/forge"
                 style={{
                   color: "#848E9C",
+                  fontWeight: 500,
                   textDecoration: "none",
+                  padding: "6px 14px",
+                  borderRadius: "9999px",
+                  transition: "all 0.15s ease",
                 }}
               >
                 Strategy Forge
@@ -114,7 +137,12 @@ export default function RootLayout({
                   textDecoration: "none",
                   display: "flex",
                   alignItems: "center",
-                  gap: "4px",
+                  gap: "6px",
+                  padding: "6px 14px",
+                  borderRadius: "9999px",
+                  backgroundColor: "rgba(240, 185, 11, 0.12)",
+                  border: "1px solid rgba(240, 185, 11, 0.25)",
+                  boxShadow: "0 0 12px rgba(240, 185, 11, 0.15)",
                 }}
               >
                 <span>Unified Loop</span>
@@ -122,8 +150,9 @@ export default function RootLayout({
                   style={{
                     fontSize: "9px",
                     padding: "1px 5px",
-                    borderRadius: "3px",
-                    backgroundColor: "rgba(240, 185, 11, 0.15)",
+                    borderRadius: "9999px",
+                    backgroundColor: "rgba(240, 185, 11, 0.25)",
+                    color: "#F0B90B",
                   }}
                 >
                   SEE→PROVE
@@ -137,22 +166,24 @@ export default function RootLayout({
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "6px",
-                padding: "4px 10px",
-                borderRadius: "16px",
-                backgroundColor: "#1E2329",
-                border: "1px solid #2B313A",
+                gap: "8px",
+                padding: "6px 14px",
+                borderRadius: "9999px",
+                backgroundColor: "rgba(255, 255, 255, 0.05)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                backdropFilter: "blur(8px)",
               }}
             >
               <span
                 style={{
-                  width: "6px",
-                  height: "6px",
+                  width: "7px",
+                  height: "7px",
                   borderRadius: "50%",
                   backgroundColor: "#0ECB81",
+                  boxShadow: "0 0 8px #0ECB81",
                 }}
               />
-              <span style={{ color: "#EAECEF", fontWeight: 500 }}>BNB Chain 56</span>
+              <span style={{ color: "#EAECEF", fontWeight: 600 }}>BNB Chain 56</span>
             </div>
           </div>
         </header>
@@ -166,4 +197,3 @@ export default function RootLayout({
     </html>
   );
 }
-

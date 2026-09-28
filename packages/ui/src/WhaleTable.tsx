@@ -5,6 +5,7 @@
 // Reference: Spectra.md §8.1, §8.4
 
 import React from "react";
+import { AnimatedBadge } from "./motion/AnimatedBadge.js";
 
 export interface WhaleAlertRow {
   id: string;
@@ -67,9 +68,10 @@ export const WhaleTable: React.FC<WhaleTableProps> = ({
       style={{
         backgroundColor: "#181A20",
         border: "1px solid #2B313A",
-        borderRadius: "8px",
+        borderRadius: "16px",
         overflow: "hidden",
         width: "100%",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
       }}
     >
       <div
@@ -120,18 +122,7 @@ export const WhaleTable: React.FC<WhaleTableProps> = ({
                     {timeDisplay}
                   </td>
                   <td style={{ padding: "12px 16px" }}>
-                    <span
-                      style={{
-                        padding: "3px 8px",
-                        borderRadius: "4px",
-                        fontSize: "11px",
-                        fontWeight: 700,
-                        backgroundColor: isInflow ? "#0C382A" : "#3D1A24",
-                        color: isInflow ? "#0ECB81" : "#F6465D",
-                      }}
-                    >
-                      {row.direction}
-                    </span>
+                    <AnimatedBadge label={row.direction} status={isInflow ? "success" : "error"} size="sm" />
                   </td>
                   <td style={{ padding: "12px 16px" }}>
                     <span
@@ -146,9 +137,7 @@ export const WhaleTable: React.FC<WhaleTableProps> = ({
                     </span>
                   </td>
                   <td style={{ padding: "12px 16px" }}>
-                    <span style={{ fontSize: "11px", padding: "2px 6px", backgroundColor: "#2B313A", borderRadius: "3px", color: "#EAECEF" }}>
-                      {row.platform}
-                    </span>
+                    <AnimatedBadge label={row.platform} status="neutral" size="sm" />
                   </td>
                   <td style={{ padding: "12px 16px" }}>
                     <span

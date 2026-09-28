@@ -5,6 +5,7 @@
 // Reference: Spectra.md §7.4, §7.6
 
 import React from "react";
+import { AnimatedButton } from "./motion/AnimatedButton.js";
 
 export interface StrategyPreviewProps {
   dsl: Record<string, unknown>;
@@ -32,12 +33,13 @@ export const StrategyPreview: React.FC<StrategyPreviewProps> = ({
       style={{
         backgroundColor: "#181A20",
         border: "1px solid #2B313A",
-        borderRadius: "8px",
+        borderRadius: "16px",
         padding: "20px",
         display: "flex",
         flexDirection: "column",
         gap: "14px",
         width: "100%",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -62,45 +64,27 @@ export const StrategyPreview: React.FC<StrategyPreviewProps> = ({
 
         <div style={{ display: "flex", gap: "8px" }}>
           {onSimulate && (
-            <button
-              type="button"
+            <AnimatedButton
               data-testid="simulate-btn"
               disabled={isSimulating || !isValid}
               onClick={onSimulate}
-              style={{
-                padding: "6px 14px",
-                backgroundColor: "#20252E",
-                border: "1px solid #2B313A",
-                borderRadius: "4px",
-                color: "#EAECEF",
-                fontSize: "12px",
-                fontWeight: 600,
-                cursor: isSimulating || !isValid ? "not-allowed" : "pointer",
-              }}
+              variant="secondary"
+              size="sm"
             >
               {isSimulating ? "Simulating..." : "🔍 Run Dry-Run Simulation"}
-            </button>
+            </AnimatedButton>
           )}
 
           {onDeploy && (
-            <button
-              type="button"
+            <AnimatedButton
               data-testid="deploy-btn"
               disabled={isDeploying || !isValid}
               onClick={onDeploy}
-              style={{
-                padding: "6px 16px",
-                backgroundColor: "#F0B90B",
-                border: "none",
-                borderRadius: "4px",
-                color: "#0D0E12",
-                fontSize: "12px",
-                fontWeight: 700,
-                cursor: isDeploying || !isValid ? "not-allowed" : "pointer",
-              }}
+              variant="gold"
+              size="sm"
             >
               {isDeploying ? "Deploying..." : "🚀 Deploy to Agent Studio"}
-            </button>
+            </AnimatedButton>
           )}
         </div>
       </div>

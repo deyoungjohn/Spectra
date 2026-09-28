@@ -1,0 +1,175 @@
+- generic [active] [ref=f4e1]:
+  - banner [ref=f4e2]:
+    - generic [ref=f4e3]:
+      - link "SPECTRA BSC" [ref=f4e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f4e5]: SPECTRA
+        - generic [ref=f4e6]: BSC
+      - navigation [ref=f4e7]:
+        - link "Market Intel" [ref=f4e8] [cursor=pointer]:
+          - /url: /
+        - link "Flow Radar" [ref=f4e9] [cursor=pointer]:
+          - /url: /flow
+        - link "Strategy Forge" [ref=f4e10] [cursor=pointer]:
+          - /url: /forge
+        - link "Unified Loop SEE→PROVE" [ref=f4e11] [cursor=pointer]:
+          - /url: /loop
+          - generic [ref=f4e12]: Unified Loop
+          - generic [ref=f4e13]: SEE→PROVE
+    - generic [ref=f4e14]: BNB Chain 56
+  - main [ref=f4e18]:
+    - generic [ref=f4e19]:
+      - generic [ref=f4e20]:
+        - generic [ref=f4e21]:
+          - heading "Flow Radar The Quiver Quant Layer" [level=1] [ref=f4e22]
+          - paragraph [ref=f4e23]: Real-time BSC token transfer tracking, whale accumulation alerts, and cross-platform liquidity migration.
+        - generic [ref=f4e24]:
+          - generic [ref=f4e25]:
+            - generic [ref=f4e26]: API Access (b402 Paid Endpoint)
+            - generic [ref=f4e27]: GET /api/alpha/flow/:ticker • 0.02 USDC
+          - link "Query Alpha" [ref=f4e28] [cursor=pointer]:
+            - /url: /api/alpha/flow/AAPL
+      - generic [ref=f4e30]:
+        - generic [ref=f4e31]:
+          - generic [ref=f4e32]: Total 24h Smart Money Net Flow
+          - generic [ref=f4e33]: +$142,500.50
+          - generic [ref=f4e34]: Aggregated across all verified BSC equity pools
+        - generic [ref=f4e35]:
+          - generic [ref=f4e36]: ▲ Top Accumulation (Smart Inflows)
+          - generic [ref=f4e37]:
+            - generic [ref=f4e38] [cursor=pointer]:
+              - generic [ref=f4e39]:
+                - generic [ref=f4e40]: AAPL
+                - generic [ref=f4e41]: ONDO
+              - generic [ref=f4e42]: +$54,200.00
+            - generic [ref=f4e43] [cursor=pointer]:
+              - generic [ref=f4e44]:
+                - generic [ref=f4e45]: MSFT
+                - generic [ref=f4e46]: BSTOCKS
+              - generic [ref=f4e47]: +$32,100.00
+            - generic [ref=f4e48] [cursor=pointer]:
+              - generic [ref=f4e49]:
+                - generic [ref=f4e50]: TSLA
+                - generic [ref=f4e51]: ONDO
+              - generic [ref=f4e52]: +$18,500.00
+        - generic [ref=f4e53]:
+          - generic [ref=f4e54]: ▼ Top Distribution (Whale Outflows)
+          - generic [ref=f4e56] [cursor=pointer]:
+            - generic [ref=f4e57]:
+              - generic [ref=f4e58]: NVDA
+              - generic [ref=f4e59]: ONDO
+            - generic [ref=f4e60]: "-$26,000.00"
+      - generic [ref=f4e61]:
+        - generic [ref=f4e62]: "Inspect Equity Flow:"
+        - button "AAPL" [ref=f4e63] [cursor=pointer]
+        - button "NVDA" [ref=f4e64] [cursor=pointer]
+        - button "TSLA" [ref=f4e65] [cursor=pointer]
+        - button "MSFT" [ref=f4e66] [cursor=pointer]
+      - generic [ref=f4e67]:
+        - generic [ref=f4e68]:
+          - generic [ref=f4e69]:
+            - generic [ref=f4e70]:
+              - heading "AAPL Net Smart Money Flow" [level=3] [ref=f4e71]
+              - generic [ref=f4e72]: PRE-EVENT POSITIONING DETECTED
+            - generic [ref=f4e73]:
+              - button "1h" [ref=f4e74] [cursor=pointer]
+              - button "4h" [ref=f4e75] [cursor=pointer]
+              - button "24h" [ref=f4e76] [cursor=pointer]
+          - generic [ref=f4e77]:
+            - 'generic "2026-09-26T16:00:00Z: Net $9,000.00 (In: $12,000.00, Out: $3,000.00)" [ref=f4e78]'
+            - 'generic "2026-09-26T17:00:00Z: Net $10,500.00 (In: $15,000.00, Out: $4,500.00)" [ref=f4e80]'
+            - 'generic "2026-09-26T18:00:00Z: Net $16,800.00 (In: $22,000.00, Out: $5,200.00)" [ref=f4e82]'
+            - 'generic "2026-09-26T19:00:00Z: Net $12,000.00 (In: $18,000.00, Out: $6,000.00)" [ref=f4e84]'
+            - 'generic "2026-09-26T20:00:00Z: Net $5,900.00 (In: $14,000.00, Out: $8,100.00)" [ref=f4e86]'
+          - generic [ref=f4e88]:
+            - generic [ref=f4e89]: Oldest
+            - generic [ref=f4e90]:
+              - generic [ref=f4e91]: Net Inflow (Accumulation)
+              - generic [ref=f4e93]: Net Outflow (Distribution)
+            - generic [ref=f4e95]: Now
+        - generic [ref=f4e96]:
+          - generic [ref=f4e97]:
+            - generic [ref=f4e98]:
+              - heading "AAPL Cross-Platform Flow Routing" [level=3] [ref=f4e99]
+              - text: 24h Net Liquidity Migration across BSC Issuers
+            - generic [ref=f4e100]:
+              - generic [ref=f4e101]: "Dominant Venue:"
+              - generic [ref=f4e102]: ONDO
+          - generic [ref=f4e103]:
+            - generic [ref=f4e104]:
+              - generic [ref=f4e105]:
+                - generic [ref=f4e106]: Ondo Finance
+                - generic [ref=f4e107]: 0.15% fee
+              - generic [ref=f4e108]: +$35,000.00
+              - generic [ref=f4e109]: ★ Highest Net Accumulation
+            - generic [ref=f4e110]:
+              - generic [ref=f4e111]:
+                - generic [ref=f4e112]: bStocks (PancakeSwap)
+                - generic [ref=f4e113]: 0.25% fee
+              - generic [ref=f4e114]: +$12,000.00
+              - generic [ref=f4e115]: Secondary Venue
+            - generic [ref=f4e116]:
+              - generic [ref=f4e117]:
+                - generic [ref=f4e118]: xStocks
+                - generic [ref=f4e119]: 0.30% fee
+              - generic [ref=f4e120]: +$7,200.00
+              - generic [ref=f4e121]: Secondary Venue
+          - generic [ref=f4e122]:
+            - generic [ref=f4e123]: Total Cross-Platform 24h Net Flow
+            - generic [ref=f4e124]: +$54,200.00
+      - generic [ref=f4e125]:
+        - generic [ref=f4e126]:
+          - heading "🐳 Whale Radar Movements (> $10k USD)" [level=3] [ref=f4e127]
+          - generic [ref=f4e128]: 1 events detected
+        - table [ref=f4e130]:
+          - rowgroup [ref=f4e131]:
+            - row [ref=f4e132]:
+              - columnheader "Time" [ref=f4e133]
+              - columnheader "Direction" [ref=f4e134]
+              - columnheader "Ticker" [ref=f4e135]
+              - columnheader "Platform" [ref=f4e136]
+              - columnheader "Wallet" [ref=f4e137]
+              - columnheader "Notional (USD)" [ref=f4e138]
+              - columnheader "Shares" [ref=f4e139]
+              - columnheader "Tx Hash" [ref=f4e140]
+          - rowgroup [ref=f4e141]:
+            - row [ref=f4e142]:
+              - cell "20:15:00" [ref=f4e143]
+              - cell "INFLOW" [ref=f4e144]
+              - cell "AAPL" [ref=f4e145]
+              - cell "ONDO" [ref=f4e146]
+              - cell "Whale 0x71C6...8B29" [ref=f4e147]
+              - cell "+$16,751.00" [ref=f4e148]
+              - cell "50.00" [ref=f4e149]
+              - cell [ref=f4e150]:
+                - link "0x1a8f...5671 ↗" [ref=f4e151] [cursor=pointer]:
+                  - /url: https://bscscan.com/tx/0x1a8f93e4b78c9012a456d8ef1234567890abcdef1234567890abcdef12345671
+  - generic [ref=f4e152]:
+    - generic [ref=f4e153]:
+      - generic [ref=f4e154]: US MARKET OPEN
+      - generic [ref=f4e157]: "WS: CONNECTED"
+    - generic [ref=f4e160]:
+      - generic [ref=f4e161]: "ACTIVE SIGNALS:"
+      - generic [ref=f4e162]:
+        - generic [ref=f4e163]: TSLA
+        - generic [ref=f4e164]: +105 bps
+        - generic [ref=f4e165]: TSLA on-chain at +105 bps premium vs TradFi close
+      - generic [ref=f4e166]:
+        - generic [ref=f4e167]: NVDA
+        - generic [ref=f4e168]: 38 bps
+        - generic [ref=f4e169]: bStocks NVDA is 38 bps cheaper than Ondo NVDA
+      - generic [ref=f4e170]:
+        - generic [ref=f4e171]: AAPL
+        - generic [ref=f4e172]: +$125k
+        - generic [ref=f4e173]: 3 BSC whale wallets accumulated Ondo AAPL in last 4h
+      - generic [ref=f4e174]:
+        - generic [ref=f4e175]: MSTR
+        - generic [ref=f4e176]: 12 bps
+        - generic [ref=f4e177]: MSTR dividend multiplier drift detected
+    - generic [ref=f4e178]:
+      - generic [ref=f4e179]: "Gas: 3 Gwei"
+      - generic [ref=f4e180]: •
+      - generic [ref=f4e181]: "Block: 3.0s"
+      - generic [ref=f4e182]: •
+      - generic [ref=f4e183]: Just now
+  - alert [ref=f4e184]

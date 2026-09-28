@@ -1,0 +1,152 @@
+- generic [active] [ref=f2e1]:
+  - banner [ref=f2e2]:
+    - generic [ref=f2e3]:
+      - generic [ref=f2e4]:
+        - generic [ref=f2e5]: SPECTRA
+        - generic [ref=f2e6]: BSC
+      - navigation [ref=f2e7]:
+        - link "Market Intel" [ref=f2e8] [cursor=pointer]:
+          - /url: /
+        - link "Flow Radar" [ref=f2e9] [cursor=pointer]:
+          - /url: /flow
+        - link "Strategy Forge" [ref=f2e10] [cursor=pointer]:
+          - /url: /forge
+        - link "Unified Loop SEE→PROVE" [ref=f2e11] [cursor=pointer]:
+          - /url: /loop
+          - generic [ref=f2e12]: Unified Loop
+          - generic [ref=f2e13]: SEE→PROVE
+    - generic [ref=f2e14]: BNB Chain 56
+  - main [ref=f2e18]:
+    - generic [ref=f2e19]:
+      - generic [ref=f2e20]:
+        - heading "Strategy Forge The Composer Layer" [level=1] [ref=f2e21]
+        - paragraph [ref=f2e22]: Compose algorithmic strategies in natural language or templates, dry-run against live market feeds, and deploy to BNB Agent Studio.
+      - generic [ref=f2e23]:
+        - generic [ref=f2e24]:
+          - heading "📦 Pre-Built Strategy Templates" [level=3] [ref=f2e25]
+          - generic [ref=f2e26]: One-click deployable templates
+        - generic [ref=f2e27]:
+          - generic [ref=f2e28] [cursor=pointer]:
+            - generic [ref=f2e29]:
+              - generic [ref=f2e30]:
+                - generic [ref=f2e31]: DCA
+                - generic [ref=f2e32]: ~8.5% APY
+              - generic [ref=f2e33]: Weekly DCA
+              - generic [ref=f2e34]: Buy $X of a tokenized stock every Monday at US market open
+            - generic [ref=f2e35]:
+              - generic [ref=f2e36]: "Default: AAPL"
+              - generic [ref=f2e37]: Use Template →
+          - generic [ref=f2e38] [cursor=pointer]:
+            - generic [ref=f2e39]:
+              - generic [ref=f2e40]:
+                - generic [ref=f2e41]: ARBITRAGE
+                - generic [ref=f2e42]: ~14.2% APY
+              - generic [ref=f2e43]: Cross-Platform Basis Rotation
+              - generic [ref=f2e44]: Rotate between Ondo and bStocks when basis exceeds 20 bps net
+            - generic [ref=f2e45]:
+              - generic [ref=f2e46]: "Default: AAPL"
+              - generic [ref=f2e47]: Selected ✓
+          - generic [ref=f2e48] [cursor=pointer]:
+            - generic [ref=f2e49]:
+              - generic [ref=f2e50]:
+                - generic [ref=f2e51]: GUARD
+                - generic [ref=f2e52]: Risk Defense
+              - generic [ref=f2e53]: Oracle Divergence Guard
+              - generic [ref=f2e54]: Emit alert and pause trading if on-chain price diverges > 25 bps from TradFi
+            - generic [ref=f2e55]:
+              - generic [ref=f2e56]: "Default: AAPL"
+              - generic [ref=f2e57]: Use Template →
+          - generic [ref=f2e58] [cursor=pointer]:
+            - generic [ref=f2e59]:
+              - generic [ref=f2e60]:
+                - generic [ref=f2e61]: TACTICAL
+                - generic [ref=f2e62]: ~6.5% APY
+              - generic [ref=f2e63]: Weekend Premium Fade
+              - generic [ref=f2e64]: Take profit when weekend sentiment premium exceeds 150 bps
+            - generic [ref=f2e65]:
+              - generic [ref=f2e66]: "Default: AAPL"
+              - generic [ref=f2e67]: Use Template →
+      - generic [ref=f2e68]:
+        - generic [ref=f2e69]:
+          - heading "💬 Natural Language Strategy Composer" [level=3] [ref=f2e70]
+          - generic [ref=f2e71]: Compiles to typed Strategy DSL JSON
+        - textbox "Describe your strategy in plain English (e.g. 'Rotate Ondo AAPL to bStocks AAPL when basis exceeds 20 bps...')" [ref=f2e72]: Rotate my Ondo AAPL to bStocks AAPL whenever the cross-platform basis exceeds 20 bps and Flow Radar shows net accumulation above $5,000. Max trade $10, max slippage 1%.
+        - generic [ref=f2e73]:
+          - generic [ref=f2e74]: "Try an example:"
+          - generic [ref=f2e75]:
+            - button "★ Basis Rotation + Flow" [ref=f2e76] [cursor=pointer]
+            - button "Weekly DCA" [ref=f2e77] [cursor=pointer]
+            - button "Oracle Guard" [ref=f2e78] [cursor=pointer]
+            - button "Weekend Fade" [ref=f2e79] [cursor=pointer]
+        - button "⚡ Compile Strategy" [ref=f2e81] [cursor=pointer]
+      - generic [ref=f2e82]:
+        - generic [ref=f2e83]:
+          - generic [ref=f2e84]:
+            - generic [ref=f2e85]:
+              - heading "📋 Compiled Strategy DSL" [level=3] [ref=f2e86]
+              - generic [ref=f2e87]: VALID DSL ✓
+            - generic [ref=f2e88]:
+              - button "🔍 Run Dry-Run Simulation" [ref=f2e89] [cursor=pointer]
+              - button "🚀 Deploy to Agent Studio" [ref=f2e90] [cursor=pointer]
+          - generic [ref=f2e91]: "{ \"name\": \"AAPL Basis Rotation\", \"trigger\": { \"type\": \"AND\", \"conditions\": [ { \"type\": \"CROSS_PLATFORM_BASIS_ABOVE\", \"ticker\": \"AAPL\", \"basisBps\": \"20\" }, { \"type\": \"FLOW_ACCUMULATION_ABOVE\", \"ticker\": \"AAPL\", \"usdAmount\": \"5000.00\" } ] }, \"action\": { \"type\": \"ROTATE\", \"ticker\": \"AAPL\", \"fromPlatform\": \"ONDO\", \"toPlatform\": \"BSTOCKS\" }, \"policy\": { \"maxTradeNotionalUsd\": \"10.00\", \"maxSlippageBps\": \"100\", \"cooldownSeconds\": 300 } }"
+        - generic [ref=f2e92]: Click "Run Dry-Run Simulation" to backtest against current market prices and policy constraints.
+      - generic [ref=f2e93]:
+        - generic [ref=f2e94]:
+          - heading "📜 Agent Execution Log & Receipts" [level=3] [ref=f2e95]
+          - generic [ref=f2e96]: Anchored on BNB Chain via ReceiptRegistry.sol
+        - table [ref=f2e98]:
+          - rowgroup [ref=f2e99]:
+            - row [ref=f2e100]:
+              - columnheader "Time" [ref=f2e101]
+              - columnheader "Strategy" [ref=f2e102]
+              - columnheader "Action" [ref=f2e103]
+              - columnheader "Ticker" [ref=f2e104]
+              - columnheader "Notional" [ref=f2e105]
+              - columnheader "Status" [ref=f2e106]
+              - columnheader "Receipt Hash" [ref=f2e107]
+          - rowgroup [ref=f2e108]:
+            - row [ref=f2e109]:
+              - cell "2026-09-26 21:15:00" [ref=f2e110]
+              - cell "AAPL Basis Rotation" [ref=f2e111]
+              - cell "ROTATE" [ref=f2e112]
+              - cell "AAPL" [ref=f2e113]
+              - cell "$10.00" [ref=f2e114]
+              - cell "CONFIRMED" [ref=f2e115]
+              - cell "0x89ab12...345678" [ref=f2e116]
+            - row [ref=f2e117]:
+              - cell "2026-09-26 13:00:00" [ref=f2e118]
+              - cell "Weekly DCA (TSLA)" [ref=f2e119]
+              - cell "BUY" [ref=f2e120]
+              - cell "TSLA" [ref=f2e121]
+              - cell "$10.00" [ref=f2e122]
+              - cell "CONFIRMED" [ref=f2e123]
+              - cell "0x45cd12...345678" [ref=f2e124]
+  - generic [ref=f2e125]:
+    - generic [ref=f2e126]:
+      - generic [ref=f2e127]: US MARKET OPEN
+      - generic [ref=f2e130]: "WS: CONNECTED"
+    - generic [ref=f2e133]:
+      - generic [ref=f2e134]: "ACTIVE SIGNALS:"
+      - generic [ref=f2e135]:
+        - generic [ref=f2e136]: TSLA
+        - generic [ref=f2e137]: +105 bps
+        - generic [ref=f2e138]: TSLA on-chain at +105 bps premium vs TradFi close
+      - generic [ref=f2e139]:
+        - generic [ref=f2e140]: NVDA
+        - generic [ref=f2e141]: 38 bps
+        - generic [ref=f2e142]: bStocks NVDA is 38 bps cheaper than Ondo NVDA
+      - generic [ref=f2e143]:
+        - generic [ref=f2e144]: AAPL
+        - generic [ref=f2e145]: +$125k
+        - generic [ref=f2e146]: 3 BSC whale wallets accumulated Ondo AAPL in last 4h
+      - generic [ref=f2e147]:
+        - generic [ref=f2e148]: MSTR
+        - generic [ref=f2e149]: 12 bps
+        - generic [ref=f2e150]: MSTR dividend multiplier drift detected
+    - generic [ref=f2e151]:
+      - generic [ref=f2e152]: "Gas: 3 Gwei"
+      - generic [ref=f2e153]: •
+      - generic [ref=f2e154]: "Block: 3.0s"
+      - generic [ref=f2e155]: •
+      - generic [ref=f2e156]: Just now
+  - button "Open Next.js Dev Tools" [ref=f2e162] [cursor=pointer]

@@ -7,6 +7,7 @@ import {
   TickerFlowChart,
   WhaleTable,
   CrossPlatformFlow,
+  AnimatedTabs,
   type FlowChartPoint,
   type WhaleAlertRow,
 } from "@spectra/ui";
@@ -172,27 +173,13 @@ export default function FlowRadarPage() {
       />
 
       {/* Ticker Selector Tabs */}
-      <div style={{ display: "flex", alignItems: "center", gap: "8px", borderBottom: "1px solid #2B313A", paddingBottom: "12px" }}>
-        <span style={{ fontSize: "12px", color: "#848E9C", marginRight: "8px" }}>Inspect Equity Flow:</span>
-        {tickers.map((t) => (
-          <button
-            key={t}
-            type="button"
-            onClick={() => setSelectedTicker(t)}
-            style={{
-              padding: "6px 16px",
-              fontSize: "13px",
-              fontWeight: 700,
-              borderRadius: "4px",
-              border: selectedTicker === t ? "1px solid #F0B90B" : "1px solid #2B313A",
-              backgroundColor: selectedTicker === t ? "#F0B90B" : "#181A20",
-              color: selectedTicker === t ? "#0D0E12" : "#EAECEF",
-              cursor: "pointer",
-            }}
-          >
-            {t}
-          </button>
-        ))}
+      <div style={{ display: "flex", alignItems: "center", gap: "16px", borderBottom: "1px solid #2B313A", paddingBottom: "16px", marginTop: "16px" }}>
+        <span style={{ fontSize: "14px", color: "#848E9C", fontWeight: 600 }}>Inspect Equity Flow:</span>
+        <AnimatedTabs
+          tabs={tickers.map((t) => ({ id: t, label: t }))}
+          activeTab={selectedTicker}
+          onChange={setSelectedTicker}
+        />
       </div>
 
       {/* Detailed Ticker Analysis Grid */}

@@ -1,0 +1,157 @@
+- generic [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "SPECTRA BSC" [ref=e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e5]: SPECTRA
+        - generic [ref=e6]: BSC
+      - navigation [ref=e7]:
+        - link "Market Intel" [ref=e8] [cursor=pointer]:
+          - /url: /
+        - link "Flow Radar" [ref=e9] [cursor=pointer]:
+          - /url: /flow
+        - link "Strategy Forge" [ref=e10] [cursor=pointer]:
+          - /url: /forge
+        - link "Unified Loop SEE→PROVE" [ref=e11] [cursor=pointer]:
+          - /url: /loop
+          - generic [ref=e12]: Unified Loop
+          - generic [ref=e13]: SEE→PROVE
+    - generic [ref=e14]: BNB Chain 56
+  - main [ref=e18]:
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]: "TRADFI US EQUITIES: OPEN"
+        - generic [ref=e161]: "Updated: 5:12:47 PM"
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - generic [ref=e26]:
+            - heading "Market Intelligence" [level=1] [ref=e27]
+            - paragraph [ref=e28]: Empirical per-share unit conversion & cross-platform basis radar on BNB Smart Chain
+          - generic [ref=e29]:
+            - button "⚡ Query Paid Alpha ($0.02)" [active] [ref=e30] [cursor=pointer]
+            - generic [ref=e32]:
+              - button "Heatmap Treemap" [ref=e33] [cursor=pointer]
+              - button "Screener Table" [ref=e34] [cursor=pointer]
+        - tablist [ref=e36]:
+          - tab "All Tickers" [selected] [ref=e37] [cursor=pointer]
+          - tab "Magnificent 7" [ref=e39] [cursor=pointer]
+          - tab "AI Chips" [ref=e40] [cursor=pointer]
+          - tab "Index ETFs" [ref=e41] [cursor=pointer]
+          - tab "Buffett Portfolio" [ref=e42] [cursor=pointer]
+        - generic [ref=e44]:
+          - button "All Equities" [ref=e45] [cursor=pointer]
+          - button "Oracle Divergence (>10 bps)" [ref=e47] [cursor=pointer]
+          - button "Weekend Premium (±100 bps) LOCKED" [ref=e49] [cursor=pointer]:
+            - generic [ref=e50]: Weekend Premium (±100 bps)
+            - generic [ref=e51]: LOCKED
+          - button "Cross-Platform Basis (>20 bps)" [ref=e52] [cursor=pointer]
+          - button "Ratio Drift Alerts" [ref=e54] [cursor=pointer]
+        - generic [ref=e56]:
+          - generic [ref=e57] [cursor=pointer]:
+            - generic [ref=e59]:
+              - generic [ref=e60]: AAPL
+              - generic [ref=e62]: ONDO
+            - generic [ref=e63]:
+              - generic [ref=e64]: Per-Share Price
+              - generic [ref=e65]: $333.8927
+            - generic [ref=e66]:
+              - generic [ref=e67]: Oracle Div
+              - generic [ref=e68]: +33 bps
+            - generic [ref=e69]:
+              - generic [ref=e70]: Cross Basis
+              - generic [ref=e71]: +15 bps
+          - generic [ref=e72] [cursor=pointer]:
+            - generic [ref=e74]:
+              - generic [ref=e75]: AAPL
+              - generic [ref=e77]: BSTOCKS
+            - generic [ref=e78]:
+              - generic [ref=e79]: Per-Share Price
+              - generic [ref=e80]: $334.6000
+            - generic [ref=e81]:
+              - generic [ref=e82]: Oracle Div
+              - generic [ref=e83]: +21 bps
+            - generic [ref=e84]:
+              - generic [ref=e85]: Cross Basis
+              - generic [ref=e86]: +15 bps
+          - generic [ref=e87] [cursor=pointer]:
+            - generic [ref=e89]:
+              - generic [ref=e90]: NVDA
+              - generic [ref=e92]: ONDO
+            - generic [ref=e93]:
+              - generic [ref=e94]: Per-Share Price
+              - generic [ref=e95]: $125.3120
+            - generic [ref=e96]:
+              - generic [ref=e97]: Oracle Div
+              - generic [ref=e98]: +25 bps
+            - generic [ref=e99]:
+              - generic [ref=e100]: Cross Basis
+              - generic [ref=e101]: +23 bps
+          - generic [ref=e102] [cursor=pointer]:
+            - generic [ref=e104]:
+              - generic [ref=e105]: NVDA
+              - generic [ref=e107]: BSTOCKS
+            - generic [ref=e108]:
+              - generic [ref=e109]: Per-Share Price
+              - generic [ref=e110]: $125.0200
+            - generic [ref=e111]:
+              - generic [ref=e112]: Oracle Div
+              - generic [ref=e113]: +2 bps
+            - generic [ref=e114]:
+              - generic [ref=e115]: Cross Basis
+              - generic [ref=e116]: +23 bps
+          - generic [ref=e117] [cursor=pointer]:
+            - generic [ref=e119]:
+              - generic [ref=e120]: TSLA
+              - generic [ref=e122]: XSTOCKS
+            - generic [ref=e123]:
+              - generic [ref=e124]: Per-Share Price
+              - generic [ref=e125]: $248.5000
+            - generic [ref=e126]:
+              - generic [ref=e127]: Oracle Div
+              - generic [ref=e128]: +20 bps
+      - button "Close modal" [ref=e173] [cursor=pointer]
+      - generic [ref=e177]:
+        - generic [ref=e178]:
+          - heading "⚡ b402 Paid Alpha Feed Access" [level=3] [ref=e179]
+          - button "✕" [ref=e180] [cursor=pointer]
+        - paragraph [ref=e181]: Unlock real-time arbitrage spreads, cross-platform flow accumulation, and automated policy verification via b402 micro-settlement.
+        - generic [ref=e182]:
+          - generic [ref=e183]:
+            - generic [ref=e184]: "Cost per query:"
+            - generic [ref=e185]: 0.02 USDC
+          - generic [ref=e186]:
+            - generic [ref=e187]: "Settlement Rail:"
+            - generic [ref=e188]: BNB Chain (b402 Shadow Gateway)
+        - generic [ref=e189]:
+          - button "Cancel" [ref=e190] [cursor=pointer]
+          - button "Sign & Pay 0.02 USDC" [ref=e192] [cursor=pointer]
+  - generic [ref=e129]:
+    - generic [ref=e130]:
+      - generic [ref=e131]: US MARKET OPEN
+      - generic [ref=e134]: "WS: CONNECTED"
+    - generic [ref=e137]:
+      - generic [ref=e138]: "ACTIVE SIGNALS:"
+      - generic [ref=e139]:
+        - generic [ref=e140]: TSLA
+        - generic [ref=e141]: +105 bps
+        - generic [ref=e142]: TSLA on-chain at +105 bps premium vs TradFi close
+      - generic [ref=e143]:
+        - generic [ref=e144]: NVDA
+        - generic [ref=e145]: 38 bps
+        - generic [ref=e146]: bStocks NVDA is 38 bps cheaper than Ondo NVDA
+      - generic [ref=e147]:
+        - generic [ref=e148]: AAPL
+        - generic [ref=e149]: +$125k
+        - generic [ref=e150]: 3 BSC whale wallets accumulated Ondo AAPL in last 4h
+      - generic [ref=e151]:
+        - generic [ref=e152]: MSTR
+        - generic [ref=e153]: 12 bps
+        - generic [ref=e154]: MSTR dividend multiplier drift detected
+    - generic [ref=e155]:
+      - generic [ref=e156]: "Gas: 3 Gwei"
+      - generic [ref=e157]: •
+      - generic [ref=e158]: "Block: 3.0s"
+      - generic [ref=e159]: •
+      - generic [ref=e160]: Just now
+  - button "Open Next.js Dev Tools" [ref=e168] [cursor=pointer]
+  - alert [ref=e172]

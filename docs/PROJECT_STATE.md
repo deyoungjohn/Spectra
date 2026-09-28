@@ -85,7 +85,7 @@ independent TradFi oracle.
   - `ExecutionLog`: Audit trail of autonomous agent trades and execution receipts
 - Next.js Web Application (`apps/web`):
   - Turbopack-enabled Next.js 16 dashboard with routes `/`, `/flow`, `/forge`, `/market/ticker/[ticker]`, and `/flow/ticker/[ticker]`
-  - Spectra dark theme (`#0D0E12`, `#F0B90B` gold accent)
+  - Spectra dark theme (`#0D0E12`, `#F0B90B` gold accent) updated with `DESIGN.md` modern guidelines, 16px border radii, frosted glass, and `beui` Framer Motion primitives (AnimatedTabs, TiltCard, AnimatedBadge, AnimatedButton, ColorSelector)
 - Smart Contracts (`@spectra/contracts`) implements:
   - `FixedPointMath.sol`: 18-decimal fixed-point library on-chain
   - `OracleWatch.sol`: Divergence recording with bounded history pruning

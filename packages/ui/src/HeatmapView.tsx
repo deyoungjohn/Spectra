@@ -1,5 +1,8 @@
 // packages/ui/src/HeatmapView.tsx
+"use client";
+
 import React from "react";
+import { TiltCard } from "./motion/TiltCard.js";
 
 export interface HeatmapItem {
   ticker: string;
@@ -28,10 +31,10 @@ export const HeatmapView: React.FC<HeatmapViewProps> = ({
     <div
       style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))",
-        gap: "8px",
+        gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+        gap: "14px",
         padding: "16px 0",
-        fontFamily: "Inter, sans-serif",
+        fontFamily: "'Inter', sans-serif",
       }}
     >
       {items.map((item) => {
@@ -40,52 +43,75 @@ export const HeatmapView: React.FC<HeatmapViewProps> = ({
         const basisBps = parseInt(item.crossPlatformBasisBps, 10) || 0;
 
         return (
-          <div
+          <TiltCard
             key={`${item.ticker}-${item.platform}`}
             onClick={() => onSelectTicker?.(item.ticker)}
+            max={7}
             style={{
-              backgroundColor: "#16181D",
-              border: isSelected ? "2px solid #F0B90B" : "1px solid #23272E",
-              borderTop: `4px solid ${item.signalColor}`,
-              borderRadius: "6px",
-              padding: "12px",
-              cursor: "pointer",
-              transition: "transform 0.1s ease, border-color 0.15s ease",
+              backgroundColor: isSelected ? "#1A1D24" : "#14161C",
+              border: isSelected ? "1.5px solid #F0B90B" : "1px solid rgba(255, 255, 255, 0.08)",
+              borderRadius: "16px",
+              padding: "16px",
+              boxShadow: isSelected
+                ? "0 8px 24px rgba(240, 185, 11, 0.15), 0 0 0 1px rgba(240, 185, 11, 0.3)"
+                : "0 4px 16px rgba(0, 0, 0, 0.25)",
+              transition: "border-color 0.2s ease, box-shadow 0.2s ease",
             }}
           >
+            {/* Top color indicator accent bar */}
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                left: "16px",
+                right: "16px",
+                height: "3px",
+                borderRadius: "0 0 4px 4px",
+                backgroundColor: item.signalColor,
+                opacity: 0.9,
+                boxShadow: `0 0 8px ${item.signalColor}`,
+              }}
+            />
+
             <div
               style={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                marginBottom: "6px",
+                marginTop: "4px",
+                marginBottom: "10px",
               }}
             >
-              <span style={{ fontWeight: 700, fontSize: "16px", color: "#FFFFFF" }}>
-                {item.ticker}
-              </span>
+              <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <span style={{ fontWeight: 700, fontSize: "17px", color: "#FFFFFF", letterSpacing: "-0.3px" }}>
+                  {item.ticker}
+                </span>
+              </div>
               <span
                 style={{
                   fontSize: "10px",
-                  padding: "2px 6px",
-                  borderRadius: "4px",
-                  backgroundColor: "#2B313A",
-                  color: "#EAECEF",
+                  padding: "2px 8px",
+                  borderRadius: "9999px",
+                  backgroundColor: "rgba(255, 255, 255, 0.06)",
+                  border: "1px solid rgba(255, 255, 255, 0.1)",
+                  color: "#B0B4BA",
                   fontWeight: 600,
+                  letterSpacing: "0.4px",
                 }}
               >
                 {item.platform}
               </span>
             </div>
 
-            <div style={{ marginBottom: "8px" }}>
-              <div style={{ fontSize: "11px", color: "#848E9C" }}>Per-Share Price</div>
+            <div style={{ marginBottom: "12px" }}>
+              <div style={{ fontSize: "11px", color: "#848E9C", fontWeight: 500, marginBottom: "2px" }}>Per-Share Price</div>
               <div
                 style={{
-                  fontSize: "14px",
-                  fontWeight: 600,
-                  color: "#F0B90B", // On-chain price color (§11)
-                  fontFamily: "monospace",
+                  fontSize: "16px",
+                  fontWeight: 700,
+                  color: "#F0B90B",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  letterSpacing: "-0.5px",
                 }}
               >
                 ${item.perSharePrice.slice(0, 8)}
@@ -96,17 +122,21 @@ export const HeatmapView: React.FC<HeatmapViewProps> = ({
               style={{
                 display: "flex",
                 justifyContent: "space-between",
+                alignItems: "center",
                 fontSize: "11px",
-                borderTop: "1px solid #23272E",
-                paddingTop: "6px",
+                borderTop: "1px solid rgba(255, 255, 255, 0.06)",
+                paddingTop: "8px",
               }}
             >
-              <span style={{ color: "#848E9C" }}>Oracle Div:</span>
+              <span style={{ color: "#848E9C" }}>Oracle Div</span>
               <span
                 style={{
                   fontWeight: 600,
                   color: divBps > 25 ? "#F6465D" : divBps > 10 ? "#F0B90B" : "#0ECB81",
-                  fontFamily: "monospace",
+                  fontFamily: "'JetBrains Mono', monospace",
+                  backgroundColor: divBps > 25 ? "rgba(246, 70, 93, 0.1)" : divBps > 10 ? "rgba(240, 185, 11, 0.1)" : "rgba(14, 203, 129, 0.1)",
+                  padding: "1px 6px",
+                  borderRadius: "4px",
                 }}
               >
                 {divBps > 0 ? `+${divBps}` : divBps} bps
@@ -118,17 +148,27 @@ export const HeatmapView: React.FC<HeatmapViewProps> = ({
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
+                  alignItems: "center",
                   fontSize: "11px",
-                  marginTop: "4px",
+                  marginTop: "6px",
                 }}
               >
-                <span style={{ color: "#848E9C" }}>Cross Basis:</span>
-                <span style={{ fontWeight: 600, color: "#F0B90B", fontFamily: "monospace" }}>
+                <span style={{ color: "#848E9C" }}>Cross Basis</span>
+                <span
+                  style={{
+                    fontWeight: 600,
+                    color: "#F0B90B",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    backgroundColor: "rgba(240, 185, 11, 0.1)",
+                    padding: "1px 6px",
+                    borderRadius: "4px",
+                  }}
+                >
                   +{basisBps} bps
                 </span>
               </div>
             )}
-          </div>
+          </TiltCard>
         );
       })}
     </div>

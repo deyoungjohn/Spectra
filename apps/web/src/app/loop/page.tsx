@@ -109,9 +109,10 @@ export default function UnifiedLoopPage() {
           data-testid="stage-see"
           style={{
             backgroundColor: "#16181D",
-            borderRadius: "8px",
+            borderRadius: "16px",
             border: "1px solid #23272E",
             padding: "24px",
+            boxShadow: "0 8px 30px rgba(0, 0, 0, 0.25)",
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
@@ -227,9 +228,10 @@ export default function UnifiedLoopPage() {
           data-testid="stage-read"
           style={{
             backgroundColor: "#16181D",
-            borderRadius: "8px",
+            borderRadius: "16px",
             border: "1px solid #23272E",
             padding: "24px",
+            boxShadow: "0 8px 30px rgba(0, 0, 0, 0.25)",
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
@@ -371,9 +373,10 @@ export default function UnifiedLoopPage() {
           data-testid="stage-forge"
           style={{
             backgroundColor: "#16181D",
-            borderRadius: "8px",
+            borderRadius: "16px",
             border: "1px solid #23272E",
             padding: "24px",
+            boxShadow: "0 8px 30px rgba(0, 0, 0, 0.25)",
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
@@ -560,9 +563,10 @@ export default function UnifiedLoopPage() {
           data-testid="stage-prove"
           style={{
             backgroundColor: "#16181D",
-            borderRadius: "8px",
+            borderRadius: "16px",
             border: "1px solid #23272E",
             padding: "24px",
+            boxShadow: "0 8px 30px rgba(0, 0, 0, 0.25)",
           }}
         >
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>

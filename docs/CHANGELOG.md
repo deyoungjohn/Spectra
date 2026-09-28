@@ -255,3 +255,16 @@
 - Reason: Server-side rendering (SSR) in Next.js evaluated `toLocaleTimeString()` in server locale/timezone, mismatching the client browser's locale formatting and render timestamp.
 - Behavior/compatibility impact: Resolves Next.js hydration mismatch warning completely without visual shifts.
 - Verification: `./scripts/check.sh` passes — 214/214 tests passing across 23 test suites, Next.js build clean in 154ms, ESLint clean.
+
+## 2026-09-28 — UI Overhaul and Modernization (DESIGN.md)
+
+- Agent/client: Antigravity
+- Change: Overhauled the entire Spectra Terminal UI (pages `/`, `/flow`, `/forge`, `/loop`) according to Expo-inspired `DESIGN.md` guidelines using `beui` MCP components:
+  - Integrated `AnimatedTabs`, `TiltCard`, `AnimatedBadge`, `AnimatedButton`, and `ColorSelector` primitives with Next.js/Framer Motion.
+  - Standardized border radii to `16px` across all card containers (`Simulator`, `StrategyPreview`, `ExecutionLog`, `WhaleTable`, etc.).
+  - Replaced plain HTML badges and buttons with animated interactive variants.
+  - Fixed TypeScript and Next.js lint errors introduced by unused `beui` imports.
+  - Avoided any breakages in the 18-decimal `BigInt` financial mathematics and data flow.
+- Reason: Achieve a modern, high-polish "device mockup" aesthetic with frosted glass, rounded edges, and smooth interactive transitions.
+- Behavior/compatibility impact: Zero impact on core modules or smart contracts. Purely visual and layout improvements on the frontend.
+- Verification: `./scripts/check.sh` passes — 214/214 tests passing across 23 test suites, Next.js build clean, 0 type errors, 0 lint errors. Playwright visual snapshots taken iteratively.

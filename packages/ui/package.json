@@ -19,8 +19,12 @@
   },
   "dependencies": {
     "@spectra/core": "*",
+    "clsx": "2.1.1",
+    "lucide-react": "1.48.0",
+    "motion": "13.4.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "tailwind-merge": "3.7.0"
   },
   "devDependencies": {
     "@testing-library/dom": "10.4.2",

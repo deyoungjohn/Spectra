@@ -1,0 +1,122 @@
+- generic [active] [ref=f3e1]:
+  - banner [ref=f3e2]:
+    - generic [ref=f3e3]:
+      - link "SPECTRA BSC" [ref=f3e4] [cursor=pointer]:
+        - /url: /
+        - generic [ref=f3e5]: SPECTRA
+        - generic [ref=f3e6]: BSC
+      - navigation [ref=f3e7]:
+        - link "Market Intel" [ref=f3e8] [cursor=pointer]:
+          - /url: /
+        - link "Flow Radar" [ref=f3e9] [cursor=pointer]:
+          - /url: /flow
+        - link "Strategy Forge" [ref=f3e10] [cursor=pointer]:
+          - /url: /forge
+        - link "Unified Loop SEE→PROVE" [ref=f3e11] [cursor=pointer]:
+          - /url: /loop
+          - generic [ref=f3e12]: Unified Loop
+          - generic [ref=f3e13]: SEE→PROVE
+    - generic [ref=f3e14]: BNB Chain 56
+  - main [ref=f3e18]:
+    - generic [ref=f3e19]:
+      - generic [ref=f3e20]:
+        - generic [ref=f3e21]:
+          - 'heading "Unified Loop: Autonomous Intelligence to Proof" [level=1] [ref=f3e22]'
+          - generic [ref=f3e23]: SEE → READ → FORGE → PROVE
+        - paragraph [ref=f3e24]: Spectra connects market intelligence, on-chain whale flow radar, strategy simulation, and cryptographic audit receipts in a single verifiable pipeline.
+      - navigation [ref=f3e25]:
+        - button "1 SEE Module 1 Spot price & oracle anomalies" [ref=f3e26] [cursor=pointer]:
+          - generic [ref=f3e27]: "1"
+          - generic [ref=f3e28]:
+            - generic [ref=f3e29]:
+              - generic [ref=f3e30]: SEE
+              - generic [ref=f3e31]: Module 1
+            - generic [ref=f3e32]: Spot price & oracle anomalies
+        - generic [ref=f3e33]: →
+        - button "2 READ Module 3 Track whale & smart-money flows" [ref=f3e34] [cursor=pointer]:
+          - generic [ref=f3e35]: "2"
+          - generic [ref=f3e36]:
+            - generic [ref=f3e37]:
+              - generic [ref=f3e38]: READ
+              - generic [ref=f3e39]: Module 3
+            - generic [ref=f3e40]: Track whale & smart-money flows
+        - generic [ref=f3e41]: →
+        - button "3 FORGE Module 2 Synthesize & dry-run agent rule" [ref=f3e42] [cursor=pointer]:
+          - generic [ref=f3e43]: "3"
+          - generic [ref=f3e44]:
+            - generic [ref=f3e45]:
+              - generic [ref=f3e46]: FORGE
+              - generic [ref=f3e47]: Module 2
+            - generic [ref=f3e48]: Synthesize & dry-run agent rule
+        - generic [ref=f3e49]: →
+        - button "4 PROVE Base Layer Cryptographic on-chain proof" [ref=f3e50] [cursor=pointer]:
+          - generic [ref=f3e51]: "4"
+          - generic [ref=f3e52]:
+            - generic [ref=f3e53]:
+              - generic [ref=f3e54]: PROVE
+              - generic [ref=f3e55]: Base Layer
+            - generic [ref=f3e56]: Cryptographic on-chain proof
+      - generic [ref=f3e57]:
+        - generic [ref=f3e58]:
+          - generic [ref=f3e59]:
+            - text: STAGE 1 // SEE
+            - heading "Detect Real-Time Market & Oracle Anomalies" [level=2] [ref=f3e60]
+            - paragraph [ref=f3e61]: Review live anomalies detected across tokenized equity platforms on BNB Smart Chain. Select an anomaly to investigate.
+          - generic [ref=f3e62]: 3 Active Anomalies
+        - generic [ref=f3e63]:
+          - generic [ref=f3e64] [cursor=pointer]:
+            - generic [ref=f3e65]:
+              - generic [ref=f3e66]: TSLA
+              - generic [ref=f3e67]: CRITICAL ALPHA
+            - generic [ref=f3e68]: +105 bps
+            - generic [ref=f3e69]: TSLA tokenized equity on-chain is trading at 105 bps premium vs frozen TradFi close.
+            - generic [ref=f3e70]:
+              - generic [ref=f3e71]: "On-chain: $248.50"
+              - generic [ref=f3e72]: "TradFi: $245.90"
+          - generic [ref=f3e73] [cursor=pointer]:
+            - generic [ref=f3e74]:
+              - generic [ref=f3e75]: NVDA
+              - generic [ref=f3e76]: ARBITRAGE OPPORTUNITY
+            - generic [ref=f3e77]: 38 bps
+            - generic [ref=f3e78]: bStocks NVDA is 38 bps cheaper than Ondo NVDA ($125.02 vs $125.50).
+            - generic [ref=f3e79]:
+              - generic [ref=f3e80]: "On-chain: $125.02"
+              - generic [ref=f3e81]: "TradFi: $125.00"
+          - generic [ref=f3e82] [cursor=pointer]:
+            - generic [ref=f3e83]:
+              - generic [ref=f3e84]: AAPL
+              - generic [ref=f3e85]: SMART MONEY ACCUMULATION
+            - generic [ref=f3e86]: +$125k net
+            - generic [ref=f3e87]: 3 BSC whale wallets accumulated Ondo AAPL in the last 4 hours prior to US market open.
+            - generic [ref=f3e88]:
+              - generic [ref=f3e89]: "On-chain: $334.60"
+              - generic [ref=f3e90]: "TradFi: $333.90"
+        - button "Confirm Anomaly & Proceed to READ (Inspect Flow) →" [ref=f3e92] [cursor=pointer]
+  - generic [ref=f3e93]:
+    - generic [ref=f3e94]:
+      - generic [ref=f3e95]: US MARKET OPEN
+      - generic [ref=f3e98]: "WS: CONNECTED"
+    - generic [ref=f3e101]:
+      - generic [ref=f3e102]: "ACTIVE SIGNALS:"
+      - generic [ref=f3e103]:
+        - generic [ref=f3e104]: TSLA
+        - generic [ref=f3e105]: +105 bps
+        - generic [ref=f3e106]: TSLA on-chain at +105 bps premium vs TradFi close
+      - generic [ref=f3e107]:
+        - generic [ref=f3e108]: NVDA
+        - generic [ref=f3e109]: 38 bps
+        - generic [ref=f3e110]: bStocks NVDA is 38 bps cheaper than Ondo NVDA
+      - generic [ref=f3e111]:
+        - generic [ref=f3e112]: AAPL
+        - generic [ref=f3e113]: +$125k
+        - generic [ref=f3e114]: 3 BSC whale wallets accumulated Ondo AAPL in last 4h
+      - generic [ref=f3e115]:
+        - generic [ref=f3e116]: MSTR
+        - generic [ref=f3e117]: 12 bps
+        - generic [ref=f3e118]: MSTR dividend multiplier drift detected
+    - generic [ref=f3e119]:
+      - generic [ref=f3e120]: "Gas: 3 Gwei"
+      - generic [ref=f3e121]: •
+      - generic [ref=f3e122]: "Block: 3.0s"
+      - generic [ref=f3e123]: •
+      - generic [ref=f3e124]: Just now

@@ -38,7 +38,7 @@ export const ExecutionLog: React.FC<ExecutionLogProps> = ({ executions }) => {
         style={{
           backgroundColor: "#181A20",
           border: "1px solid #2B313A",
-          borderRadius: "8px",
+          borderRadius: "16px",
           padding: "24px",
           textAlign: "center",
           color: "#848E9C",
@@ -55,9 +55,10 @@ export const ExecutionLog: React.FC<ExecutionLogProps> = ({ executions }) => {
       style={{
         backgroundColor: "#181A20",
         border: "1px solid #2B313A",
-        borderRadius: "8px",
+        borderRadius: "16px",
         overflow: "hidden",
         width: "100%",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
       }}
     >
       <div
