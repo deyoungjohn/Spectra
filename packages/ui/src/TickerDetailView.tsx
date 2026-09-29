@@ -1,6 +1,8 @@
 // packages/ui/src/TickerDetailView.tsx
 import React from "react";
 import { PlatformComparison, type PlatformQuote } from "./PlatformComparison.js";
+import { motion } from "motion/react";
+import { SPRING_PRESS } from "./lib/ease.js";
 
 export interface SignalDetail {
   id: string;
@@ -39,10 +41,14 @@ export const TickerDetailView: React.FC<TickerDetailViewProps> = ({
   return (
     <div
       style={{
-        backgroundColor: "#0D0E12",
+        backgroundColor: "rgba(22, 24, 29, 0.8)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
         color: "#FFFFFF",
-        padding: "20px",
-        borderRadius: "8px",
+        padding: "24px",
+        borderRadius: "16px",
+        border: "1px solid rgba(255, 255, 255, 0.08)",
+        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)",
         fontFamily: "Inter, sans-serif",
       }}
     >
@@ -55,11 +61,17 @@ export const TickerDetailView: React.FC<TickerDetailViewProps> = ({
             color: "#848E9C",
             fontSize: "13px",
             cursor: "pointer",
-            marginBottom: "16px",
+            marginBottom: "18px",
             padding: 0,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "6px",
+            transition: "color 0.15s ease",
           }}
+          className="hover:text-white"
         >
-          ← Back to Heatmap
+          <span>←</span>
+          <span>Back to Heatmap</span>
         </button>
       )}
 
@@ -69,22 +81,23 @@ export const TickerDetailView: React.FC<TickerDetailViewProps> = ({
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          marginBottom: "20px",
-          borderBottom: "1px solid #23272E",
-          paddingBottom: "16px",
+          marginBottom: "24px",
+          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+          paddingBottom: "18px",
         }}
       >
         <div>
-          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <h1 style={{ fontSize: "28px", fontWeight: 800, margin: 0 }}>{ticker}</h1>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <h1 style={{ fontSize: "32px", fontWeight: 800, margin: 0, letterSpacing: "-0.5px" }}>{ticker}</h1>
             <span
               style={{
-                padding: "2px 8px",
-                borderRadius: "4px",
+                padding: "3px 10px",
+                borderRadius: "9999px",
                 fontSize: "11px",
-                fontWeight: 600,
+                fontWeight: 700,
                 backgroundColor:
-                  marketStatus === "OPEN" ? "rgba(14, 203, 129, 0.15)" : "#2B313A",
+                  marketStatus === "OPEN" ? "rgba(14, 203, 129, 0.12)" : "rgba(120, 123, 134, 0.15)",
+                border: `1px solid ${marketStatus === "OPEN" ? "rgba(14, 203, 129, 0.3)" : "rgba(120, 123, 134, 0.2)"}`,
                 color: marketStatus === "OPEN" ? "#0ECB81" : "#787B86",
               }}
             >
@@ -92,26 +105,30 @@ export const TickerDetailView: React.FC<TickerDetailViewProps> = ({
             </span>
           </div>
           <div style={{ color: "#848E9C", fontSize: "13px", marginTop: "4px" }}>
-            Tokenized Equity on BNB Smart Chain
+            Tokenized Equity on BNB Smart Chain • Continuous 24/7 Arbitrage
           </div>
         </div>
 
-        <button
+        <motion.button
+          whileTap={{ scale: 0.96 }}
+          transition={SPRING_PRESS}
           onClick={() => onForgeStrategy?.(ticker)}
           style={{
             backgroundColor: "#F0B90B",
             color: "#000000",
             border: "none",
-            borderRadius: "6px",
-            padding: "10px 20px",
+            borderRadius: "8px",
+            padding: "10px 22px",
             fontWeight: 700,
             fontSize: "14px",
             cursor: "pointer",
-            transition: "opacity 0.15s ease",
+            boxShadow: "0 2px 10px rgba(240, 185, 11, 0.25)",
+            transition: "all 0.15s ease",
           }}
+          className="hover:bg-yellow-400 hover:shadow-lg"
         >
           Forge Strategy →
-        </button>
+        </motion.button>
       </div>
 
       {/* Price comparison card */}
@@ -120,26 +137,26 @@ export const TickerDetailView: React.FC<TickerDetailViewProps> = ({
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr",
           gap: "16px",
-          marginBottom: "20px",
+          marginBottom: "24px",
         }}
       >
         <div
           style={{
-            backgroundColor: "#16181D",
-            borderRadius: "6px",
-            padding: "16px",
-            border: "1px solid #23272E",
+            backgroundColor: "rgba(30, 35, 41, 0.7)",
+            borderRadius: "12px",
+            padding: "18px",
+            border: "1px solid rgba(255, 255, 255, 0.06)",
           }}
         >
-          <div style={{ color: "#848E9C", fontSize: "12px", marginBottom: "4px" }}>
+          <div style={{ color: "#848E9C", fontSize: "12px", marginBottom: "6px" }}>
             On-Chain Per-Share Price
           </div>
           <div
             style={{
-              fontSize: "24px",
-              fontWeight: 700,
+              fontSize: "26px",
+              fontWeight: 800,
               color: "#F0B90B",
-              fontFamily: "monospace",
+              fontFamily: "'JetBrains Mono', monospace",
             }}
           >
             ${perSharePrice.slice(0, 8)}
@@ -148,21 +165,21 @@ export const TickerDetailView: React.FC<TickerDetailViewProps> = ({
 
         <div
           style={{
-            backgroundColor: "#16181D",
-            borderRadius: "6px",
-            padding: "16px",
-            border: "1px solid #23272E",
+            backgroundColor: "rgba(30, 35, 41, 0.7)",
+            borderRadius: "12px",
+            padding: "18px",
+            border: "1px solid rgba(255, 255, 255, 0.06)",
           }}
         >
-          <div style={{ color: "#848E9C", fontSize: "12px", marginBottom: "4px" }}>
+          <div style={{ color: "#848E9C", fontSize: "12px", marginBottom: "6px" }}>
             TradFi Reference Price
           </div>
           <div
             style={{
-              fontSize: "24px",
-              fontWeight: 700,
+              fontSize: "26px",
+              fontWeight: 800,
               color: "#4A90E2",
-              fontFamily: "monospace",
+              fontFamily: "'JetBrains Mono', monospace",
             }}
           >
             ${tradfiPrice.slice(0, 8)}
@@ -171,21 +188,21 @@ export const TickerDetailView: React.FC<TickerDetailViewProps> = ({
 
         <div
           style={{
-            backgroundColor: "#16181D",
-            borderRadius: "6px",
-            padding: "16px",
-            border: "1px solid #23272E",
+            backgroundColor: "rgba(30, 35, 41, 0.7)",
+            borderRadius: "12px",
+            padding: "18px",
+            border: "1px solid rgba(255, 255, 255, 0.06)",
           }}
         >
-          <div style={{ color: "#848E9C", fontSize: "12px", marginBottom: "4px" }}>
+          <div style={{ color: "#848E9C", fontSize: "12px", marginBottom: "6px" }}>
             Oracle Divergence Spread
           </div>
           <div
             style={{
-              fontSize: "24px",
-              fontWeight: 700,
+              fontSize: "26px",
+              fontWeight: 800,
               color: divBps > 25 ? "#F6465D" : divBps > 10 ? "#F0B90B" : "#0ECB81",
-              fontFamily: "monospace",
+              fontFamily: "'JetBrains Mono', monospace",
             }}
           >
             {divBps > 0 ? `+${divBps}` : divBps} bps
@@ -195,31 +212,46 @@ export const TickerDetailView: React.FC<TickerDetailViewProps> = ({
 
       {/* Active Alpha Signals */}
       {signals.length > 0 && (
-        <div style={{ marginBottom: "20px" }}>
-          <h3 style={{ fontSize: "14px", color: "#848E9C", marginBottom: "8px" }}>
+        <div style={{ marginBottom: "24px" }}>
+          <h3
+            style={{
+              fontSize: "12px",
+              color: "#848E9C",
+              marginBottom: "10px",
+              textTransform: "uppercase",
+              letterSpacing: "0.88px",
+              fontWeight: 600,
+            }}
+          >
             ACTIVE ALPHA SIGNALS
           </h3>
-          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
             {signals.map((sig) => (
               <div
                 key={sig.id}
                 style={{
                   backgroundColor:
                     sig.severity === "critical"
-                      ? "rgba(246, 70, 93, 0.15)"
-                      : "rgba(240, 185, 11, 0.15)",
+                      ? "rgba(246, 70, 93, 0.12)"
+                      : "rgba(240, 185, 11, 0.12)",
                   color: sig.severity === "critical" ? "#F6465D" : "#F0B90B",
                   border:
                     sig.severity === "critical"
-                      ? "1px solid #F6465D"
-                      : "1px solid #F0B90B",
-                  borderRadius: "6px",
-                  padding: "8px 12px",
+                      ? "1px solid rgba(246, 70, 93, 0.35)"
+                      : "1px solid rgba(240, 185, 11, 0.35)",
+                  borderRadius: "8px",
+                  padding: "8px 14px",
                   fontSize: "12px",
                   fontWeight: 600,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
                 }}
               >
-                [{sig.type}] Severity: {sig.severity.toUpperCase()} | Regime: {sig.regime}
+                <span>⚡ [{sig.type}]</span>
+                <span>Severity: {sig.severity.toUpperCase()}</span>
+                <span>•</span>
+                <span>Regime: {sig.regime}</span>
               </div>
             ))}
           </div>

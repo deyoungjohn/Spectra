@@ -9,8 +9,6 @@ import {
   HeatmapView,
   ScreenerTable,
   TickerDetailView,
-  AnimatedButton,
-  MorphingModal,
   type SectorType,
   type AnomalyFilterType,
   type ScreenerRow,
@@ -102,7 +100,6 @@ export default function MarketIntelDashboard() {
   const [viewMode, setViewMode] = useState<"HEATMAP" | "SCREENER">("HEATMAP");
   const [selectedTicker, setSelectedTicker] = useState<string | null>(null);
   const [lastFetchTime, setLastFetchTime] = useState<string | null>(null);
-  const [modalView, setModalView] = useState<"alpha-feed" | "settled" | null>(null);
 
   useEffect(() => {
     setLastFetchTime(new Date().toISOString());
@@ -168,7 +165,7 @@ export default function MarketIntelDashboard() {
         lastFetchTime={lastFetchTime}
       />
 
-      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "28px 24px 60px 24px" }}>
+      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "20px 24px" }}>
         {/* Detail view overlay if ticker selected */}
         {selectedStock ? (
           <TickerDetailView
@@ -206,89 +203,79 @@ export default function MarketIntelDashboard() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
+                marginBottom: "20px",
                 flexWrap: "wrap",
                 gap: "16px",
-                marginBottom: "20px",
               }}
             >
               <div>
-                <h1 style={{ fontSize: "26px", fontWeight: 700, margin: 0, letterSpacing: "-0.8px" }}>
+                <h1 style={{ fontSize: "24px", fontWeight: 800, margin: 0, letterSpacing: "-0.5px" }}>
                   Market Intelligence
                 </h1>
-                <p style={{ margin: "6px 0 0 0", color: "#848E9C", fontSize: "14px" }}>
-                  Empirical per-share unit conversion & cross-platform basis radar on BNB Smart Chain
+                <p style={{ margin: "4px 0 0 0", color: "#848E9C", fontSize: "13px" }}>
+                  Empirical per-share unit conversion & cross-platform basis radar across BNB Smart Chain
                 </p>
               </div>
 
-              {/* Action Controls & View Switcher */}
-              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                <AnimatedButton
-                  variant="gold"
-                  size="sm"
-                  onClick={() => setModalView("alpha-feed")}
+              {/* View Switcher: Heatmap vs Screener Table */}
+              <div
+                style={{
+                  display: "inline-flex",
+                  borderRadius: "10px",
+                  backgroundColor: "rgba(22, 24, 29, 0.75)",
+                  backdropFilter: "blur(10px)",
+                  border: "1px solid rgba(255, 255, 255, 0.08)",
+                  padding: "3px",
+                }}
+              >
+                <button
+                  onClick={() => setViewMode("HEATMAP")}
                   style={{
-                    borderRadius: "9999px",
-                    fontWeight: 700,
+                    padding: "6px 14px",
+                    borderRadius: "7px",
+                    border: "none",
+                    backgroundColor: viewMode === "HEATMAP" ? "rgba(240, 185, 11, 0.15)" : "transparent",
+                    color: viewMode === "HEATMAP" ? "#F0B90B" : "#848E9C",
+                    fontWeight: 600,
+                    fontSize: "12px",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    transition: "all 0.15s ease",
                   }}
                 >
-                  ⚡ Query Paid Alpha ($0.02)
-                </AnimatedButton>
-
-                {/* View Switcher: Heatmap vs Screener Table */}
-                <div
+                  <span>▦</span>
+                  <span>Heatmap</span>
+                </button>
+                <button
+                  onClick={() => setViewMode("SCREENER")}
                   style={{
-                    display: "inline-flex",
-                    borderRadius: "9999px",
-                    backgroundColor: "rgba(255, 255, 255, 0.04)",
-                    border: "1px solid rgba(255, 255, 255, 0.08)",
-                    padding: "3px",
+                    padding: "6px 14px",
+                    borderRadius: "7px",
+                    border: "none",
+                    backgroundColor: viewMode === "SCREENER" ? "rgba(240, 185, 11, 0.15)" : "transparent",
+                    color: viewMode === "SCREENER" ? "#F0B90B" : "#848E9C",
+                    fontWeight: 600,
+                    fontSize: "12px",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    transition: "all 0.15s ease",
                   }}
                 >
-                  <button
-                    onClick={() => setViewMode("HEATMAP")}
-                    style={{
-                      padding: "6px 16px",
-                      borderRadius: "9999px",
-                      border: "none",
-                      backgroundColor: viewMode === "HEATMAP" ? "#1E232B" : "transparent",
-                      color: viewMode === "HEATMAP" ? "#FFFFFF" : "#848E9C",
-                      boxShadow: viewMode === "HEATMAP" ? "0 2px 8px rgba(0, 0, 0, 0.3)" : "none",
-                      fontWeight: 600,
-                      fontSize: "12px",
-                      cursor: "pointer",
-                      transition: "all 0.15s ease",
-                    }}
-                  >
-                    Heatmap Treemap
-                  </button>
-                  <button
-                    onClick={() => setViewMode("SCREENER")}
-                    style={{
-                      padding: "6px 16px",
-                      borderRadius: "9999px",
-                      border: "none",
-                      backgroundColor: viewMode === "SCREENER" ? "#1E232B" : "transparent",
-                      color: viewMode === "SCREENER" ? "#FFFFFF" : "#848E9C",
-                      boxShadow: viewMode === "SCREENER" ? "0 2px 8px rgba(0, 0, 0, 0.3)" : "none",
-                      fontWeight: 600,
-                      fontSize: "12px",
-                      cursor: "pointer",
-                      transition: "all 0.15s ease",
-                    }}
-                  >
-                    Screener Table
-                  </button>
-                </div>
+                  <span>☰</span>
+                  <span>Screener Table</span>
+                </button>
               </div>
             </div>
 
-            {/* Sector Tabs (§6.3) */}
-            <div style={{ marginBottom: "12px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "16px" }}>
+              {/* Sector Tabs (§6.3) */}
               <SectorTabs activeSector={activeSector} onSectorChange={setActiveSector} />
-            </div>
 
-            {/* Web3 Anomaly Filters (§6.3) */}
-            <div style={{ marginBottom: "16px" }}>
+              {/* Web3 Anomaly Filters (§6.3) */}
               <AnomalyFilters activeFilter={activeFilter} onFilterChange={setActiveFilter} />
             </div>
 
@@ -308,121 +295,6 @@ export default function MarketIntelDashboard() {
           </>
         )}
       </div>
-
-      {/* Morphing Modal for b402 Paid Alpha */}
-      <MorphingModal viewId={modalView} onClose={() => setModalView(null)}>
-        {modalView === "alpha-feed" ? (
-          <div>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-              <h3 style={{ margin: 0, fontSize: "18px", fontWeight: 700, color: "#FFFFFF" }}>
-                ⚡ b402 Paid Alpha Feed Access
-              </h3>
-              <button
-                type="button"
-                onClick={() => setModalView(null)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "#848E9C",
-                  fontSize: "18px",
-                  cursor: "pointer",
-                }}
-              >
-                ✕
-              </button>
-            </div>
-            <p style={{ fontSize: "13px", color: "#848E9C", lineHeight: 1.5, marginBottom: "20px" }}>
-              Unlock real-time arbitrage spreads, cross-platform flow accumulation, and automated policy verification via b402 micro-settlement.
-            </p>
-            <div
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.04)",
-                border: "1px solid rgba(255, 255, 255, 0.08)",
-                borderRadius: "14px",
-                padding: "16px",
-                marginBottom: "20px",
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px", fontSize: "13px" }}>
-                <span style={{ color: "#848E9C" }}>Cost per query:</span>
-                <span style={{ color: "#F0B90B", fontWeight: 700, fontFamily: "'JetBrains Mono', monospace" }}>0.02 USDC</span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "13px" }}>
-                <span style={{ color: "#848E9C" }}>Settlement Rail:</span>
-                <span style={{ color: "#0ECB81", fontWeight: 600 }}>BNB Chain (b402 Shadow Gateway)</span>
-              </div>
-            </div>
-            <div style={{ display: "flex", gap: "10px" }}>
-              <AnimatedButton
-                variant="secondary"
-                size="md"
-                onClick={() => setModalView(null)}
-                style={{ flex: 1, borderRadius: "10px" }}
-              >
-                Cancel
-              </AnimatedButton>
-              <AnimatedButton
-                variant="gold"
-                size="md"
-                onClick={() => setModalView("settled")}
-                style={{ flex: 1, borderRadius: "10px" }}
-              >
-                Sign & Pay 0.02 USDC
-              </AnimatedButton>
-            </div>
-          </div>
-        ) : modalView === "settled" ? (
-          <div>
-            <div style={{ textAlign: "center", padding: "10px 0" }}>
-              <div
-                style={{
-                  width: "48px",
-                  height: "48px",
-                  borderRadius: "50%",
-                  backgroundColor: "rgba(14, 203, 129, 0.15)",
-                  border: "1px solid #0ECB81",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "0 auto 16px auto",
-                  fontSize: "24px",
-                  color: "#0ECB81",
-                }}
-              >
-                ✓
-              </div>
-              <h3 style={{ margin: "0 0 8px 0", fontSize: "18px", fontWeight: 700, color: "#FFFFFF" }}>
-                Micro-Settlement Verified!
-              </h3>
-              <p style={{ fontSize: "13px", color: "#848E9C", lineHeight: 1.5, marginBottom: "16px" }}>
-                Receipt registered on BNB Smart Chain. Full alpha stream unlocked with HMAC cryptographic signature.
-              </p>
-              <div
-                style={{
-                  fontFamily: "'JetBrains Mono', monospace",
-                  fontSize: "11px",
-                  color: "#0ECB81",
-                  backgroundColor: "rgba(14, 203, 129, 0.08)",
-                  padding: "8px 12px",
-                  borderRadius: "8px",
-                  marginBottom: "20px",
-                  wordBreak: "break-all",
-                }}
-              >
-                Tx: 0x8a92...ef41 | Block: #38,912,410
-              </div>
-              <AnimatedButton
-                variant="gold"
-                size="md"
-                onClick={() => setModalView(null)}
-                style={{ width: "100%", borderRadius: "10px" }}
-              >
-                Return to Dashboard
-              </AnimatedButton>
-            </div>
-          </div>
-        ) : null}
-      </MorphingModal>
     </div>
   );
 }

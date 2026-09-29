@@ -46,60 +46,101 @@ export const MarketStatusBanner: React.FC<MarketStatusBannerProps> = ({
     }
   }, [lastFetchTime, mounted]);
 
+  const statusColor = getStatusColor();
+
   return (
     <div
       style={{
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        padding: "10px 16px",
-        backgroundColor: "#16181D",
-        borderBottom: "1px solid #23272E",
+        padding: "10px 24px",
+        backgroundColor: "rgba(18, 20, 25, 0.65)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
         color: "#FFFFFF",
         fontFamily: "Inter, sans-serif",
         fontSize: "13px",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-        <span
+      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+        <div
           style={{
-            display: "inline-block",
-            width: "8px",
-            height: "8px",
-            borderRadius: "50%",
-            backgroundColor: getStatusColor(),
-            boxShadow: isOpen ? "0 0 8px #0ECB81" : "none",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "7px",
+            padding: "3px 10px",
+            borderRadius: "9999px",
+            backgroundColor: isOpen ? "rgba(14, 203, 129, 0.1)" : "rgba(120, 123, 134, 0.12)",
+            border: `1px solid ${isOpen ? "rgba(14, 203, 129, 0.3)" : "rgba(120, 123, 134, 0.25)"}`,
           }}
-        />
-        <span style={{ fontWeight: 600, letterSpacing: "0.5px" }}>
-          TRADFI US EQUITIES: {status}
-        </span>
+        >
+          <span
+            style={{
+              display: "inline-block",
+              width: "7px",
+              height: "7px",
+              borderRadius: "50%",
+              backgroundColor: statusColor,
+              boxShadow: isOpen ? "0 0 10px #0ECB81" : "none",
+            }}
+          />
+          <span style={{ fontWeight: 600, letterSpacing: "0.5px", fontSize: "11px", color: isOpen ? "#0ECB81" : "#A0A8B5" }}>
+            TRADFI US EQUITIES: {status}
+          </span>
+        </div>
+
         {formattedOpenTime && !isOpen && (
-          <span style={{ color: "#848E9C" }} suppressHydrationWarning>
+          <span style={{ color: "#848E9C", fontSize: "12px" }} suppressHydrationWarning>
             (Opens: {formattedOpenTime})
           </span>
         )}
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
         {!dataFeedAvailable && (
           <span
             style={{
               backgroundColor: "rgba(246, 70, 93, 0.15)",
               color: "#F6465D",
-              padding: "2px 8px",
-              borderRadius: "4px",
+              border: "1px solid rgba(246, 70, 93, 0.3)",
+              padding: "3px 10px",
+              borderRadius: "6px",
               fontSize: "11px",
               fontWeight: 600,
+              display: "flex",
+              alignItems: "center",
+              gap: "5px",
             }}
           >
-            DATA FEED DELAYED (STALE CACHE ACTIVE)
+            <span>⚠️</span>
+            <span>DATA FEED DELAYED (STALE CACHE ACTIVE)</span>
           </span>
         )}
         {formattedUpdateTime && (
-          <span style={{ color: "#5E6673", fontSize: "11px" }} suppressHydrationWarning>
-            Updated: {formattedUpdateTime}
-          </span>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              color: "#787B86",
+              fontSize: "11px",
+              fontFamily: "'JetBrains Mono', monospace",
+            }}
+          >
+            <span
+              style={{
+                width: "4px",
+                height: "4px",
+                borderRadius: "50%",
+                backgroundColor: "#F0B90B",
+              }}
+            />
+            <span suppressHydrationWarning>
+              Updated: {formattedUpdateTime}
+            </span>
+          </div>
         )}
       </div>
     </div>

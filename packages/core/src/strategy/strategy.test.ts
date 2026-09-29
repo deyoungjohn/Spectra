@@ -8,10 +8,21 @@ import { NLStrategyCompiler } from "./compiler.js";
 import { StrategySimulator } from "./simulator.js";
 import { NormalizationEngine } from "../normalize/engine.js";
 import { DataIngestionService, MockRwaDataProvider } from "../services/data-ingestion.js";
-import { CompositeTradFiClient, YFinanceClient } from "../services/tradfi.js";
+import { CompositeTradFiClient, type ITradFiClient, type TradFiQuote } from "../services/tradfi.js";
 import { FlowAggregator } from "../flow/aggregator.js";
 import { MockBscScanProvider } from "../flow/bscscan.js";
 import type { ExecutionPolicy } from "../types/policy.js";
+
+class MockTradFiClient implements ITradFiClient {
+  async getQuote(ticker: string): Promise<TradFiQuote | null> {
+    return {
+      ticker,
+      price: parseToFixed18("224.50"),
+      timestamp: new Date(),
+      source: "mock",
+    };
+  }
+}
 
 describe("Strategy Forge Layer (Module 2)", () => {
   describe("Pre-built Strategy Templates", () => {
@@ -156,7 +167,7 @@ describe("Strategy Forge Layer (Module 2)", () => {
   describe("StrategySimulator", () => {
     it("simulates strategy dry run, computes fees, and generates SHA-256 simulationHash", async () => {
       const ingestion = new DataIngestionService(new MockRwaDataProvider());
-      const tradfi = new CompositeTradFiClient(new YFinanceClient(), new YFinanceClient());
+      const tradfi = new CompositeTradFiClient(new MockTradFiClient(), new MockTradFiClient());
       const normalization = new NormalizationEngine(ingestion, tradfi);
       const flowAggregator = new FlowAggregator(new MockBscScanProvider());
 
@@ -177,7 +188,7 @@ describe("Strategy Forge Layer (Module 2)", () => {
 
     it("blocks simulation with BLOCKED_BY_POLICY when policy constraints violated", async () => {
       const ingestion = new DataIngestionService(new MockRwaDataProvider());
-      const tradfi = new CompositeTradFiClient(new YFinanceClient(), new YFinanceClient());
+      const tradfi = new CompositeTradFiClient(new MockTradFiClient(), new MockTradFiClient());
       const normalization = new NormalizationEngine(ingestion, tradfi);
 
       const simulator = new StrategySimulator(normalization);

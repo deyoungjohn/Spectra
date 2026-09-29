@@ -1,11 +1,9 @@
 // packages/ui/src/WhaleTable.tsx
-//
 // Module 3: Whale Table Component
 // High-conviction wallet accumulation and distribution tracking.
 // Reference: Spectra.md §8.1, §8.4
 
 import React from "react";
-import { AnimatedBadge } from "./motion/AnimatedBadge.js";
 
 export interface WhaleAlertRow {
   id: string;
@@ -49,13 +47,15 @@ export const WhaleTable: React.FC<WhaleTableProps> = ({
     return (
       <div
         style={{
-          backgroundColor: "#181A20",
-          border: "1px solid #2B313A",
-          borderRadius: "8px",
-          padding: "24px",
+          backgroundColor: "rgba(22, 24, 29, 0.75)",
+          backdropFilter: "blur(12px)",
+          border: "1px solid rgba(255, 255, 255, 0.08)",
+          borderRadius: "12px",
+          padding: "32px",
           textAlign: "center",
           color: "#848E9C",
           fontSize: "14px",
+          fontFamily: "Inter, sans-serif",
         }}
       >
         No whale movements detected above threshold ($10,000 USD).
@@ -66,86 +66,144 @@ export const WhaleTable: React.FC<WhaleTableProps> = ({
   return (
     <div
       style={{
-        backgroundColor: "#181A20",
-        border: "1px solid #2B313A",
-        borderRadius: "16px",
+        backgroundColor: "rgba(22, 24, 29, 0.75)",
+        backdropFilter: "blur(12px)",
+        border: "1px solid rgba(255, 255, 255, 0.08)",
+        borderRadius: "12px",
         overflow: "hidden",
         width: "100%",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
+        fontFamily: "Inter, sans-serif",
       }}
     >
       <div
         style={{
           padding: "16px 20px",
-          borderBottom: "1px solid #2B313A",
+          borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
+          backgroundColor: "rgba(13, 14, 18, 0.4)",
         }}
       >
-        <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: "#EAECEF" }}>
-          🐳 Whale Radar Movements (&gt; $10k USD)
-        </h3>
-        <span style={{ fontSize: "12px", color: "#848E9C" }}>{alerts.length} events detected</span>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <span style={{ fontSize: "16px" }}>🐳</span>
+          <h3 style={{ margin: 0, fontSize: "15px", fontWeight: 700, color: "#EAECEF" }}>
+            Whale Radar Movements (&gt; $10k USD)
+          </h3>
+        </div>
+        <span
+          style={{
+            fontSize: "11px",
+            color: "#F0B90B",
+            backgroundColor: "rgba(240, 185, 11, 0.1)",
+            padding: "2px 8px",
+            borderRadius: "9999px",
+            border: "1px solid rgba(240, 185, 11, 0.25)",
+            fontFamily: "'JetBrains Mono', monospace",
+          }}
+        >
+          {alerts.length} events detected
+        </span>
       </div>
 
       <div style={{ overflowX: "auto" }}>
         <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "13px" }}>
           <thead>
-            <tr style={{ backgroundColor: "#20252E", color: "#848E9C", borderBottom: "1px solid #2B313A" }}>
-              <th style={{ padding: "10px 16px" }}>Time</th>
-              <th style={{ padding: "10px 16px" }}>Direction</th>
-              <th style={{ padding: "10px 16px" }}>Ticker</th>
-              <th style={{ padding: "10px 16px" }}>Platform</th>
-              <th style={{ padding: "10px 16px" }}>Wallet</th>
-              <th style={{ padding: "10px 16px", textAlign: "right" }}>Notional (USD)</th>
-              <th style={{ padding: "10px 16px", textAlign: "right" }}>Shares</th>
-              <th style={{ padding: "10px 16px", textAlign: "right" }}>Tx Hash</th>
+            <tr
+              style={{
+                borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+                color: "#848E9C",
+                fontSize: "11px",
+                fontWeight: 600,
+                letterSpacing: "0.88px",
+                textTransform: "uppercase",
+                backgroundColor: "rgba(13, 14, 18, 0.3)",
+              }}
+            >
+              <th style={{ padding: "12px 18px" }}>Time</th>
+              <th style={{ padding: "12px 18px" }}>Direction</th>
+              <th style={{ padding: "12px 18px" }}>Ticker</th>
+              <th style={{ padding: "12px 18px" }}>Platform</th>
+              <th style={{ padding: "12px 18px" }}>Wallet</th>
+              <th style={{ padding: "12px 18px", textAlign: "right" }}>Notional (USD)</th>
+              <th style={{ padding: "12px 18px", textAlign: "right" }}>Shares</th>
+              <th style={{ padding: "12px 18px", textAlign: "center" }}>Tx</th>
             </tr>
           </thead>
           <tbody>
             {alerts.map((row) => {
               const isInflow = row.direction === "INFLOW";
               const timeDisplay = row.timestamp.includes("T")
-                ? row.timestamp.split("T")[1]?.slice(0, 8) || row.timestamp
+                ? row.timestamp.split("T")[1]?.slice(0, 5) ?? row.timestamp
                 : row.timestamp;
 
               return (
                 <tr
                   key={row.id}
-                  data-testid={`whale-row-${row.id}`}
                   style={{
-                    borderBottom: "1px solid #20252E",
+                    borderBottom: "1px solid rgba(255, 255, 255, 0.04)",
+                    color: "#FFFFFF",
+                    transition: "background-color 0.15s ease",
                   }}
+                  className="hover:bg-white/[0.03]"
                 >
-                  <td style={{ padding: "12px 16px", color: "#848E9C", fontFamily: "JetBrains Mono, monospace" }}>
+                  <td style={{ padding: "12px 18px", color: "#848E9C", fontFamily: "'JetBrains Mono', monospace", fontSize: "12px" }}>
                     {timeDisplay}
                   </td>
-                  <td style={{ padding: "12px 16px" }}>
-                    <AnimatedBadge label={row.direction} status={isInflow ? "success" : "error"} size="sm" />
-                  </td>
-                  <td style={{ padding: "12px 16px" }}>
+                  <td style={{ padding: "12px 18px" }}>
                     <span
-                      onClick={() => onSelectTicker?.(row.ticker)}
                       style={{
+                        padding: "3px 8px",
+                        borderRadius: "9999px",
+                        fontSize: "11px",
                         fontWeight: 700,
-                        color: "#EAECEF",
-                        cursor: onSelectTicker ? "pointer" : "default",
+                        backgroundColor: isInflow ? "rgba(14, 203, 129, 0.12)" : "rgba(246, 70, 93, 0.12)",
+                        border: `1px solid ${isInflow ? "rgba(14, 203, 129, 0.3)" : "rgba(246, 70, 93, 0.3)"}`,
+                        color: isInflow ? "#0ECB81" : "#F6465D",
                       }}
                     >
-                      {row.ticker}
+                      {isInflow ? "▲ INFLOW" : "▼ OUTFLOW"}
                     </span>
                   </td>
-                  <td style={{ padding: "12px 16px" }}>
-                    <AnimatedBadge label={row.platform} status="neutral" size="sm" />
+                  <td style={{ padding: "12px 18px" }}>
+                    <button
+                      onClick={() => onSelectTicker?.(row.ticker)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        color: "#F0B90B",
+                        fontWeight: 700,
+                        cursor: onSelectTicker ? "pointer" : "default",
+                        padding: 0,
+                        fontSize: "14px",
+                      }}
+                      className="hover:underline"
+                    >
+                      {row.ticker}
+                    </button>
                   </td>
-                  <td style={{ padding: "12px 16px" }}>
+                  <td style={{ padding: "12px 18px" }}>
+                    <span
+                      style={{
+                        padding: "2px 6px",
+                        borderRadius: "4px",
+                        backgroundColor: "rgba(255, 255, 255, 0.06)",
+                        fontSize: "11px",
+                        fontWeight: 600,
+                        color: "#848E9C",
+                      }}
+                    >
+                      {row.platform}
+                    </span>
+                  </td>
+                  <td style={{ padding: "12px 18px" }}>
                     <span
                       onClick={() => onSelectWallet?.(row.wallet)}
                       style={{
-                        fontFamily: "JetBrains Mono, monospace",
-                        color: "#F0B90B",
+                        color: onSelectWallet ? "#F0B90B" : "#EAECEF",
                         cursor: onSelectWallet ? "pointer" : "default",
+                        fontFamily: "'JetBrains Mono', monospace",
                         fontSize: "12px",
                       }}
                     >
@@ -154,31 +212,35 @@ export const WhaleTable: React.FC<WhaleTableProps> = ({
                   </td>
                   <td
                     style={{
-                      padding: "12px 16px",
+                      padding: "12px 18px",
                       textAlign: "right",
-                      fontFamily: "JetBrains Mono, monospace",
+                      fontFamily: "'JetBrains Mono', monospace",
                       fontWeight: 700,
                       color: isInflow ? "#0ECB81" : "#F6465D",
                     }}
                   >
                     {isInflow ? `+${formatDollars(row.amountUsd)}` : `-${formatDollars(row.amountUsd)}`}
                   </td>
-                  <td style={{ padding: "12px 16px", textAlign: "right", fontFamily: "JetBrains Mono, monospace", color: "#EAECEF" }}>
+                  <td style={{ padding: "12px 18px", textAlign: "right", fontFamily: "'JetBrains Mono', monospace", color: "#848E9C" }}>
                     {formatTokens(row.amountTokens)}
                   </td>
-                  <td style={{ padding: "12px 16px", textAlign: "right" }}>
+                  <td style={{ padding: "12px 18px", textAlign: "center" }}>
                     <a
                       href={`https://bscscan.com/tx/${row.hash}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       style={{
-                        fontFamily: "JetBrains Mono, monospace",
-                        fontSize: "11px",
-                        color: "#848E9C",
+                        color: "#0D74CE",
                         textDecoration: "none",
+                        fontFamily: "'JetBrains Mono', monospace",
+                        fontSize: "11px",
+                        padding: "2px 6px",
+                        borderRadius: "4px",
+                        backgroundColor: "rgba(13, 116, 206, 0.1)",
                       }}
+                      className="hover:bg-blue-500/20"
                     >
-                      {`${row.hash.slice(0, 6)}...${row.hash.slice(-4)}`} ↗
+                      {row.hash.slice(0, 6)}...
                     </a>
                   </td>
                 </tr>

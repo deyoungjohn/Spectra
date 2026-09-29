@@ -268,3 +268,16 @@
 - Reason: Achieve a modern, high-polish "device mockup" aesthetic with frosted glass, rounded edges, and smooth interactive transitions.
 - Behavior/compatibility impact: Zero impact on core modules or smart contracts. Purely visual and layout improvements on the frontend.
 - Verification: `./scripts/check.sh` passes — 214/214 tests passing across 23 test suites, Next.js build clean, 0 type errors, 0 lint errors. Playwright visual snapshots taken iteratively.
+
+## 2026-09-29 — Handoff Preparation & Knowledge Base for Opencode
+
+- Agent/client: Antigravity
+- Change: Created comprehensive handoff guide (`docs/HANDOFF.md`) and updated `docs/PROJECT_STATE.md` with:
+  - Detailed architectural breakdown, empirical discovery context, package maps, and live on-chain contract addresses.
+  - Strict engineering invariants (18-decimal fixed-point BigInt math, SSR hydration safety, Etherscan API V2 standard).
+  - Current status and roadmap for remaining UI modernization and visual iteration.
+  - Recorded handoff state in shared MCP project-memory.
+- Reason: Ensure immediate, full-context comprehension and seamless continuation for incoming pair programmer / agent (Opencode).
+- Behavior/compatibility impact: No behavioral or contract changes. Repository fully verified.
+- Verification: `./scripts/check.sh` passes — 214/214 tests passing across 23 test suites, clean typecheck, build, and lint.
+

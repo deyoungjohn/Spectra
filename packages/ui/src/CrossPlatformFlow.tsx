@@ -1,5 +1,4 @@
 // packages/ui/src/CrossPlatformFlow.tsx
-//
 // Module 3: Cross-Platform Flow Comparison Component
 // Compares on-chain token flows across Ondo, bStocks, and xStocks.
 // Reference: Spectra.md §8.1, §8.4
@@ -41,37 +40,41 @@ export const CrossPlatformFlow: React.FC<CrossPlatformFlowProps> = ({
   return (
     <div
       style={{
-        backgroundColor: "#181A20",
-        border: "1px solid #2B313A",
-        borderRadius: "8px",
-        padding: "20px",
+        backgroundColor: "rgba(22, 24, 29, 0.75)",
+        backdropFilter: "blur(12px)",
+        border: "1px solid rgba(255, 255, 255, 0.08)",
+        borderRadius: "12px",
+        padding: "20px 24px",
         display: "flex",
         flexDirection: "column",
         gap: "16px",
         width: "100%",
+        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
+        fontFamily: "Inter, sans-serif",
       }}
     >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
         <div>
           <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: "#EAECEF" }}>
             {ticker} Cross-Platform Flow Routing
           </h3>
           <span style={{ fontSize: "12px", color: "#848E9C" }}>
-            24h Net Liquidity Migration across BSC Issuers
+            24h Net Liquidity Migration across BSC Issuers • Total Net Flow: {formatDollars(totalNetFlowUsd)}
           </span>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <span style={{ fontSize: "11px", color: "#848E9C" }}>Dominant Venue:</span>
           <span
             data-testid="dominant-venue-badge"
             style={{
               fontSize: "11px",
               fontWeight: 700,
-              padding: "2px 8px",
-              borderRadius: "4px",
-              backgroundColor: "#2B2414",
-              border: "1px solid #F0B90B",
+              padding: "3px 10px",
+              borderRadius: "9999px",
+              backgroundColor: "rgba(240, 185, 11, 0.12)",
+              border: "1px solid rgba(240, 185, 11, 0.35)",
               color: "#F0B90B",
+              boxShadow: "0 0 10px rgba(240, 185, 11, 0.15)",
             }}
           >
             {dominantPlatform}
@@ -84,7 +87,7 @@ export const CrossPlatformFlow: React.FC<CrossPlatformFlowProps> = ({
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-          gap: "12px",
+          gap: "14px",
         }}
       >
         {venues.map((v) => {
@@ -96,61 +99,51 @@ export const CrossPlatformFlow: React.FC<CrossPlatformFlowProps> = ({
               key={v.code}
               data-testid={`venue-card-${v.code}`}
               style={{
-                backgroundColor: isDominant ? "#20252E" : "#14151A",
-                border: isDominant ? "1px solid #F0B90B" : "1px solid #2B313A",
-                borderRadius: "6px",
-                padding: "14px 16px",
+                backgroundColor: isDominant ? "rgba(30, 35, 41, 0.85)" : "rgba(20, 22, 27, 0.6)",
+                border: isDominant ? "1px solid rgba(240, 185, 11, 0.4)" : "1px solid rgba(255, 255, 255, 0.06)",
+                borderRadius: "10px",
+                padding: "16px",
                 display: "flex",
                 flexDirection: "column",
-                gap: "8px",
+                gap: "10px",
+                boxShadow: isDominant ? "0 4px 16px rgba(240, 185, 11, 0.08)" : "none",
+                transition: "all 0.15s ease",
               }}
+              className="hover:border-white/20"
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ fontWeight: 700, color: "#EAECEF", fontSize: "14px" }}>{v.name}</span>
-                <span style={{ fontSize: "10px", padding: "1px 5px", backgroundColor: "#2B313A", borderRadius: "3px", color: "#848E9C" }}>
-                  {v.fee} fee
+                <span style={{ fontSize: "14px", fontWeight: 700, color: "#FFFFFF" }}>
+                  {v.name}
+                </span>
+                <span
+                  style={{
+                    fontSize: "10px",
+                    color: "#848E9C",
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    padding: "2px 6px",
+                    borderRadius: "4px",
+                  }}
+                >
+                  Fee: {v.fee}
                 </span>
               </div>
-              <div
-                style={{
-                  fontSize: "18px",
-                  fontWeight: 700,
-                  fontFamily: "JetBrains Mono, monospace",
-                  color: isPos ? "#0ECB81" : "#F6465D",
-                }}
-              >
-                {isPos ? `+${formatDollars(v.netFlow)}` : formatDollars(v.netFlow)}
-              </div>
-              <div style={{ fontSize: "11px", color: isDominant ? "#F0B90B" : "#848E9C" }}>
-                {isDominant ? "★ Highest Net Accumulation" : "Secondary Venue"}
+
+              <div>
+                <div style={{ fontSize: "11px", color: "#848E9C", marginBottom: "3px" }}>24h Net Flow</div>
+                <div
+                  style={{
+                    fontSize: "18px",
+                    fontWeight: 800,
+                    fontFamily: "'JetBrains Mono', monospace",
+                    color: isPos ? "#0ECB81" : "#F6465D",
+                  }}
+                >
+                  {isPos ? `+${formatDollars(v.netFlow)}` : formatDollars(v.netFlow)}
+                </div>
               </div>
             </div>
           );
         })}
-      </div>
-
-      {/* Aggregate Bottom Bar */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "10px 14px",
-          backgroundColor: "#20252E",
-          borderRadius: "6px",
-          fontSize: "12px",
-        }}
-      >
-        <span style={{ color: "#848E9C" }}>Total Cross-Platform 24h Net Flow</span>
-        <span
-          style={{
-            fontFamily: "JetBrains Mono, monospace",
-            fontWeight: 700,
-            color: !totalNetFlowUsd.startsWith("-") ? "#0ECB81" : "#F6465D",
-          }}
-        >
-          {!totalNetFlowUsd.startsWith("-") ? `+${formatDollars(totalNetFlowUsd)}` : formatDollars(totalNetFlowUsd)}
-        </span>
       </div>
     </div>
   );

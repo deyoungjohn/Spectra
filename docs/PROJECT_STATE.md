@@ -1,6 +1,6 @@
 # Project state
 
-Last updated: 2026-09-27
+Last updated: 2026-09-29
 
 ## Objective
 
@@ -12,17 +12,9 @@ independent TradFi oracle.
 
 ## Current status
 
-- **Phase 0 (Project Scaffolding): ✅ Complete**
-- **Phase 1 (Base Layer — Core Data): ✅ Complete**
-- **Phase 2 (Base Layer — Signals & Policy): ✅ Complete**
-- **Phase 3 (Smart Contracts): ✅ Complete**
-- **Phase 4 (Module 1 — Market Intelligence): ✅ Complete**
-- **Phase 5 (Module 3 — Flow Radar): ✅ Complete**
-- **Phase 6 (Module 2 — Strategy Forge): ✅ Complete**
-- **Phase 7 (Agent Layer): ✅ Complete**
-- **Phase 8 (Integration & Polish): ✅ Complete**
-- **Phase 9 (Deployment & Verification): ✅ Complete**
-- **All 10 Build Phases Complete & Verified: Production-Ready**
+- **Comprehensive Handoff Guide:** `docs/HANDOFF.md`
+- **UI Modernization & Overhaul:** In active progress according to `docs/UI_OVERHAUL_PLAN.md` and `DESIGN.md` (Expo-inspired design system with Tailwind CSS v4, Framer Motion, and beUI motion components).
+- **All 10 Core Build Phases Complete & Verified: Production-Ready (214/214 tests passing)**
 - Live Deployed & Verified Contracts (BSC Mainnet 56 & BSC Testnet 97):
   - Deployer / Owner Address: `0xC1012a56A20A7481718092a7f65cEA1fd2ebE4E7`
   - `OracleWatch`: `0x2Ae7E670022957079357997a2D434911679e9c9a` (✅ Verified on BscScan)
@@ -85,7 +77,7 @@ independent TradFi oracle.
   - `ExecutionLog`: Audit trail of autonomous agent trades and execution receipts
 - Next.js Web Application (`apps/web`):
   - Turbopack-enabled Next.js 16 dashboard with routes `/`, `/flow`, `/forge`, `/market/ticker/[ticker]`, and `/flow/ticker/[ticker]`
-  - Spectra dark theme (`#0D0E12`, `#F0B90B` gold accent) updated with `DESIGN.md` modern guidelines, 16px border radii, frosted glass, and `beui` Framer Motion primitives (AnimatedTabs, TiltCard, AnimatedBadge, AnimatedButton, ColorSelector)
+  - Spectra dark theme (`#0D0E12`, `#F0B90B` gold accent)
 - Smart Contracts (`@spectra/contracts`) implements:
   - `FixedPointMath.sol`: 18-decimal fixed-point library on-chain
   - `OracleWatch.sol`: Divergence recording with bounded history pruning

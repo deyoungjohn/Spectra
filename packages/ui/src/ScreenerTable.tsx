@@ -1,8 +1,5 @@
 // packages/ui/src/ScreenerTable.tsx
-"use client";
-
 import React from "react";
-import { AnimatedButton } from "./motion/AnimatedButton.js";
 
 export interface ScreenerRow {
   ticker: string;
@@ -33,25 +30,36 @@ export const ScreenerTable: React.FC<ScreenerTableProps> = ({
     <div
       style={{
         overflowX: "auto",
-        backgroundColor: "#14161C",
-        borderRadius: "16px",
+        backgroundColor: "rgba(22, 24, 29, 0.75)",
+        backdropFilter: "blur(12px)",
+        borderRadius: "12px",
         border: "1px solid rgba(255, 255, 255, 0.08)",
-        boxShadow: "0 8px 30px rgba(0, 0, 0, 0.3)",
-        fontFamily: "'Inter', sans-serif",
+        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
+        fontFamily: "Inter, sans-serif",
       }}
     >
       <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "left", fontSize: "13px" }}>
         <thead>
-          <tr style={{ borderBottom: "1px solid rgba(255, 255, 255, 0.08)", color: "#848E9C" }}>
-            <th style={{ padding: "14px 18px", fontWeight: 600, fontSize: "11px", letterSpacing: "0.5px" }}>TICKER</th>
-            <th style={{ padding: "14px 18px", fontWeight: 600, fontSize: "11px", letterSpacing: "0.5px" }}>PLATFORM</th>
-            <th style={{ padding: "14px 18px", textAlign: "right", fontWeight: 600, fontSize: "11px", letterSpacing: "0.5px" }}>ONCHAIN PER-SHARE</th>
-            <th style={{ padding: "14px 18px", textAlign: "right", fontWeight: 600, fontSize: "11px", letterSpacing: "0.5px" }}>TRADFI ANCHOR</th>
-            <th style={{ padding: "14px 18px", textAlign: "right", fontWeight: 600, fontSize: "11px", letterSpacing: "0.5px" }}>ORACLE DIV</th>
-            <th style={{ padding: "14px 18px", textAlign: "right", fontWeight: 600, fontSize: "11px", letterSpacing: "0.5px" }}>CROSS-BASIS</th>
-            <th style={{ padding: "14px 18px", textAlign: "right", fontWeight: 600, fontSize: "11px", letterSpacing: "0.5px" }}>DEX LIQUIDITY</th>
-            <th style={{ padding: "14px 18px", textAlign: "center", fontWeight: 600, fontSize: "11px", letterSpacing: "0.5px" }}>STATUS</th>
-            <th style={{ padding: "14px 18px", textAlign: "center", fontWeight: 600, fontSize: "11px", letterSpacing: "0.5px" }}>ACTION</th>
+          <tr
+            style={{
+              borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+              color: "#848E9C",
+              fontSize: "11px",
+              fontWeight: 600,
+              letterSpacing: "0.88px",
+              textTransform: "uppercase",
+              backgroundColor: "rgba(13, 14, 18, 0.4)",
+            }}
+          >
+            <th style={{ padding: "14px 18px" }}>TICKER</th>
+            <th style={{ padding: "14px 18px" }}>PLATFORM</th>
+            <th style={{ padding: "14px 18px", textAlign: "right" }}>ONCHAIN PER-SHARE</th>
+            <th style={{ padding: "14px 18px", textAlign: "right" }}>TRADFI ANCHOR</th>
+            <th style={{ padding: "14px 18px", textAlign: "right" }}>ORACLE DIV</th>
+            <th style={{ padding: "14px 18px", textAlign: "right" }}>CROSS-BASIS</th>
+            <th style={{ padding: "14px 18px", textAlign: "right" }}>DEX LIQUIDITY</th>
+            <th style={{ padding: "14px 18px", textAlign: "center" }}>STATUS</th>
+            <th style={{ padding: "14px 18px", textAlign: "center" }}>ACTION</th>
           </tr>
         </thead>
         <tbody>
@@ -65,8 +73,9 @@ export const ScreenerTable: React.FC<ScreenerTableProps> = ({
                 style={{
                   borderBottom: "1px solid rgba(255, 255, 255, 0.04)",
                   color: "#FFFFFF",
-                  transition: "background 0.15s ease",
+                  transition: "background-color 0.15s ease",
                 }}
+                className="hover:bg-white/[0.03]"
               >
                 <td style={{ padding: "14px 18px", fontWeight: 700, fontSize: "14px" }}>
                   {row.ticker}
@@ -74,13 +83,13 @@ export const ScreenerTable: React.FC<ScreenerTableProps> = ({
                 <td style={{ padding: "14px 18px" }}>
                   <span
                     style={{
-                      padding: "3px 10px",
-                      borderRadius: "9999px",
+                      padding: "3px 8px",
+                      borderRadius: "4px",
                       backgroundColor: "rgba(255, 255, 255, 0.06)",
-                      border: "1px solid rgba(255, 255, 255, 0.1)",
+                      border: "1px solid rgba(255, 255, 255, 0.08)",
                       fontSize: "11px",
                       fontWeight: 600,
-                      color: "#B0B4BA",
+                      color: "#EAECEF",
                     }}
                   >
                     {row.platform}
@@ -92,7 +101,7 @@ export const ScreenerTable: React.FC<ScreenerTableProps> = ({
                     textAlign: "right",
                     fontFamily: "'JetBrains Mono', monospace",
                     color: "#F0B90B",
-                    fontWeight: 600,
+                    fontWeight: 700,
                   }}
                 >
                   ${row.perSharePrice.slice(0, 8)}
@@ -102,7 +111,8 @@ export const ScreenerTable: React.FC<ScreenerTableProps> = ({
                     padding: "14px 18px",
                     textAlign: "right",
                     fontFamily: "'JetBrains Mono', monospace",
-                    color: "#47C2FF",
+                    color: "#0D74CE",
+                    fontWeight: 500,
                   }}
                 >
                   ${row.tradfiPrice.slice(0, 8)}
@@ -112,7 +122,7 @@ export const ScreenerTable: React.FC<ScreenerTableProps> = ({
                     padding: "14px 18px",
                     textAlign: "right",
                     fontFamily: "'JetBrains Mono', monospace",
-                    fontWeight: 600,
+                    fontWeight: 700,
                     color: divBps > 25 ? "#F6465D" : divBps > 10 ? "#F0B90B" : "#0ECB81",
                   }}
                 >
@@ -124,7 +134,7 @@ export const ScreenerTable: React.FC<ScreenerTableProps> = ({
                     textAlign: "right",
                     fontFamily: "'JetBrains Mono', monospace",
                     color: basisBps > 20 ? "#F0B90B" : "#848E9C",
-                    fontWeight: basisBps > 20 ? 600 : 400,
+                    fontWeight: basisBps > 20 ? 700 : 400,
                   }}
                 >
                   {basisBps > 0 ? `+${basisBps} bps` : "—"}
@@ -141,30 +151,32 @@ export const ScreenerTable: React.FC<ScreenerTableProps> = ({
                       fontSize: "10px",
                       fontWeight: 700,
                       backgroundColor:
-                        row.marketStatus === "OPEN" ? "rgba(14, 203, 129, 0.15)" : "rgba(255, 255, 255, 0.08)",
-                      border: row.marketStatus === "OPEN" ? "1px solid rgba(14, 203, 129, 0.3)" : "1px solid rgba(255, 255, 255, 0.1)",
+                        row.marketStatus === "OPEN" ? "rgba(14, 203, 129, 0.12)" : "rgba(120, 123, 134, 0.15)",
+                      border: `1px solid ${row.marketStatus === "OPEN" ? "rgba(14, 203, 129, 0.3)" : "rgba(120, 123, 134, 0.2)"}`,
                       color: row.marketStatus === "OPEN" ? "#0ECB81" : "#787B86",
-                      letterSpacing: "0.5px",
                     }}
                   >
                     {row.marketStatus}
                   </span>
                 </td>
                 <td style={{ padding: "14px 18px", textAlign: "center" }}>
-                  <AnimatedButton
-                    variant="secondary"
-                    size="sm"
+                  <button
                     onClick={() => onSelectRow?.(row.ticker)}
                     style={{
-                      borderRadius: "9999px",
-                      fontSize: "11px",
-                      padding: "4px 12px",
-                      height: "28px",
+                      padding: "5px 12px",
+                      borderRadius: "6px",
+                      border: "1px solid rgba(240, 185, 11, 0.3)",
+                      backgroundColor: "rgba(240, 185, 11, 0.1)",
                       color: "#F0B90B",
+                      fontSize: "11px",
+                      cursor: "pointer",
+                      fontWeight: 600,
+                      transition: "all 0.15s ease",
                     }}
+                    className="hover:bg-yellow-500/20 hover:scale-105"
                   >
                     Inspect
-                  </AnimatedButton>
+                  </button>
                 </td>
               </tr>
             );

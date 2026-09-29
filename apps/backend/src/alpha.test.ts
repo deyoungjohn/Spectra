@@ -1,28 +1,13 @@
 // apps/backend/src/alpha.test.ts
-import { describe, it, expect, vi, beforeAll, afterAll } from "vitest";
+import { describe, it, expect } from "vitest";
 import request from "supertest";
 import { createApp, createServices } from "./app.js";
-import { CompositeTradFiClient } from "@spectra/core";
 import {
   type B402PaymentPayload,
   type PaymentRequirementOption,
 } from "@spectra/core";
 
 describe("b402 Paid Alpha Endpoints (/api/alpha/*)", () => {
-  beforeAll(() => {
-    vi.spyOn(CompositeTradFiClient.prototype, "getQuote").mockImplementation(async (ticker: string) => ({
-      ticker,
-      price: 150000000000000000000n, // 150.0 in 18 decimals
-      timestamp: new Date(),
-      isStale: false,
-      source: "mock" as const,
-    }));
-  });
-
-  afterAll(() => {
-    vi.restoreAllMocks();
-  });
-
   function createTestApp() {
     const services = createServices();
     const app = createApp(services);

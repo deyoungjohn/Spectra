@@ -20,12 +20,3 @@ export { Simulator, type SimulatorProps, type SimulationResultView } from "./Sim
 export { ExecutionLog, type ExecutionLogProps, type ExecutionRecordView } from "./ExecutionLog.js";
 export { UnifiedLoopNav, type UnifiedLoopNavProps, type LoopStepMeta, type LoopStepId, LOOP_STEPS } from "./UnifiedLoopNav.js";
 export { TickerTape, type TickerTapeProps, type TickerTapeSignal } from "./TickerTape.js";
-
-// Motion & beUI components (DESIGN.md modern overhaul)
-export { TiltCard, type TiltCardProps } from "./motion/TiltCard.js";
-export { MorphingModal, type MorphingModalProps } from "./motion/MorphingModal.js";
-export { AnimatedTabs, type AnimatedTabsProps, type TabItem } from "./motion/AnimatedTabs.js";
-export { AnimatedButton, type AnimatedButtonProps } from "./motion/AnimatedButton.js";
-export { ColorSelector, type ColorSelectorProps, type ColorOption } from "./motion/ColorSelector.js";
-export { AnimatedBadge, type AnimatedBadgeProps } from "./motion/AnimatedBadge.js";
-export * from "./motion/ease.js";

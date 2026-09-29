@@ -1,5 +1,4 @@
 // packages/ui/src/TickerFlowChart.tsx
-//
 // Module 3: Ticker Net Flow Time-Series Chart Component
 // Visualizes hourly net flow with pre-event positioning alerts.
 // Reference: Spectra.md §8.1, §8.4
@@ -37,7 +36,7 @@ export const TickerFlowChart: React.FC<TickerFlowChartProps> = ({
   selectedWindow = "24h",
   onSelectWindow,
 }) => {
-  // Find max absolute value using BigInt for integer percentage scaling
+  // Find max absolute value using BigInt for integer percentage scaling (Zero floating-point)
   let maxAbsVal = 1n;
   for (const p of points) {
     const wholeStr = p.netFlowUsd.split(".")[0] || "0";
@@ -55,18 +54,21 @@ export const TickerFlowChart: React.FC<TickerFlowChartProps> = ({
   return (
     <div
       style={{
-        backgroundColor: "#181A20",
-        border: "1px solid #2B313A",
-        borderRadius: "8px",
-        padding: "20px",
+        backgroundColor: "rgba(22, 24, 29, 0.75)",
+        backdropFilter: "blur(12px)",
+        border: "1px solid rgba(255, 255, 255, 0.08)",
+        borderRadius: "12px",
+        padding: "20px 24px",
         display: "flex",
         flexDirection: "column",
         gap: "16px",
         width: "100%",
+        boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
+        fontFamily: "Inter, sans-serif",
       }}
     >
       {/* Header */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: "#EAECEF" }}>
             {ticker} Net Smart Money Flow
@@ -75,42 +77,57 @@ export const TickerFlowChart: React.FC<TickerFlowChartProps> = ({
             <span
               data-testid="pre-event-badge"
               style={{
-                fontSize: "11px",
-                padding: "2px 8px",
-                borderRadius: "4px",
-                backgroundColor: "#2B2414",
-                border: "1px solid #F0B90B",
+                fontSize: "10px",
+                padding: "3px 10px",
+                borderRadius: "9999px",
+                backgroundColor: "rgba(240, 185, 11, 0.12)",
+                border: "1px solid rgba(240, 185, 11, 0.35)",
                 color: "#F0B90B",
-                fontWeight: 600,
+                fontWeight: 700,
+                letterSpacing: "0.5px",
+                boxShadow: "0 0 10px rgba(240, 185, 11, 0.15)",
               }}
             >
-              PRE-EVENT POSITIONING DETECTED
+              ⚡ PRE-EVENT POSITIONING DETECTED
             </span>
           )}
         </div>
 
         {/* Window controls */}
         {onSelectWindow && (
-          <div style={{ display: "flex", gap: "4px" }}>
-            {(["1h", "4h", "24h"] as const).map((w) => (
-              <button
-                key={w}
-                type="button"
-                onClick={() => onSelectWindow(w)}
-                style={{
-                  padding: "4px 10px",
-                  fontSize: "12px",
-                  fontWeight: selectedWindow === w ? 600 : 400,
-                  backgroundColor: selectedWindow === w ? "#F0B90B" : "#20252E",
-                  color: selectedWindow === w ? "#0D0E12" : "#848E9C",
-                  border: "1px solid #2B313A",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                {w}
-              </button>
-            ))}
+          <div
+            style={{
+              display: "inline-flex",
+              backgroundColor: "rgba(13, 14, 18, 0.5)",
+              border: "1px solid rgba(255, 255, 255, 0.06)",
+              borderRadius: "8px",
+              padding: "2px",
+              gap: "2px",
+            }}
+          >
+            {(["1h", "4h", "24h"] as const).map((w) => {
+              const isSelected = selectedWindow === w;
+              return (
+                <button
+                  key={w}
+                  type="button"
+                  onClick={() => onSelectWindow(w)}
+                  style={{
+                    padding: "4px 12px",
+                    fontSize: "12px",
+                    fontWeight: isSelected ? 700 : 500,
+                    backgroundColor: isSelected ? "rgba(240, 185, 11, 0.15)" : "transparent",
+                    color: isSelected ? "#F0B90B" : "#848E9C",
+                    border: isSelected ? "1px solid rgba(240, 185, 11, 0.3)" : "1px solid transparent",
+                    borderRadius: "6px",
+                    cursor: "pointer",
+                    transition: "all 0.15s ease",
+                  }}
+                >
+                  {w}
+                </button>
+              );
+            })}
           </div>
         )}
       </div>
@@ -122,9 +139,9 @@ export const TickerFlowChart: React.FC<TickerFlowChartProps> = ({
           display: "flex",
           alignItems: "center",
           height: "180px",
-          gap: "4px",
-          padding: "10px 0",
-          borderBottom: "1px solid #2B313A",
+          gap: "6px",
+          padding: "12px 0",
+          borderBottom: "1px solid rgba(255, 255, 255, 0.06)",
         }}
       >
         {points.map((p, idx) => {
@@ -153,7 +170,9 @@ export const TickerFlowChart: React.FC<TickerFlowChartProps> = ({
                 justifyContent: "center",
                 alignItems: "center",
                 height: "100%",
+                cursor: "pointer",
               }}
+              className="group"
             >
               <div
                 style={{
@@ -161,9 +180,11 @@ export const TickerFlowChart: React.FC<TickerFlowChartProps> = ({
                   maxHeight: "85%",
                   height: `${heightNum}%`,
                   backgroundColor: color,
-                  borderRadius: "2px",
-                  transition: "height 0.2s ease",
+                  borderRadius: "4px",
+                  boxShadow: `0 0 10px ${color}33`,
+                  transition: "all 0.2s ease",
                 }}
+                className="group-hover:opacity-100 group-hover:scale-y-105"
               />
             </div>
           );
@@ -172,18 +193,18 @@ export const TickerFlowChart: React.FC<TickerFlowChartProps> = ({
 
       {/* Legend */}
       <div style={{ display: "flex", justifyContent: "space-between", color: "#848E9C", fontSize: "11px" }}>
-        <span>Oldest</span>
-        <div style={{ display: "flex", gap: "16px" }}>
-          <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-            <span style={{ width: "8px", height: "8px", backgroundColor: "#0ECB81", borderRadius: "2px" }} />
-            Net Inflow (Accumulation)
+        <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>Earliest</span>
+        <div style={{ display: "flex", gap: "20px" }}>
+          <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <span style={{ width: "8px", height: "8px", backgroundColor: "#0ECB81", borderRadius: "2px", boxShadow: "0 0 6px #0ECB81" }} />
+            <span>Net Inflow (Accumulation)</span>
           </span>
-          <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-            <span style={{ width: "8px", height: "8px", backgroundColor: "#F6465D", borderRadius: "2px" }} />
-            Net Outflow (Distribution)
+          <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+            <span style={{ width: "8px", height: "8px", backgroundColor: "#F6465D", borderRadius: "2px", boxShadow: "0 0 6px #F6465D" }} />
+            <span>Net Outflow (Distribution)</span>
           </span>
         </div>
-        <span>Now</span>
+        <span style={{ fontFamily: "'JetBrains Mono', monospace" }}>Now</span>
       </div>
     </div>
   );

@@ -1,9 +1,8 @@
-// packages/ui/src/motion/use-hover-capable.ts
 "use client";
 
 import { useEffect, useState } from "react";
 
-export function useHoverCapable() {
+export function useHoverCapable(): boolean {
   const [canHover, setCanHover] = useState(false);
 
   useEffect(() => {

@@ -334,14 +334,15 @@ export function createAlphaRouter(services: BackendServices): Router {
       const stocks = await services.normalization.getAll();
       const stock = stocks.find((s) => s.ticker.toUpperCase() === ticker);
       const tradFiQuote = await services.tradfi.getQuote(ticker);
+      const tradFiPrice = tradFiQuote?.price ?? stock?.tradfiPrice;
 
-      if (!stock || !tradFiQuote) {
+      if (!stock || !tradFiPrice) {
         res.status(404).json({ error: `Ticker ${ticker} not found in normalized inventory` });
         return;
       }
 
-      const diff = stock.perSharePrice - tradFiQuote.price;
-      const divergenceBps = (diff * BPS_PRECISION) / tradFiQuote.price;
+      const diff = stock.perSharePrice - tradFiPrice;
+      const divergenceBps = (diff * BPS_PRECISION) / tradFiPrice;
       const absBps = divergenceBps < 0n ? -divergenceBps : divergenceBps;
 
       const divergenceState =
@@ -355,7 +356,7 @@ export function createAlphaRouter(services: BackendServices): Router {
         divergenceState,
         direction,
         onChainPrice: formatFixed18(stock.perSharePrice),
-        tradFiPrice: formatFixed18(tradFiQuote.price),
+        tradFiPrice: formatFixed18(tradFiPrice),
         platform: stock.platform,
         timestamp: Date.now(),
         costUsd: "0.01",

@@ -1,9 +1,8 @@
 // packages/ui/src/FlowDashboard.tsx
-"use client";
+// Module 3: Flow Radar Dashboard Overview
+// Reference: Spectra.md §8.1, §8.4
 
 import React from "react";
-import { TiltCard } from "./motion/TiltCard.js";
-import { AnimatedBadge } from "./motion/AnimatedBadge.js";
 
 export interface FlowLeaderboardItem {
   ticker: string;
@@ -40,7 +39,7 @@ export const FlowDashboard: React.FC<FlowDashboardProps> = ({
   const isNetPositive = !totalMarketNetFlow24hUsd.startsWith("-");
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "100%", fontFamily: "'Inter', sans-serif" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "20px", width: "100%", fontFamily: "Inter, sans-serif" }}>
       {/* Stale or degradation warning */}
       {isStale && (
         <div
@@ -50,16 +49,19 @@ export const FlowDashboard: React.FC<FlowDashboardProps> = ({
             alignItems: "center",
             justifyContent: "space-between",
             padding: "12px 18px",
-            backgroundColor: "rgba(240, 185, 11, 0.12)",
-            border: "1px solid rgba(240, 185, 11, 0.3)",
-            borderRadius: "12px",
+            backgroundColor: "rgba(240, 185, 11, 0.1)",
+            border: "1px solid rgba(240, 185, 11, 0.35)",
+            borderRadius: "10px",
             color: "#F0B90B",
             fontSize: "13px",
-            backdropFilter: "blur(8px)",
+            backdropFilter: "blur(10px)",
           }}
         >
-          <span>⚠️ <strong>Flow Radar Degraded:</strong> Serving cached on-chain transfer events. Live BscScan feeds suspended.</span>
-          {lastUpdated && <span style={{ color: "#848E9C", fontSize: "11px" }}>Last update: {lastUpdated}</span>}
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <span>⚠️</span>
+            <span><strong>Flow Radar Degraded:</strong> Serving cached on-chain transfer events. Live BscScan feeds suspended.</span>
+          </div>
+          {lastUpdated && <span style={{ color: "#848E9C", fontSize: "11px", fontFamily: "'JetBrains Mono', monospace" }}>Last update: {lastUpdated}</span>}
         </div>
       )}
 
@@ -67,35 +69,43 @@ export const FlowDashboard: React.FC<FlowDashboardProps> = ({
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
           gap: "16px",
         }}
       >
         {/* Total 24h Flow Card */}
-        <TiltCard
-          max={6}
+        <div
           style={{
-            backgroundColor: "#14161C",
+            backgroundColor: "rgba(22, 24, 29, 0.75)",
+            backdropFilter: "blur(12px)",
             border: "1px solid rgba(255, 255, 255, 0.08)",
-            borderRadius: "16px",
+            borderRadius: "12px",
             padding: "20px 22px",
             display: "flex",
             flexDirection: "column",
             gap: "8px",
-            boxShadow: "0 8px 24px rgba(0, 0, 0, 0.25)",
+            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
           }}
         >
-          <div style={{ color: "#848E9C", fontSize: "12px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>
+          <div
+            style={{
+              color: "#848E9C",
+              fontSize: "11px",
+              textTransform: "uppercase",
+              letterSpacing: "0.88px",
+              fontWeight: 600,
+            }}
+          >
             Total 24h Smart Money Net Flow
           </div>
           <div
             data-testid="total-net-flow"
             style={{
-              fontSize: "26px",
-              fontWeight: 700,
+              fontSize: "28px",
+              fontWeight: 800,
               fontFamily: "'JetBrains Mono', monospace",
               color: isNetPositive ? "#0ECB81" : "#F6465D",
-              letterSpacing: "-0.5px",
+              textShadow: isNetPositive ? "0 0 16px rgba(14, 203, 129, 0.25)" : "0 0 16px rgba(246, 70, 93, 0.25)",
             }}
           >
             {isNetPositive ? `+${formatDollars(totalMarketNetFlow24hUsd)}` : formatDollars(totalMarketNetFlow24hUsd)}
@@ -103,21 +113,34 @@ export const FlowDashboard: React.FC<FlowDashboardProps> = ({
           <div style={{ color: "#848E9C", fontSize: "12px" }}>
             Aggregated across all verified BSC equity pools
           </div>
-        </TiltCard>
+        </div>
 
         {/* Top Accumulators Card */}
-        <TiltCard
-          max={6}
+        <div
           style={{
-            backgroundColor: "#14161C",
+            backgroundColor: "rgba(22, 24, 29, 0.75)",
+            backdropFilter: "blur(12px)",
             border: "1px solid rgba(255, 255, 255, 0.08)",
-            borderRadius: "16px",
+            borderRadius: "12px",
             padding: "20px 22px",
-            boxShadow: "0 8px 24px rgba(0, 0, 0, 0.25)",
+            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
           }}
         >
-          <div style={{ color: "#0ECB81", fontSize: "12px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "14px" }}>
-            ▲ Top Accumulation (Smart Inflows)
+          <div
+            style={{
+              color: "#0ECB81",
+              fontSize: "11px",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.88px",
+              marginBottom: "14px",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <span>▲</span>
+            <span>Top Accumulation (Smart Inflows)</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {topAccumulated.slice(0, 3).map((item) => (
@@ -127,41 +150,80 @@ export const FlowDashboard: React.FC<FlowDashboardProps> = ({
                 onClick={() => onSelectTicker?.(item.ticker)}
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
                   alignItems: "center",
+                  justifyContent: "space-between",
                   padding: "8px 12px",
-                  backgroundColor: "rgba(255, 255, 255, 0.03)",
+                  borderRadius: "8px",
+                  backgroundColor: "rgba(30, 35, 41, 0.5)",
                   border: "1px solid rgba(255, 255, 255, 0.05)",
-                  borderRadius: "10px",
                   cursor: onSelectTicker ? "pointer" : "default",
-                  transition: "background-color 0.15s ease",
+                  transition: "all 0.15s ease",
                 }}
+                className="hover:border-green-500/30 hover:bg-white/[0.04]"
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <span style={{ fontWeight: 700, color: "#EAECEF", fontSize: "14px" }}>{item.ticker}</span>
-                  <AnimatedBadge label={item.dominantPlatform} status="neutral" size="sm" />
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <span style={{ fontWeight: 700, color: "#FFFFFF", fontSize: "14px" }}>
+                    {item.ticker}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "10px",
+                      padding: "2px 6px",
+                      borderRadius: "4px",
+                      backgroundColor: "rgba(255, 255, 255, 0.06)",
+                      color: "#848E9C",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {item.dominantPlatform}
+                  </span>
                 </div>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", color: "#0ECB81", fontWeight: 600, fontSize: "13px" }}>
+                <span
+                  style={{
+                    color: "#0ECB81",
+                    fontWeight: 700,
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "13px",
+                  }}
+                >
                   +{formatDollars(item.netFlow24hUsd)}
                 </span>
               </div>
             ))}
+            {topAccumulated.length === 0 && (
+              <div style={{ color: "#848E9C", fontSize: "12px", fontStyle: "italic" }}>
+                No significant accumulation detected
+              </div>
+            )}
           </div>
-        </TiltCard>
+        </div>
 
-        {/* Top Distribution Card */}
-        <TiltCard
-          max={6}
+        {/* Top Distributers Card */}
+        <div
           style={{
-            backgroundColor: "#14161C",
+            backgroundColor: "rgba(22, 24, 29, 0.75)",
+            backdropFilter: "blur(12px)",
             border: "1px solid rgba(255, 255, 255, 0.08)",
-            borderRadius: "16px",
+            borderRadius: "12px",
             padding: "20px 22px",
-            boxShadow: "0 8px 24px rgba(0, 0, 0, 0.25)",
+            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
           }}
         >
-          <div style={{ color: "#F6465D", fontSize: "12px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "14px" }}>
-            ▼ Top Distribution (Whale Outflows)
+          <div
+            style={{
+              color: "#F6465D",
+              fontSize: "11px",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.88px",
+              marginBottom: "14px",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+            }}
+          >
+            <span>▼</span>
+            <span>Top Distribution (Selling Pressure)</span>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {topDistributed.slice(0, 3).map((item) => (
@@ -171,27 +233,53 @@ export const FlowDashboard: React.FC<FlowDashboardProps> = ({
                 onClick={() => onSelectTicker?.(item.ticker)}
                 style={{
                   display: "flex",
-                  justifyContent: "space-between",
                   alignItems: "center",
+                  justifyContent: "space-between",
                   padding: "8px 12px",
-                  backgroundColor: "rgba(255, 255, 255, 0.03)",
+                  borderRadius: "8px",
+                  backgroundColor: "rgba(30, 35, 41, 0.5)",
                   border: "1px solid rgba(255, 255, 255, 0.05)",
-                  borderRadius: "10px",
                   cursor: onSelectTicker ? "pointer" : "default",
-                  transition: "background-color 0.15s ease",
+                  transition: "all 0.15s ease",
                 }}
+                className="hover:border-red-500/30 hover:bg-white/[0.04]"
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                  <span style={{ fontWeight: 700, color: "#EAECEF", fontSize: "14px" }}>{item.ticker}</span>
-                  <AnimatedBadge label={item.dominantPlatform} status="neutral" size="sm" />
+                <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <span style={{ fontWeight: 700, color: "#FFFFFF", fontSize: "14px" }}>
+                    {item.ticker}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "10px",
+                      padding: "2px 6px",
+                      borderRadius: "4px",
+                      backgroundColor: "rgba(255, 255, 255, 0.06)",
+                      color: "#848E9C",
+                      fontWeight: 600,
+                    }}
+                  >
+                    {item.dominantPlatform}
+                  </span>
                 </div>
-                <span style={{ fontFamily: "'JetBrains Mono', monospace", color: "#F6465D", fontWeight: 600, fontSize: "13px" }}>
+                <span
+                  style={{
+                    color: "#F6465D",
+                    fontWeight: 700,
+                    fontFamily: "'JetBrains Mono', monospace",
+                    fontSize: "13px",
+                  }}
+                >
                   {formatDollars(item.netFlow24hUsd)}
                 </span>
               </div>
             ))}
+            {topDistributed.length === 0 && (
+              <div style={{ color: "#848E9C", fontSize: "12px", fontStyle: "italic" }}>
+                No significant distribution detected
+              </div>
+            )}
           </div>
-        </TiltCard>
+        </div>
       </div>
     </div>
   );

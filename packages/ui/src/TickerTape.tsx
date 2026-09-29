@@ -1,5 +1,6 @@
 // packages/ui/src/TickerTape.tsx
 import React from "react";
+import { Marquee } from "./components/motion/marquee.js";
 
 export interface TickerTapeSignal {
   id: string;
@@ -69,12 +70,18 @@ export const TickerTape: React.FC<TickerTapeProps> = ({
     <div
       data-testid="ticker-tape"
       style={{
+        position: "sticky",
+        bottom: 0,
+        left: 0,
+        right: 0,
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        height: "36px",
-        backgroundColor: "#16181D",
-        borderTop: "1px solid #23272E",
+        height: "40px",
+        backgroundColor: "rgba(18, 20, 24, 0.88)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderTop: "1px solid rgba(255, 255, 255, 0.08)",
         padding: "0 16px",
         fontSize: "11px",
         fontFamily: "'JetBrains Mono', monospace",
@@ -84,7 +91,7 @@ export const TickerTape: React.FC<TickerTapeProps> = ({
       }}
     >
       {/* Left: Market Status & WS Pill */}
-      <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", flexShrink: 0 }}>
         {/* Market Status */}
         <div
           data-testid="market-status-pill"
@@ -92,12 +99,15 @@ export const TickerTape: React.FC<TickerTapeProps> = ({
             display: "flex",
             alignItems: "center",
             gap: "6px",
-            padding: "2px 8px",
-            borderRadius: "12px",
+            padding: "3px 10px",
+            borderRadius: "9999px",
             backgroundColor: marketOpen
               ? "rgba(14, 203, 129, 0.12)"
               : "rgba(120, 123, 134, 0.12)",
-            border: marketOpen ? "1px solid #0ECB81" : "1px solid #787B86",
+            border: marketOpen
+              ? "1px solid rgba(14, 203, 129, 0.35)"
+              : "1px solid rgba(120, 123, 134, 0.35)",
+            boxShadow: marketOpen ? "0 0 10px rgba(14, 203, 129, 0.1)" : "none",
           }}
         >
           <span
@@ -106,7 +116,7 @@ export const TickerTape: React.FC<TickerTapeProps> = ({
               height: "6px",
               borderRadius: "50%",
               backgroundColor: marketOpen ? "#0ECB81" : "#787B86",
-              boxShadow: marketOpen ? "0 0 6px #0ECB81" : "none",
+              boxShadow: marketOpen ? "0 0 8px #0ECB81" : "none",
             }}
           />
           <span
@@ -128,6 +138,10 @@ export const TickerTape: React.FC<TickerTapeProps> = ({
             display: "flex",
             alignItems: "center",
             gap: "5px",
+            padding: "3px 8px",
+            borderRadius: "6px",
+            backgroundColor: "rgba(255, 255, 255, 0.03)",
+            border: "1px solid rgba(255, 255, 255, 0.05)",
             color:
               wsStatus === "CONNECTED"
                 ? "#0ECB81"
@@ -144,6 +158,7 @@ export const TickerTape: React.FC<TickerTapeProps> = ({
               height: "5px",
               borderRadius: "50%",
               backgroundColor: "currentColor",
+              boxShadow: wsStatus === "CONNECTED" ? "0 0 6px rgba(14, 203, 129, 0.6)" : "none",
             }}
           />
           <span>WS: {wsStatus}</span>
@@ -156,11 +171,10 @@ export const TickerTape: React.FC<TickerTapeProps> = ({
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "16px",
-          overflowX: "auto",
-          padding: "0 16px",
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
+          gap: "12px",
+          flex: 1,
+          margin: "0 16px",
+          overflow: "hidden",
         }}
       >
         <span
@@ -170,64 +184,72 @@ export const TickerTape: React.FC<TickerTapeProps> = ({
             color: "#F0B90B",
             letterSpacing: "0.5px",
             flexShrink: 0,
+            display: "flex",
+            alignItems: "center",
+            gap: "4px",
           }}
         >
-          ACTIVE SIGNALS:
+          <span>⚡</span>
+          <span>SIGNALS:</span>
         </span>
-        {displaySignals.map((sig) => {
-          const isWarning = sig.severity === "WARNING" || sig.severity === "CRITICAL";
-          return (
-            <div
-              key={sig.id}
-              data-testid={`signal-pill-${sig.ticker.toLowerCase()}`}
-              onClick={() => onSelectSignal?.(sig)}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                padding: "2px 8px",
-                borderRadius: "4px",
-                backgroundColor: isWarning
-                  ? "rgba(246, 70, 93, 0.12)"
-                  : "#1E2329",
-                border: isWarning ? "1px solid #F6465D" : "1px solid #2B313A",
-                cursor: onSelectSignal ? "pointer" : "default",
-                flexShrink: 0,
-              }}
-            >
-              <span
+        <Marquee speed={32} pauseOnHover gap="12px" className="flex-1">
+          {displaySignals.map((sig) => {
+            const isWarning = sig.severity === "WARNING" || sig.severity === "CRITICAL";
+            return (
+              <div
+                key={sig.id}
+                data-testid={`signal-pill-${sig.ticker.toLowerCase()}`}
+                onClick={() => onSelectSignal?.(sig)}
                 style={{
-                  fontWeight: 800,
-                  color: isWarning ? "#F6465D" : "#F0B90B",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  padding: "3px 10px",
+                  borderRadius: "6px",
+                  backgroundColor: isWarning
+                    ? "rgba(246, 70, 93, 0.12)"
+                    : "rgba(30, 35, 41, 0.8)",
+                  border: isWarning
+                    ? "1px solid rgba(246, 70, 93, 0.35)"
+                    : "1px solid rgba(255, 255, 255, 0.08)",
+                  cursor: onSelectSignal ? "pointer" : "default",
+                  transition: "all 0.15s ease",
                 }}
               >
-                {sig.ticker}
-              </span>
-              {sig.spreadBps && (
                 <span
                   style={{
-                    color: isWarning ? "#F6465D" : "#0ECB81",
-                    fontWeight: 600,
+                    fontWeight: 800,
+                    color: isWarning ? "#F6465D" : "#F0B90B",
                   }}
                 >
-                  {sig.spreadBps}
+                  {sig.ticker}
                 </span>
-              )}
-              <span
-                style={{
-                  color: "#848E9C",
-                  fontSize: "10px",
-                  maxWidth: "220px",
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {sig.message}
-              </span>
-            </div>
-          );
-        })}
+                {sig.spreadBps && (
+                  <span
+                    style={{
+                      color: isWarning ? "#F6465D" : "#0ECB81",
+                      fontWeight: 600,
+                      backgroundColor: "rgba(0,0,0,0.2)",
+                      padding: "1px 4px",
+                      borderRadius: "3px",
+                    }}
+                  >
+                    {sig.spreadBps}
+                  </span>
+                )}
+                <span
+                  style={{
+                    color: "#A0A8B5",
+                    fontSize: "10px",
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  {sig.message}
+                </span>
+              </div>
+            );
+          })}
+        </Marquee>
       </div>
 
       {/* Right: Network Metrics & Timestamp */}
@@ -235,16 +257,18 @@ export const TickerTape: React.FC<TickerTapeProps> = ({
         style={{
           display: "flex",
           alignItems: "center",
-          gap: "12px",
+          gap: "10px",
           flexShrink: 0,
           fontSize: "10px",
         }}
       >
-        <span>Gas: {gasGwei}</span>
-        <span>•</span>
-        <span>Block: 3.0s</span>
-        <span>•</span>
-        <span data-testid="last-updated">{lastUpdated}</span>
+        <span style={{ color: "#EAECEF", backgroundColor: "rgba(255,255,255,0.04)", padding: "2px 6px", borderRadius: "4px" }}>
+          Gas: {gasGwei}
+        </span>
+        <span style={{ color: "#5E6673" }}>•</span>
+        <span style={{ color: "#848E9C" }}>Block: 3.0s</span>
+        <span style={{ color: "#5E6673" }}>•</span>
+        <span data-testid="last-updated" style={{ color: "#F0B90B" }}>{lastUpdated}</span>
       </div>
     </div>
   );

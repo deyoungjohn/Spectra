@@ -7,7 +7,6 @@ import {
   TickerFlowChart,
   WhaleTable,
   CrossPlatformFlow,
-  AnimatedTabs,
   type FlowChartPoint,
   type WhaleAlertRow,
 } from "@spectra/ui";
@@ -23,7 +22,7 @@ const INITIAL_SUMMARY = {
     { ticker: "NVDA", netFlow24hUsd: "-26000.00", dominantPlatform: "ONDO" },
   ],
   isStale: false,
-  lastUpdated: new Date().toISOString(),
+  lastUpdated: "Just now",
 };
 
 const MOCK_CHART_POINTS: Record<string, FlowChartPoint[]> = {
@@ -113,13 +112,28 @@ export default function FlowRadarPage() {
   );
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "24px", width: "100%" }}>
+    <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "24px", display: "flex", flexDirection: "column", gap: "24px", width: "100%", fontFamily: "Inter, sans-serif" }}>
       {/* Title & Introduction */}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "16px" }}>
         <div>
-          <h1 style={{ margin: 0, fontSize: "24px", fontWeight: 800, color: "#EAECEF" }}>
-            Flow Radar <span style={{ color: "#F0B90B", fontSize: "16px", fontWeight: 600 }}>The Quiver Quant Layer</span>
-          </h1>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <h1 style={{ margin: 0, fontSize: "26px", fontWeight: 800, color: "#FFFFFF", letterSpacing: "-0.5px" }}>
+              Flow Radar
+            </h1>
+            <span
+              style={{
+                fontSize: "11px",
+                padding: "2px 8px",
+                borderRadius: "4px",
+                backgroundColor: "rgba(240, 185, 11, 0.15)",
+                border: "1px solid rgba(240, 185, 11, 0.3)",
+                color: "#F0B90B",
+                fontWeight: 700,
+              }}
+            >
+              The Quiver Quant Layer
+            </span>
+          </div>
           <p style={{ margin: "6px 0 0", color: "#848E9C", fontSize: "14px" }}>
             Real-time BSC token transfer tracking, whale accumulation alerts, and cross-platform liquidity migration.
           </p>
@@ -130,17 +144,20 @@ export default function FlowRadarPage() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "12px",
-            padding: "8px 14px",
-            backgroundColor: "#20252E",
-            border: "1px solid #2B313A",
-            borderRadius: "6px",
+            gap: "14px",
+            padding: "10px 16px",
+            backgroundColor: "rgba(22, 24, 29, 0.8)",
+            backdropFilter: "blur(12px)",
+            border: "1px solid rgba(255, 255, 255, 0.08)",
+            borderRadius: "10px",
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-            <span style={{ fontSize: "11px", color: "#848E9C" }}>API Access (b402 Paid Endpoint)</span>
-            <span style={{ fontFamily: "JetBrains Mono, monospace", fontSize: "12px", color: "#0ECB81", fontWeight: 700 }}>
-              GET /api/alpha/flow/:ticker • 0.02 USDC
+            <span style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.88px", color: "#848E9C", fontWeight: 600 }}>
+              b402 Paid Alpha Feed
+            </span>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "12px", color: "#0ECB81", fontWeight: 700 }}>
+              GET /api/alpha/flow/:ticker • $0.02
             </span>
           </div>
           <a
@@ -148,16 +165,18 @@ export default function FlowRadarPage() {
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              padding: "6px 12px",
+              padding: "7px 14px",
               backgroundColor: "#F0B90B",
               color: "#0D0E12",
-              borderRadius: "4px",
+              borderRadius: "6px",
               fontSize: "12px",
               fontWeight: 700,
               textDecoration: "none",
+              transition: "all 0.15s ease",
             }}
+            className="hover:bg-yellow-400"
           >
-            Query Alpha
+            Query Alpha →
           </a>
         </div>
       </div>
@@ -173,13 +192,34 @@ export default function FlowRadarPage() {
       />
 
       {/* Ticker Selector Tabs */}
-      <div style={{ display: "flex", alignItems: "center", gap: "16px", borderBottom: "1px solid #2B313A", paddingBottom: "16px", marginTop: "16px" }}>
-        <span style={{ fontSize: "14px", color: "#848E9C", fontWeight: 600 }}>Inspect Equity Flow:</span>
-        <AnimatedTabs
-          tabs={tickers.map((t) => ({ id: t, label: t }))}
-          activeTab={selectedTicker}
-          onChange={setSelectedTicker}
-        />
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", borderBottom: "1px solid rgba(255, 255, 255, 0.08)", paddingBottom: "14px" }}>
+        <span style={{ fontSize: "12px", color: "#848E9C", fontWeight: 600 }}>INSPECT EQUITY FLOW:</span>
+        <div style={{ display: "inline-flex", gap: "6px" }}>
+          {tickers.map((t) => {
+            const isSelected = selectedTicker === t;
+            return (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setSelectedTicker(t)}
+                style={{
+                  padding: "6px 16px",
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  borderRadius: "8px",
+                  border: isSelected ? "1px solid #F0B90B" : "1px solid rgba(255, 255, 255, 0.08)",
+                  backgroundColor: isSelected ? "rgba(240, 185, 11, 0.15)" : "rgba(22, 24, 29, 0.7)",
+                  color: isSelected ? "#F0B90B" : "#848E9C",
+                  cursor: "pointer",
+                  transition: "all 0.15s ease",
+                }}
+                className="hover:text-white"
+              >
+                {t}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Detailed Ticker Analysis Grid */}

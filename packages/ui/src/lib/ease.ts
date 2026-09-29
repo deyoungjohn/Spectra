@@ -1,11 +1,12 @@
-// packages/ui/src/motion/ease.ts
-// Shared motion tokens and canonical spring physics from beui / DESIGN.md
+// packages/ui/src/lib/ease.ts
+// Shared motion tokens and spring physics from beUI
 
 export const EASE_OUT = [0.16, 1, 0.3, 1] as const;
 export const EASE_IN_OUT = [0.77, 0, 0.175, 1] as const;
+export const EASE_DRAWER = [0.32, 0.72, 0, 1] as const;
+
 export const EASE_OUT_CSS = "cubic-bezier(0.16, 1, 0.3, 1)";
 
-/** Press feedback on buttons and interactive cards */
 export const SPRING_PRESS = {
   type: "spring",
   stiffness: 500,
@@ -13,7 +14,6 @@ export const SPRING_PRESS = {
   mass: 0.6,
 } as const;
 
-/** Content swaps — transitions inside controls */
 export const SPRING_SWAP = {
   type: "spring",
   stiffness: 460,
@@ -21,7 +21,6 @@ export const SPRING_SWAP = {
   mass: 0.55,
 } as const;
 
-/** Overlay panel entrances — modals and dialogs */
 export const SPRING_PANEL = {
   type: "spring",
   stiffness: 420,
@@ -29,17 +28,21 @@ export const SPRING_PANEL = {
   mass: 0.5,
 } as const;
 
-/** Shared-layout glides — active tab indicators and pills morphing positions */
 export const SPRING_LAYOUT = {
   type: "spring",
-  stiffness: 380,
-  damping: 30,
+  stiffness: 360,
+  damping: 32,
   mass: 0.6,
 } as const;
 
-/** Cursor-follow physics for decorative mouse tracking (3D tilt, glare) */
 export const SPRING_MOUSE = {
-  stiffness: 220,
-  damping: 18,
+  stiffness: 200,
+  damping: 15,
   mass: 0.3,
+} as const;
+
+export const SPRING_GLIDE = {
+  stiffness: 700,
+  damping: 50,
+  mass: 0.5,
 } as const;

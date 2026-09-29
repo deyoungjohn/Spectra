@@ -40,7 +40,7 @@ export const Simulator: React.FC<SimulatorProps> = ({ result, isSimulating = fal
         style={{
           backgroundColor: "#181A20",
           border: "1px solid #2B313A",
-          borderRadius: "16px",
+          borderRadius: "8px",
           padding: "24px",
           textAlign: "center",
           color: "#F0B90B",
@@ -58,7 +58,7 @@ export const Simulator: React.FC<SimulatorProps> = ({ result, isSimulating = fal
         style={{
           backgroundColor: "#181A20",
           border: "1px solid #2B313A",
-          borderRadius: "16px",
+          borderRadius: "8px",
           padding: "24px",
           textAlign: "center",
           color: "#848E9C",
@@ -78,7 +78,7 @@ export const Simulator: React.FC<SimulatorProps> = ({ result, isSimulating = fal
       style={{
         backgroundColor: "#181A20",
         border: "1px solid #2B313A",
-        borderRadius: "16px",
+        borderRadius: "8px",
         padding: "20px",
         display: "flex",
         flexDirection: "column",

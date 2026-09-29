@@ -1,8 +1,9 @@
 // packages/ui/src/NLInput.tsx
-"use client";
+//
+// Module 2: Natural Language Strategy Input Component
+// Reference: Spectra.md §7.4, §7.6
 
 import React, { useState } from "react";
-import { AnimatedButton } from "./motion/AnimatedButton.js";
 
 export interface NLInputProps {
   onCompile: (prompt: string) => void;
@@ -22,20 +23,18 @@ export const NLInput: React.FC<NLInputProps> = ({ onCompile, isCompiling = false
   return (
     <div
       style={{
-        backgroundColor: "#14161C",
-        border: "1px solid rgba(255, 255, 255, 0.08)",
-        borderRadius: "16px",
-        padding: "22px",
+        backgroundColor: "#181A20",
+        border: "1px solid #2B313A",
+        borderRadius: "8px",
+        padding: "20px",
         display: "flex",
         flexDirection: "column",
-        gap: "16px",
+        gap: "14px",
         width: "100%",
-        boxShadow: "0 8px 30px rgba(0, 0, 0, 0.25)",
-        fontFamily: "'Inter', sans-serif",
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: "#FFFFFF", letterSpacing: "-0.3px" }}>
+        <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: "#EAECEF" }}>
           💬 Natural Language Strategy Composer
         </h3>
         <span style={{ fontSize: "12px", color: "#848E9C" }}>
@@ -52,34 +51,22 @@ export const NLInput: React.FC<NLInputProps> = ({ onCompile, isCompiling = false
         style={{
           width: "100%",
           boxSizing: "border-box",
-          backgroundColor: "#0D0E12",
-          border: "1px solid rgba(255, 255, 255, 0.12)",
-          borderRadius: "12px",
-          padding: "14px 16px",
-          color: "#FFFFFF",
+          backgroundColor: "#14151A",
+          border: "1px solid #2B313A",
+          borderRadius: "6px",
+          padding: "12px",
+          color: "#EAECEF",
           fontSize: "14px",
           fontFamily: "'Inter', sans-serif",
           resize: "vertical",
           outline: "none",
-          lineHeight: 1.5,
-          transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-        }}
-        onFocus={(e) => {
-          e.currentTarget.style.borderColor = "#F0B90B";
-          e.currentTarget.style.boxShadow = "0 0 0 2px rgba(240, 185, 11, 0.2)";
-        }}
-        onBlur={(e) => {
-          e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.12)";
-          e.currentTarget.style.boxShadow = "none";
         }}
       />
 
       {/* Preset Example Chips */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-        <span style={{ fontSize: "11px", color: "#848E9C", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>
-          Try an example:
-        </span>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+        <span style={{ fontSize: "11px", color: "#848E9C" }}>Try an example:</span>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
           {EXAMPLE_PROMPTS.map((ex, idx) => (
             <button
               key={idx}
@@ -87,24 +74,14 @@ export const NLInput: React.FC<NLInputProps> = ({ onCompile, isCompiling = false
               data-testid={`example-chip-${idx}`}
               onClick={() => setPrompt(ex)}
               style={{
-                fontSize: "12px",
-                padding: "5px 12px",
-                backgroundColor: "rgba(255, 255, 255, 0.04)",
-                border: "1px solid rgba(255, 255, 255, 0.08)",
-                borderRadius: "9999px",
-                color: "#B0B4BA",
+                fontSize: "11px",
+                padding: "4px 8px",
+                backgroundColor: "#20252E",
+                border: "1px solid #2B313A",
+                borderRadius: "4px",
+                color: "#848E9C",
                 cursor: "pointer",
                 textAlign: "left",
-                transition: "all 0.15s ease",
-                fontWeight: 500,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.08)";
-                e.currentTarget.style.color = "#FFFFFF";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.04)";
-                e.currentTarget.style.color = "#B0B4BA";
               }}
             >
               {idx === 0 ? "★ Basis Rotation + Flow" : idx === 1 ? "Weekly DCA" : idx === 2 ? "Oracle Guard" : "Weekend Fade"}
@@ -115,19 +92,28 @@ export const NLInput: React.FC<NLInputProps> = ({ onCompile, isCompiling = false
 
       {/* Submit Button */}
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <AnimatedButton
-          variant="gold"
-          size="md"
+        <button
+          type="button"
           data-testid="compile-btn"
           disabled={isCompiling || prompt.trim() === ""}
           onClick={() => onCompile(prompt)}
           style={{
-            borderRadius: "10px",
-            padding: "10px 22px",
+            padding: "8px 20px",
+            backgroundColor: "#F0B90B",
+            color: "#0D0E12",
+            border: "none",
+            borderRadius: "6px",
+            fontSize: "13px",
+            fontWeight: 700,
+            cursor: isCompiling || prompt.trim() === "" ? "not-allowed" : "pointer",
+            opacity: isCompiling || prompt.trim() === "" ? 0.6 : 1,
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
           }}
         >
           {isCompiling ? "Compiling DSL..." : "⚡ Compile Strategy"}
-        </AnimatedButton>
+        </button>
       </div>
     </div>
   );

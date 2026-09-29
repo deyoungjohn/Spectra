@@ -1,20 +1,13 @@
-// packages/ui/src/motion/TiltCard.tsx
-// Inspired by beui.dev/components/motion/tilt-card & DESIGN.md
 "use client";
+// beui.dev/components/motion/tilt-card
 
-import React, { useRef, type ReactNode } from "react";
-import {
-  motion,
-  useMotionTemplate,
-  useMotionValue,
-  useReducedMotion,
-  useSpring,
-  type HTMLMotionProps,
-} from "motion/react";
-import { SPRING_MOUSE } from "./ease.js";
-import { useHoverCapable } from "./use-hover-capable.js";
+import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring } from "motion/react";
+import { useRef, type ReactNode } from "react";
+import { SPRING_MOUSE } from "../../lib/ease.js";
+import { useHoverCapable } from "../../lib/hooks/use-hover-capable.js";
+import { cn } from "../../lib/utils.js";
 
-export interface TiltCardProps extends Omit<HTMLMotionProps<"div">, "children"> {
+export interface TiltCardProps {
   children: ReactNode;
   max?: number;
   glare?: boolean;
@@ -23,20 +16,11 @@ export interface TiltCardProps extends Omit<HTMLMotionProps<"div">, "children"> 
   onClick?: () => void;
 }
 
-export function TiltCard({
-  children,
-  max = 8,
-  glare = true,
-  className,
-  style,
-  onClick,
-  ...rest
-}: TiltCardProps) {
+export function TiltCard({ children, max = 8, glare = true, className, style, onClick }: TiltCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotion();
   const canHover = useHoverCapable();
   const enabled = !reduce && canHover;
-
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
   const gx = useMotionValue(50);
@@ -67,35 +51,19 @@ export function TiltCard({
 
   return (
     <motion.div
-      {...rest}
       ref={ref}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
       onClick={onClick}
-      whileHover={{ y: -3, transition: { duration: 0.2 } }}
-      whileTap={{ scale: 0.985, transition: { duration: 0.1 } }}
-      style={{
-        transform: enabled ? transform : undefined,
-        transformStyle: "preserve-3d",
-        position: "relative",
-        borderRadius: "16px",
-        overflow: "hidden",
-        cursor: onClick ? "pointer" : "default",
-        ...style,
-      }}
-      className={className}
+      style={{ transform, transformStyle: "preserve-3d", ...style }}
+      className={cn("relative overflow-hidden rounded-xl will-change-transform transition-colors duration-200", className)}
     >
       {children}
       {glare && enabled ? (
         <motion.div
           aria-hidden
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: glareBg,
-            pointerEvents: "none",
-            borderRadius: "inherit",
-          }}
+          style={{ background: glareBg }}
+          className="pointer-events-none absolute inset-0 opacity-20"
         />
       ) : null}
     </motion.div>
